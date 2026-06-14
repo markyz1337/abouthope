@@ -64,6 +64,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .pill:hover{border-color:var(--rose);box-shadow:0 4px 16px rgba(232,85,122,.18);transform:translateY(-2px)}
 .edit-mode-active .info-pills{flex-direction:column;align-items:stretch;gap:.6rem}
 .edit-mode-active .info-pills .pill{padding-right:8rem}
+.edit-mode-active .love-tags{flex-direction:column;align-items:stretch;gap:.6rem}
+.edit-mode-active .love-tags .love-tag{padding-right:8rem;display:block}
+
+
+
 
 .hero-note{font-size:.85rem;font-weight:300;color:var(--text-body);line-height:1.9;border-left:2px solid var(--rose-mist);padding-left:1.2rem;font-style:italic;opacity:0;animation:fsu .9s .7s ease both;max-width:380px}
 .scroll-cta{margin-top:2.8rem;display:flex;align-items:center;gap:.8rem;opacity:0;animation:fsu .9s .85s ease both}
@@ -1612,11 +1617,22 @@ function buildEditModal(title,fields,data,saveFn){
       </label></div>`;
     } else if(type==='textarea'){
       div.innerHTML=`<div class="efield full"><label>${label}</label><textarea id="em-${f}" rows="4">${val}</textarea></div>`;
+    } else if(f==='cat1'){
+      const cats=[...new Set(allItems.filter(r=>r.tip==='film'&&r.cat1).map(r=>r.cat1))];
+      const esc=s=>String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+      div.className='ef-row full';
+      div.innerHTML=`<div class="efield full"><label>${label}</label>
+        <input type="text" id="em-${f}" value="${esc(val)}">
+        ${cats.length?`<div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem">
+          ${cats.map(c=>`<button type="button" class="ic-btn" style="background:rgba(232,85,122,.12);border:1px solid rgba(232,85,122,.25);border-radius:12px;padding:.3rem .7rem;font-size:.72rem;color:#f0c4d4" onclick="document.getElementById('em-${f}').value='${esc(c)}'">${c}</button>`).join('')}
+        </div>`:''}
+      </div>`;
     } else {
       div.innerHTML=`<div class="efield"><label>${label}</label><input type="${type}" id="em-${f}" value="${String(val).replace(/"/g,'&quot;')}"></div>`;
     }
     container.appendChild(div);
   });
+
   editModalSaveFn=async()=>{
     const vals={};
     fields.forEach(f=>{
