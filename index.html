@@ -292,7 +292,6 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 .admin-section{display:none}
 .admin-section.active{display:block}
 .admin-section-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;color:#fdf0f4;margin-bottom:1.5rem;display:flex;align-items:center;gap:.6rem}
-/* Form */
 .aform{background:rgba(255,255,255,.04);border:1px solid rgba(232,85,122,.15);border-radius:16px;padding:1.5rem;margin-bottom:2rem}
 .aform-title{color:#f0c4d4;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;font-weight:500;margin-bottom:1.2rem}
 .aform-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.8rem;margin-bottom:1rem}
@@ -311,7 +310,6 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 .abtn-secondary:hover{background:rgba(255,255,255,.12);color:#fdf0f4}
 .abtn-danger{background:rgba(180,30,60,.3);color:#ff80ab;border:1px solid rgba(180,30,60,.4)}
 .abtn-danger:hover{background:rgba(180,30,60,.5)}
-/* Table */
 .atable-wrap{overflow-x:auto}
 .atable{width:100%;border-collapse:collapse;font-size:.82rem}
 .atable th{text-align:left;padding:.7rem 1rem;border-bottom:1px solid rgba(232,85,122,.2);color:#c490a8;font-weight:500;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
@@ -325,7 +323,6 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 .btn-edit:hover{background:var(--rose);color:#fff}
 .btn-del{background:rgba(180,30,60,.2);color:#ff80ab}
 .btn-del:hover{background:rgba(180,30,60,.5)}
-/* Status */
 .admin-toast{position:fixed;bottom:2rem;right:2rem;background:rgba(22,10,15,.95);border:1px solid rgba(232,85,122,.3);border-radius:14px;padding:1rem 1.5rem;color:#fdf0f4;font-size:.85rem;z-index:99999;opacity:0;transform:translateY(20px);transition:all .3s;pointer-events:none}
 .admin-toast.show{opacity:1;transform:translateY(0)}
 .admin-toast.ok{border-color:#5cba8a;color:#a0e4a0}
@@ -333,8 +330,9 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 .admin-loading{text-align:center;padding:3rem;color:#c490a8;font-style:italic}
 .admin-empty{text-align:center;padding:2rem;color:#9b6a7e;font-style:italic;font-size:.9rem}
 .atable .txt-clamp{max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-/* Color preview */
 .color-dot{display:inline-block;width:16px;height:16px;border-radius:50%;vertical-align:middle;margin-right:.4rem;border:1px solid rgba(255,255,255,.15)}
+/* tip badge colors in admin table */
+.tip-badge{display:inline-block;border-radius:12px;padding:.15rem .55rem;font-size:.7rem;white-space:nowrap;background:rgba(232,85,122,.12);color:#f0c4d4}
 </style>
 </head>
 <body>
@@ -342,12 +340,10 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 <div id="cur"></div>
 <div id="cur2"></div>
 <div class="stars-bg" id="starsBg"></div>
-
-<!-- ─── TOAST -->
 <div class="admin-toast" id="adminToast"></div>
 
 <!-- ══════════════════════════════════════════════
-     ADMIN OVERLAY
+     ADMIN OVERLAY  (3 tabs: Settings | Content | Quotes)
 ══════════════════════════════════════════════ -->
 <div id="adminOverlay">
   <div class="admin-wrap">
@@ -356,372 +352,168 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
       <button class="admin-close" onclick="closeAdmin()">✕</button>
     </div>
 
-    <div class="admin-tabs" id="adminTabs"></div>
+    <div class="admin-tabs">
+      <button class="atab active"  onclick="switchTab('settings')">⚙️ Setări & Info</button>
+      <button class="atab"         onclick="switchTab('content')">🌸 Conținut</button>
+      <button class="atab"         onclick="switchTab('quotes')">💬 Citate</button>
+    </div>
 
-    <!-- TAB: SETĂRI -->
-    <div class="admin-section active" data-tab="setari">
-      <div class="admin-section-title">⚙️ Setări globale</div>
+    <!-- ─── TAB 1: SETTINGS ─── -->
+    <div class="admin-section active" data-tab="settings">
+      <div class="admin-section-title">⚙️ Setări globale & Info Pills</div>
+
+      <!-- Setare key/value -->
       <div class="aform">
-        <div class="aform-title">Adaugă / modifică setare</div>
+        <div class="aform-title">Setare cheie → valoare (hero_name, hero_tagline, hero_note, footer_name, love_intro...)</div>
         <div class="aform-grid">
-          <div class="afield"><label>Cheie</label><input id="s-cheie" placeholder="ex: hero_tagline"></div>
+          <div class="afield"><label>Cheie</label><input id="s-cheie" placeholder="ex: hero_name"></div>
           <div class="afield"><label>Valoare</label><input id="s-valoare" placeholder="valoarea..."></div>
         </div>
         <div class="aform-actions">
           <button class="abtn abtn-primary" onclick="saveSetare()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('s')">✕ Anulează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('s')">✕</button>
         </div>
       </div>
-      <div id="setari-list"><div class="admin-loading">Se încarcă...</div></div>
-    </div>
+      <div id="setari-list" style="margin-bottom:2.5rem"><div class="admin-loading">Se încarcă...</div></div>
 
-    <!-- TAB: INFO -->
-    <div class="admin-section" data-tab="info">
-      <div class="admin-section-title">📛 Informații hero</div>
+      <!-- Info pills -->
+      <div class="admin-section-title" style="font-size:1.2rem;margin-top:1rem">📛 Info Pills (hero)</div>
       <div class="aform">
-        <div class="aform-title">Adaugă / editează pill</div>
         <div class="aform-grid">
-          <div class="afield"><label>Cheie</label><input id="inf-cheie" placeholder="ex: zodie"></div>
-          <div class="afield"><label>Valoare</label><input id="inf-valoare" placeholder="ex: Taur ♉"></div>
           <div class="afield"><label>Emoji</label><input id="inf-emoji" placeholder="🎂"></div>
+          <div class="afield"><label>Cheie</label><input id="inf-cheie" placeholder="zodie"></div>
+          <div class="afield"><label>Valoare</label><input id="inf-valoare" placeholder="Taur ♉"></div>
           <div class="afield"><label>Ordine</label><input id="inf-ordine" type="number" value="0"></div>
         </div>
         <div class="aform-actions">
           <button class="abtn abtn-primary" onclick="saveInfo()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('inf')">✕ Anulează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('inf')">✕</button>
         </div>
         <input type="hidden" id="inf-id">
       </div>
       <div id="info-list"><div class="admin-loading">Se încarcă...</div></div>
     </div>
 
-    <!-- TAB: CULORI -->
-    <div class="admin-section" data-tab="culori">
-      <div class="admin-section-title">🎨 Culori</div>
-      <div class="aform">
-        <div class="aform-title">Adaugă / editează culoare</div>
-        <div class="aform-grid">
-          <div class="afield"><label>Nume</label><input id="c-nume" placeholder="Baby Pink"></div>
-          <div class="afield"><label>Hex 1</label><input id="c-hex" placeholder="#f9c6d8"></div>
-          <div class="afield"><label>Hex 2 (gradient, opțional)</label><input id="c-hex2" placeholder="#f4a0c0"></div>
-          <div class="afield"><label>Descriere</label><input id="c-desc" placeholder="Dulceața ta interioară"></div>
-          <div class="afield"><label>Ordine</label><input id="c-ordine" type="number" value="0"></div>
-          <div class="afield"><label>Preferată <input id="c-pref" type="checkbox"></label></div>
-        </div>
-        <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveCuloare()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('c')">✕ Anulează</button>
-        </div>
-        <input type="hidden" id="c-id">
-      </div>
-      <div id="culori-list"><div class="admin-loading">Se încarcă...</div></div>
-    </div>
+    <!-- ─── TAB 2: CONTENT ─── -->
+    <div class="admin-section" data-tab="content">
+      <div class="admin-section-title">🌸 Conținut</div>
 
-    <!-- TAB: FLORI -->
-    <div class="admin-section" data-tab="flori">
-      <div class="admin-section-title">🌷 Flori</div>
       <div class="aform">
+        <div class="aform-title">Adaugă / editează item — alege tipul mai jos</div>
         <div class="aform-grid">
-          <div class="afield"><label>Emoji</label><input id="fl-emoji" placeholder="🌸"></div>
-          <div class="afield"><label>Titlu</label><input id="fl-titlu" placeholder="Bujori"></div>
-          <div class="afield"><label>Ordine</label><input id="fl-ordine" type="number" value="0"></div>
-          <div class="afield" style="grid-column:1/-1"><label>Descriere</label><textarea id="fl-desc" placeholder="Descriere..."></textarea></div>
-        </div>
-        <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveFloare()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('fl')">✕ Anulează</button>
-        </div>
-        <input type="hidden" id="fl-id">
-      </div>
-      <div id="flori-list"><div class="admin-loading">Se încarcă...</div></div>
-    </div>
-
-    <!-- TAB: VIBES -->
-    <div class="admin-section" data-tab="vibes">
-      <div class="admin-section-title">🎀 Vibes</div>
-      <div class="aform">
-        <div class="aform-grid">
-          <div class="afield"><label>Emoji</label><input id="vb-emoji" placeholder="☕"></div>
-          <div class="afield"><label>Titlu</label><input id="vb-titlu" placeholder="Cafea de dimineață"></div>
-          <div class="afield"><label>Ordine</label><input id="vb-ordine" type="number" value="0"></div>
-          <div class="afield" style="grid-column:1/-1"><label>Descriere</label><textarea id="vb-desc" placeholder="Descriere scurtă..."></textarea></div>
-        </div>
-        <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveVibe()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('vb')">✕ Anulează</button>
-        </div>
-        <input type="hidden" id="vb-id">
-      </div>
-      <div id="vibes-list"><div class="admin-loading">Se încarcă...</div></div>
-    </div>
-
-    <!-- TAB: EMOJI STRIP -->
-    <div class="admin-section" data-tab="emoji">
-      <div class="admin-section-title">🪄 Emoji Strip</div>
-      <div class="aform">
-        <div class="aform-grid">
-          <div class="afield"><label>Emoji</label><input id="es-emoji" placeholder="🎀"></div>
-          <div class="afield"><label>Text</label><input id="es-text" placeholder="Roz interior (Barbie)"></div>
-          <div class="afield"><label>Ordine</label><input id="es-ordine" type="number" value="0"></div>
-        </div>
-        <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveEmoji()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('es')">✕ Anulează</button>
-        </div>
-        <input type="hidden" id="es-id">
-      </div>
-      <div id="emoji-list"><div class="admin-loading">Se încarcă...</div></div>
-    </div>
-
-    <!-- TAB: TRĂSĂTURI -->
-    <div class="admin-section" data-tab="trasaturi">
-      <div class="admin-section-title">🌙 Trăsături personalitate</div>
-      <div class="aform">
-        <div class="aform-grid">
-          <div class="afield"><label>Emoji</label><input id="tr-emoji" placeholder="🌟"></div>
-          <div class="afield"><label>Ordine</label><input id="tr-ordine" type="number" value="0"></div>
-          <div class="afield" style="grid-column:1/-1"><label>Text</label><textarea id="tr-text" placeholder="Descriere trăsătură..."></textarea></div>
-        </div>
-        <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveTrasatura()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('tr')">✕ Anulează</button>
-        </div>
-        <input type="hidden" id="tr-id">
-      </div>
-      <div id="trasaturi-list"><div class="admin-loading">Se încarcă...</div></div>
-    </div>
-
-    <!-- TAB: NOAPTE -->
-    <div class="admin-section" data-tab="noapte">
-      <div class="admin-section-title">✨ Momente noapte</div>
-      <div class="aform">
-        <div class="aform-grid">
-          <div class="afield"><label>Emoji</label><input id="n-emoji" placeholder="🌧️"></div>
-          <div class="afield"><label>Ordine</label><input id="n-ordine" type="number" value="0"></div>
-          <div class="afield" style="grid-column:1/-1"><label>Text</label><textarea id="n-text" placeholder="Text moment..."></textarea></div>
-        </div>
-        <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveNoapte()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('n')">✕ Anulează</button>
-        </div>
-        <input type="hidden" id="n-id">
-      </div>
-      <div id="noapte-list"><div class="admin-loading">Se încarcă...</div></div>
-    </div>
-
-    <!-- TAB: SCRATCH -->
-    <div class="admin-section" data-tab="scratch">
-      <div class="admin-section-title">🌸 Scratch Cards</div>
-      <div class="aform">
-        <div class="aform-grid">
-          <div class="afield"><label>Emoji</label><input id="sc-emoji" placeholder="🌸"></div>
-          <div class="afield"><label>Ordine</label><input id="sc-ordine" type="number" value="0"></div>
-          <div class="afield" style="grid-column:1/-1"><label>Text (mesajul ascuns)</label><textarea id="sc-text" placeholder="Mesaj pentru card..."></textarea></div>
-        </div>
-        <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveScratch()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('sc')">✕ Anulează</button>
-        </div>
-        <input type="hidden" id="sc-id">
-      </div>
-      <div id="scratch-list"><div class="admin-loading">Se încarcă...</div></div>
-    </div>
-
-    <!-- TAB: COMPLIMENTE -->
-    <div class="admin-section" data-tab="complimente">
-      <div class="admin-section-title">💌 Complimente Randomizer</div>
-      <div class="aform">
-        <div class="aform-grid">
-          <div class="afield"><label>Emoji</label><input id="co-emoji" placeholder="🌸"></div>
-          <div class="afield"><label>Ordine</label><input id="co-ordine" type="number" value="0"></div>
-          <div class="afield" style="grid-column:1/-1"><label>Text compliment</label><textarea id="co-text" placeholder="Compliment..."></textarea></div>
-        </div>
-        <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveCompliment()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('co')">✕ Anulează</button>
-        </div>
-        <input type="hidden" id="co-id">
-      </div>
-      <div id="complimente-list"><div class="admin-loading">Se încarcă...</div></div>
-    </div>
-
-    <!-- TAB: FILME -->
-    <div class="admin-section" data-tab="filme">
-      <div class="admin-section-title">🎬 Filme & Seriale</div>
-      <div class="aform">
-        <div class="aform-grid">
-          <div class="afield"><label>Titlu film</label><input id="fm-titlu" placeholder="The Notebook"></div>
-          <div class="afield"><label>Categorie</label><input id="fm-cat" placeholder="Romantice clasice"></div>
-          <div class="afield"><label>Ordine</label><input id="fm-ordine" type="number" value="0"></div>
-          <div class="afield"><label>Highlight (💕) <input id="fm-hl" type="checkbox"></label></div>
-        </div>
-        <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveFilm()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('fm')">✕ Anulează</button>
-        </div>
-        <input type="hidden" id="fm-id">
-      </div>
-      <div id="filme-list"><div class="admin-loading">Se încarcă...</div></div>
-    </div>
-
-    <!-- TAB: CITATE FILME -->
-    <div class="admin-section" data-tab="citate-filme">
-      <div class="admin-section-title">💬 Citate despre filme</div>
-      <div class="aform">
-        <div class="aform-grid">
-          <div class="afield"><label>Culoare bordură CSS</label><input id="cf-culoare" placeholder="var(--rose)" value="var(--rose)"></div>
-          <div class="afield"><label>Ordine</label><input id="cf-ordine" type="number" value="0"></div>
-          <div class="afield" style="grid-column:1/-1"><label>Text citat</label><textarea id="cf-text" placeholder="Citat despre un film..."></textarea></div>
-        </div>
-        <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveCitatFilm()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('cf')">✕ Anulează</button>
-        </div>
-        <input type="hidden" id="cf-id">
-      </div>
-      <div id="citate-filme-list"><div class="admin-loading">Se încarcă...</div></div>
-    </div>
-
-    <!-- TAB: MUZICĂ -->
-    <div class="admin-section" data-tab="muzica">
-      <div class="admin-section-title">🎵 Muzică</div>
-      <div class="aform">
-        <div class="aform-grid">
-          <div class="afield"><label>Text (artist sau piesă)</label><input id="mz-text" placeholder="Bruno Mars"></div>
           <div class="afield">
-            <label>Categorie</label>
-            <select id="mz-cat">
-              <option value="artist">Artist</option>
-              <option value="piesa">Piesă preferată</option>
+            <label>Tip</label>
+            <select id="ct-tip">
+              <optgroup label="──── Vizual ────">
+                <option value="culoare">🎨 Culoare</option>
+                <option value="floare">🌷 Floare</option>
+                <option value="vibe">🎀 Vibe</option>
+                <option value="emoji_strip">🪄 Emoji Strip</option>
+              </optgroup>
+              <optgroup label="──── Personalitate ────">
+                <option value="trasatura">🌙 Trăsătură suflet</option>
+                <option value="noapte">✨ Moment noapte</option>
+              </optgroup>
+              <optgroup label="──── Interactiv ────">
+                <option value="scratch">🌸 Scratch Card</option>
+                <option value="compliment">💌 Compliment</option>
+              </optgroup>
+              <optgroup label="──── Film / Muzică ────">
+                <option value="film">🎬 Film</option>
+                <option value="muzica_artist">🎶 Artist muzical</option>
+                <option value="muzica_piesa">🎵 Piesă preferată</option>
+              </optgroup>
+              <optgroup label="──── Statistici & Tags ────">
+                <option value="stat">📊 Statistică</option>
+                <option value="love_tag">💕 Love Tag</option>
+              </optgroup>
+              <optgroup label="──── Extra & Scrisoare ────">
+                <option value="extra_personal">🌍 Extra: Personal</option>
+                <option value="extra_culori">🎨 Extra: Culori perfecte</option>
+                <option value="extra_nu_place">❌ Extra: Nu-ți place</option>
+                <option value="extra_vise">🎯 Extra: Vise</option>
+                <option value="extra_obiceiuri">🎀 Extra: Obiceiuri</option>
+                <option value="scrisoare_paragraf">💌 Scrisoare: Paragraf</option>
+                <option value="scrisoare_semnatura">✍️ Scrisoare: Semnătură</option>
+                <option value="scrisoare_nota">📝 Scrisoare: Notă</option>
+              </optgroup>
             </select>
           </div>
-          <div class="afield"><label>Ordine</label><input id="mz-ordine" type="number" value="0"></div>
-          <div class="afield"><label>Highlight <input id="mz-hl" type="checkbox"></label></div>
+          <div class="afield"><label>Emoji</label><input id="ct-emoji" placeholder="🌸"></div>
+          <div class="afield"><label>Titlu / Cheie</label><input id="ct-titlu" placeholder="titlu sau cheie..."></div>
+          <div class="afield"><label>Ordine</label><input id="ct-ordine" type="number" value="0"></div>
+
+          <!-- culoare -->
+          <div class="afield" id="f-hex"><label>Hex culoare 1</label><input id="ct-hex" placeholder="#f9c6d8"></div>
+          <div class="afield" id="f-hex2"><label>Hex culoare 2 (gradient)</label><input id="ct-hex2" placeholder="#f4a0c0"></div>
+          <div class="afield" id="f-pref"><label>Preferată <input id="ct-pref" type="checkbox"></label></div>
+
+          <!-- film -->
+          <div class="afield" id="f-cat-film"><label>Categorie film</label><input id="ct-cat-film" placeholder="Romantice clasice"></div>
+          <div class="afield" id="f-hl"><label>Highlight 💕★ <input id="ct-hl" type="checkbox"></label></div>
+
+          <!-- stat -->
+          <div class="afield" id="f-procent"><label>Procent (0-100)</label><input id="ct-procent" type="number" min="0" max="100" value="0"></div>
+
+          <!-- text mare -->
+          <div class="afield" id="f-text" style="grid-column:1/-1"><label>Text / Descriere</label><textarea id="ct-text" placeholder="text..."></textarea></div>
         </div>
         <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveMuzica()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('mz')">✕ Anulează</button>
+          <button class="abtn abtn-primary" onclick="saveContent()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearContent()">✕ Anulează</button>
         </div>
-        <input type="hidden" id="mz-id">
+        <input type="hidden" id="ct-id">
       </div>
-      <div id="muzica-list"><div class="admin-loading">Se încarcă...</div></div>
+
+      <!-- Filter -->
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem">
+        <span style="color:#c490a8;font-size:.75rem;align-self:center">Filtrează:</span>
+        <button class="atab active" onclick="filterContent('')" id="f-all">Toate</button>
+        <button class="atab" onclick="filterContent('culoare')">Culori</button>
+        <button class="atab" onclick="filterContent('floare')">Flori</button>
+        <button class="atab" onclick="filterContent('vibe')">Vibes</button>
+        <button class="atab" onclick="filterContent('trasatura')">Suflet</button>
+        <button class="atab" onclick="filterContent('noapte')">Noapte</button>
+        <button class="atab" onclick="filterContent('scratch')">Scratch</button>
+        <button class="atab" onclick="filterContent('compliment')">Complimente</button>
+        <button class="atab" onclick="filterContent('film')">Filme</button>
+        <button class="atab" onclick="filterContent('muzica')">Muzică</button>
+        <button class="atab" onclick="filterContent('stat')">Stats</button>
+        <button class="atab" onclick="filterContent('love_tag')">Love</button>
+        <button class="atab" onclick="filterContent('extra')">Extra</button>
+        <button class="atab" onclick="filterContent('scrisoare')">Scrisoare</button>
+        <button class="atab" onclick="filterContent('emoji_strip')">Emoji</button>
+      </div>
+      <div id="content-list"><div class="admin-loading">Se încarcă...</div></div>
     </div>
 
-    <!-- TAB: STATISTICI -->
-    <div class="admin-section" data-tab="stats">
-      <div class="admin-section-title">📊 Statistici (progress bars)</div>
-      <div class="aform">
-        <div class="aform-grid">
-          <div class="afield"><label>Emoji</label><input id="st-emoji" placeholder="☕"></div>
-          <div class="afield"><label>Etichetă</label><input id="st-eticheta" placeholder="Dependență de cafea"></div>
-          <div class="afield"><label>Procent (0-100)</label><input id="st-procent" type="number" min="0" max="100" value="0"></div>
-          <div class="afield"><label>Ordine</label><input id="st-ordine" type="number" value="0"></div>
-        </div>
-        <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveStat()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('st')">✕ Anulează</button>
-        </div>
-        <input type="hidden" id="st-id">
-      </div>
-      <div id="stats-list"><div class="admin-loading">Se încarcă...</div></div>
-    </div>
-
-    <!-- TAB: LOVE TAGS -->
-    <div class="admin-section" data-tab="love">
-      <div class="admin-section-title">💕 Love Language Tags</div>
-      <div class="aform">
-        <div class="aform-grid">
-          <div class="afield"><label>Text tag</label><input id="lt-text" placeholder="Ținutul de mână 🤝"></div>
-          <div class="afield"><label>Ordine</label><input id="lt-ordine" type="number" value="0"></div>
-        </div>
-        <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveLoveTag()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('lt')">✕ Anulează</button>
-        </div>
-        <input type="hidden" id="lt-id">
-      </div>
-      <div id="love-list"><div class="admin-loading">Se încarcă...</div></div>
-    </div>
-
-    <!-- TAB: CITATE -->
-    <div class="admin-section" data-tab="citate">
-      <div class="admin-section-title">💬 Citate generale (blockquotes)</div>
+    <!-- ─── TAB 3: QUOTES ─── -->
+    <div class="admin-section" data-tab="quotes">
+      <div class="admin-section-title">💬 Citate & Blockquotes</div>
       <div class="aform">
         <div class="aform-grid">
           <div class="afield">
             <label>Secțiune</label>
-            <select id="cit-sectiune">
+            <select id="q-sectiune">
               <option value="culori">Culori</option>
               <option value="flori">Flori</option>
               <option value="noapte">Noapte</option>
               <option value="iubire">Iubire</option>
+              <option value="filme">Filme</option>
               <option value="altele">Altele</option>
             </select>
           </div>
-          <div class="afield"><label>Culoare bordură</label><input id="cit-culoare" placeholder="var(--rose)" value="var(--rose)"></div>
-          <div class="afield"><label>Ordine</label><input id="cit-ordine" type="number" value="0"></div>
-          <div class="afield" style="grid-column:1/-1"><label>Text citat</label><textarea id="cit-text" placeholder="Textul citatului..."></textarea></div>
+          <div class="afield"><label>Culoare bordură CSS</label><input id="q-culoare" placeholder="var(--rose)" value="var(--rose)"></div>
+          <div class="afield"><label>Ordine</label><input id="q-ordine" type="number" value="0"></div>
+          <div class="afield" style="grid-column:1/-1"><label>Text citat</label><textarea id="q-text" placeholder="Textul citatului..."></textarea></div>
         </div>
         <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveCitat()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('cit')">✕ Anulează</button>
+          <button class="abtn abtn-primary" onclick="saveQuote()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('q')">✕</button>
         </div>
-        <input type="hidden" id="cit-id">
+        <input type="hidden" id="q-id">
       </div>
-      <div id="citate-list"><div class="admin-loading">Se încarcă...</div></div>
-    </div>
-
-    <!-- TAB: EXTRA -->
-    <div class="admin-section" data-tab="extra">
-      <div class="admin-section-title">✨ Detalii Extra</div>
-      <div class="aform">
-        <div class="aform-grid">
-          <div class="afield">
-            <label>Categorie</label>
-            <select id="ex-cat">
-              <option value="personal">Personal</option>
-              <option value="culori_perfecte">Culori perfecte</option>
-              <option value="nu_place">Nu-ți place</option>
-              <option value="vise">Vise & aspirații</option>
-              <option value="obiceiuri">Obiceiuri & quirks</option>
-            </select>
-          </div>
-          <div class="afield"><label>Emoji</label><input id="ex-emoji" placeholder="🌟"></div>
-          <div class="afield"><label>Ordine</label><input id="ex-ordine" type="number" value="0"></div>
-          <div class="afield" style="grid-column:1/-1"><label>Text</label><textarea id="ex-text" placeholder="Detaliu..."></textarea></div>
-        </div>
-        <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveExtra()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('ex')">✕ Anulează</button>
-        </div>
-        <input type="hidden" id="ex-id">
-      </div>
-      <div id="extra-list"><div class="admin-loading">Se încarcă...</div></div>
-    </div>
-
-    <!-- TAB: SCRISOARE -->
-    <div class="admin-section" data-tab="scrisoare">
-      <div class="admin-section-title">💌 Scrisoarea finală</div>
-      <div class="aform">
-        <div class="aform-grid">
-          <div class="afield">
-            <label>Tip</label>
-            <select id="sl-tip">
-              <option value="paragraf">Paragraf</option>
-              <option value="semnatura">Semnătură</option>
-              <option value="nota">Notă</option>
-            </select>
-          </div>
-          <div class="afield"><label>Ordine</label><input id="sl-ordine" type="number" value="0"></div>
-          <div class="afield" style="grid-column:1/-1"><label>Text</label><textarea id="sl-text" placeholder="Textul paragrafului..."></textarea></div>
-        </div>
-        <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveScrisoare()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('sl')">✕ Anulează</button>
-        </div>
-        <input type="hidden" id="sl-id">
-      </div>
-      <div id="scrisoare-list"><div class="admin-loading">Se încarcă...</div></div>
+      <div id="quotes-list"><div class="admin-loading">Se încarcă...</div></div>
     </div>
 
   </div><!-- /admin-wrap -->
@@ -754,7 +546,7 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
     <h1 class="hero-name"><em id="heroName">Kseny</em></h1>
     <p class="hero-tagline" id="heroTagline">sau Ksiunea, o pisicuță în suflet 🐾</p>
     <div class="info-pills" id="infoPills">
-      <span class="pill"><span class="pi">⏳</span>Se încarcă...</span>
+      <span class="pill"><span>⏳</span>Se încarcă...</span>
     </div>
     <p class="hero-note" id="heroNote">Se încarcă...</p>
     <div class="scroll-cta">
@@ -1006,8 +798,8 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 ══════════════════════════════════════════════ -->
 <script>
 // ── SUPABASE
-const SB_URL  = 'https://fndjrfieitieqzafhyzz.supabase.co';
-const SB_KEY  = 'sb_publishable_bHDKjiKAVHqW199ICw7i2g_O3olYMAr';
+const SB_URL = 'https://fndjrfieitieqzafhyzz.supabase.co';
+const SB_KEY = 'sb_publishable_bHDKjiKAVHqW199ICw7i2g_O3olYMAr';
 const { createClient } = supabase;
 const db = createClient(SB_URL, SB_KEY);
 
@@ -1134,167 +926,166 @@ const progObs=new IntersectionObserver(entries=>{
   });
 },{threshold:.25});
 
-// ═══════════════════════════════════════════════════
-//  SUPABASE DATA LOADING
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+//  DATA — 3 tabele: xenia_settings | xenia_items | xenia_quotes
+// ══════════════════════════════════════════════════════
+
+// cache global
+let allItems = [];
+let allQuotes = [];
 
 async function loadAll(){
-  await Promise.all([
-    loadSetari(),
-    loadInfo(),
-    loadCulori(),
-    loadFlori(),
-    loadVibes(),
-    loadEmojiStrip(),
-    loadTrasaturi(),
-    loadNoapte(),
-    loadScratch(),
-    loadComplimente(),
-    loadFilme(),
-    loadMuzica(),
-    loadStats(),
-    loadLoveTags(),
-    loadCitate(),
-    loadExtra(),
-    loadScrisoare(),
-  ]);
+  await Promise.all([loadSettings(), loadItems(), loadQuotes()]);
+  renderPage();
 }
 
-// SETĂRI
-let setariCache = {};
-async function loadSetari(){
-  const {data} = await db.from('desprehope_setari').select('*').order('cheie');
+// ── SETTINGS (xenia_settings: id, cheie, valoare)
+let settingsCache = {};
+async function loadSettings(){
+  const {data} = await db.from('xenia_settings').select('*').order('cheie');
   if(!data) return;
-  setariCache = {};
-  data.forEach(r => setariCache[r.cheie] = r.valoare);
-  // aplică setările
-  if(setariCache.hero_name) document.getElementById('heroName').textContent = setariCache.hero_name;
-  if(setariCache.hero_tagline) document.getElementById('heroTagline').textContent = setariCache.hero_tagline;
-  if(setariCache.hero_note) document.getElementById('heroNote').textContent = setariCache.hero_note;
-  if(setariCache.footer_name) document.getElementById('footerName').textContent = setariCache.footer_name;
-  if(setariCache.love_intro) document.getElementById('loveIntro').innerHTML = setariCache.love_intro;
+  settingsCache = {};
+  data.forEach(r => settingsCache[r.cheie] = r.valoare);
+  if(settingsCache.hero_name)    document.getElementById('heroName').textContent    = settingsCache.hero_name;
+  if(settingsCache.hero_tagline) document.getElementById('heroTagline').textContent = settingsCache.hero_tagline;
+  if(settingsCache.hero_note)    document.getElementById('heroNote').textContent    = settingsCache.hero_note;
+  if(settingsCache.footer_name)  document.getElementById('footerName').textContent  = settingsCache.footer_name;
+  if(settingsCache.love_intro)   document.getElementById('loveIntro').innerHTML     = settingsCache.love_intro;
   renderSetariTable(data);
 }
 
-// INFO PILLS
-async function loadInfo(){
-  const {data} = await db.from('desprehope_info').select('*').order('ordine');
-  if(!data) return;
-  // hero pills
-  const pills = document.getElementById('infoPills');
-  const card  = document.getElementById('heroCardFacts');
-  if(data.length){
-    pills.innerHTML = data.map(r=>`<span class="pill"><span class="pi">${r.emoji||''}</span>${r.valoare}</span>`).join('');
-    card.innerHTML  = data.slice(0,4).map(r=>`<div class="hc-fact"><span class="hf-icon">${r.emoji||'📌'}</span><span>${r.valoare}</span></div>`).join('');
-  } else {
-    pills.innerHTML = '';
-    card.innerHTML  = '';
-  }
-  renderInfoTable(data);
+// ── INFO PILLS (xenia_settings cu cheie prefix "info_")
+// Sunt stocate ca tip separat: xenia_settings rămâne pentru key/value generic
+// Info pills vin din xenia_items cu tip='info_pill'
+// (Simplu, fără tabel separat)
+
+// ── ITEMS (xenia_items: id, tip, emoji, titlu, text, hex, hex2, bool1, num1, cat1, ordine)
+async function loadItems(){
+  const {data} = await db.from('xenia_items').select('*').order('ordine');
+  allItems = data || [];
 }
 
-// CULORI
-async function loadCulori(){
-  const {data} = await db.from('desprehope_culori').select('*').order('ordine');
-  const grid = document.getElementById('culoriGrid');
-  if(!data||!data.length){ grid.innerHTML='<div class="admin-empty">Nicio culoare adăugată.</div>'; return; }
-  grid.innerHTML = data.map(r=>{
+// ── QUOTES (xenia_quotes: id, sectiune, text, culoare_bordura, ordine)
+async function loadQuotes(){
+  const {data} = await db.from('xenia_quotes').select('*').order('ordine');
+  allQuotes = data || [];
+}
+
+function getItems(tip){ return allItems.filter(r=>r.tip===tip); }
+function getItemsPrefix(prefix){ return allItems.filter(r=>r.tip.startsWith(prefix)); }
+function getQuotes(sectiune){ return allQuotes.filter(r=>r.sectiune===sectiune); }
+
+function quotesHtml(arr, darkStyle=false){
+  return arr.map(r=>{
+    const bg = darkStyle ? 'background:rgba(255,255,255,.04);color:#ffd6e7;' : '';
+    return `<div class="bq rev" style="${bg}border-left-color:${r.culoare_bordura||'var(--rose)'}">${r.text}</div>`;
+  }).join('');
+}
+
+// ── RENDER PAGE
+function renderPage(){
+  renderInfoPills();
+  renderCulori();
+  renderFlori();
+  renderVibes();
+  renderEmojiStrip();
+  renderTrasaturi();
+  renderNoapte();
+  renderScratch();
+  renderFilme();
+  renderMuzica();
+  renderStats();
+  renderLoveTags();
+  renderExtra();
+  renderScrisoare();
+  renderContentTable(allItems);
+  renderQuotesTable(allQuotes);
+  setTimeout(observeAll, 120);
+}
+
+function renderInfoPills(){
+  const pills = getItems('info_pill');
+  const pillsEl = document.getElementById('infoPills');
+  const cardEl  = document.getElementById('heroCardFacts');
+  if(!pills.length){ pillsEl.innerHTML=''; cardEl.innerHTML=''; return; }
+  pillsEl.innerHTML = pills.map(r=>`<span class="pill"><span>${r.emoji||''}</span>${r.titlu}</span>`).join('');
+  cardEl.innerHTML  = pills.slice(0,4).map(r=>`<div class="hc-fact"><span class="hf-icon">${r.emoji||'📌'}</span><span>${r.titlu}</span></div>`).join('');
+}
+
+function renderCulori(){
+  const items = getItems('culoare');
+  const grid  = document.getElementById('culoriGrid');
+  if(!items.length){ grid.innerHTML='<div style="color:#9b6a7e;font-style:italic;width:100%;text-align:center">Nicio culoare adăugată.</div>'; }
+  else grid.innerHTML = items.map(r=>{
     const bg = r.hex2 ? `background:linear-gradient(135deg,${r.hex},${r.hex2})` : `background:${r.hex}`;
     return `<div class="palette-swatch rev">
       <div class="swatch-circle" style="${bg}"></div>
-      <div class="swatch-label">${r.nume}</div>
-      ${r.descriere?`<div class="swatch-note">${r.descriere}</div>`:''}
-      ${r.preferata?'<span class="swatch-fav">♡ Preferată</span>':''}
+      <div class="swatch-label">${r.titlu}</div>
+      ${r.text?`<div class="swatch-note">${r.text}</div>`:''}
+      ${r.bool1?'<span class="swatch-fav">♡ Preferată</span>':''}
     </div>`;
   }).join('');
-  // citate culori
-  const {data:cit} = await db.from('desprehope_citate').select('*').eq('sectiune','culori').order('ordine');
-  document.getElementById('culoriCitate').innerHTML = cit ? cit.map(r=>`<div class="bq rev" style="border-left-color:${r.culoare_bordura||'var(--rose)'}">${r.text}</div>`).join('') : '';
-  setTimeout(observeAll,100);
-  renderCuloriTable(data);
+  document.getElementById('culoriCitate').innerHTML = quotesHtml(getQuotes('culori'));
 }
 
-// FLORI
-async function loadFlori(){
-  const {data} = await db.from('desprehope_flori').select('*').order('ordine');
-  const grid = document.getElementById('floriGrid');
-  if(!data||!data.length){ grid.innerHTML='<div class="admin-empty">Nicio floare adăugată.</div>'; return; }
-  grid.innerHTML = data.map(r=>`<div class="flower-card">
-    <span class="fc-icon">${r.emoji}</span>
+function renderFlori(){
+  const items = getItems('floare');
+  const grid  = document.getElementById('floriGrid');
+  if(!items.length){ grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Nicio floare adăugată.</div>'; return; }
+  grid.innerHTML = items.map(r=>`<div class="flower-card">
+    <span class="fc-icon">${r.emoji||'🌸'}</span>
     <div class="fc-title">${r.titlu}</div>
-    <div class="fc-text">${r.descriere||''}</div>
+    <div class="fc-text">${r.text||''}</div>
   </div>`).join('');
-  const {data:cit} = await db.from('desprehope_citate').select('*').eq('sectiune','flori').order('ordine');
-  document.getElementById('floriCitate').innerHTML = cit ? cit.map(r=>`<div class="bq rev" style="border-left-color:${r.culoare_bordura||'var(--rose)'}">${r.text}</div>`).join('') : '';
-  setTimeout(observeAll,100);
-  renderFloriTable(data);
+  document.getElementById('floriCitate').innerHTML = quotesHtml(getQuotes('flori'));
 }
 
-// VIBES
-async function loadVibes(){
-  const {data} = await db.from('desprehope_vibes').select('*').order('ordine');
-  const grid = document.getElementById('vibesGrid');
-  if(!data||!data.length){ grid.innerHTML='<div class="admin-empty">Niciun vibe adăugat.</div>'; return; }
-  grid.innerHTML = data.map(r=>`<div class="vibe-card">
-    <span class="vc-icon">${r.emoji}</span>
+function renderVibes(){
+  const items = getItems('vibe');
+  const grid  = document.getElementById('vibesGrid');
+  if(!items.length){ grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun vibe adăugat.</div>'; return; }
+  grid.innerHTML = items.map(r=>`<div class="vibe-card">
+    <span class="vc-icon">${r.emoji||'✨'}</span>
     <div class="vc-label">${r.titlu}</div>
-    <div class="vc-text">${r.descriere||''}</div>
+    <div class="vc-text">${r.text||''}</div>
   </div>`).join('');
-  setTimeout(observeAll,100);
-  renderVibesTable(data);
 }
 
-// EMOJI STRIP
-async function loadEmojiStrip(){
-  const {data} = await db.from('desprehope_emoji_strip').select('*').order('ordine');
+function renderEmojiStrip(){
+  const items = getItems('emoji_strip');
   const strip = document.getElementById('emojiStrip');
-  if(!data||!data.length){ strip.innerHTML='<div style="color:#9b6a7e;font-style:italic;padding:1rem">Nimic adăugat.</div>'; return; }
-  strip.innerHTML = data.map(r=>`<div class="ef"><span class="ef-i">${r.emoji}</span><span class="ef-t">${r.text}</span></div>`).join('');
-  renderEmojiTable(data);
+  if(!items.length){ strip.innerHTML='<div style="color:#9b6a7e;font-style:italic;padding:1rem">Nimic adăugat.</div>'; return; }
+  strip.innerHTML = items.map(r=>`<div class="ef"><span class="ef-i">${r.emoji||'🌸'}</span><span class="ef-t">${r.titlu}</span></div>`).join('');
 }
 
-// TRĂSĂTURI
-async function loadTrasaturi(){
-  const {data} = await db.from('desprehope_trasaturi').select('*').order('ordine');
-  const grid = document.getElementById('trasaturiGrid');
-  if(!data||!data.length){ grid.innerHTML='<div style="color:#c490a8;font-style:italic">Nicio trăsătură adăugată.</div>'; return; }
-  grid.innerHTML = data.map(r=>`<div class="trait-item">
-    <span class="ti-icon">${r.emoji}</span><span>${r.text}</span>
-  </div>`).join('');
-  setTimeout(observeAll,100);
-  renderTrasaturiTable(data);
+function renderTrasaturi(){
+  const items = getItems('trasatura');
+  const grid  = document.getElementById('trasaturiGrid');
+  if(!items.length){ grid.innerHTML='<div style="color:#c490a8;font-style:italic">Nicio trăsătură adăugată.</div>'; return; }
+  grid.innerHTML = items.map(r=>`<div class="trait-item"><span class="ti-icon">${r.emoji||'🌟'}</span><span>${r.text}</span></div>`).join('');
 }
 
-// NOAPTE
-async function loadNoapte(){
-  const {data} = await db.from('desprehope_noapte').select('*').order('ordine');
-  const grid = document.getElementById('noapteGrid');
-  if(!data||!data.length){ grid.innerHTML='<div style="color:#c490a8;font-style:italic">Nimic adăugat.</div>'; return; }
-  grid.innerHTML = data.map(r=>`<div class="night-item">
-    <span class="ni-icon">${r.emoji}</span><span>${r.text}</span>
-  </div>`).join('');
-  const {data:cit} = await db.from('desprehope_citate').select('*').eq('sectiune','noapte').order('ordine');
-  document.getElementById('noapteCitat').innerHTML = cit ? cit.map(r=>`<div class="bq rev" style="background:rgba(255,255,255,.04);color:#ffd6e7;border-left-color:${r.culoare_bordura||'#ff80ab'}">${r.text}</div>`).join('') : '';
-  setTimeout(observeAll,100);
-  renderNoapteTable(data);
+function renderNoapte(){
+  const items = getItems('noapte');
+  const grid  = document.getElementById('noapteGrid');
+  if(!items.length){ grid.innerHTML='<div style="color:#c490a8;font-style:italic">Nimic adăugat.</div>'; return; }
+  grid.innerHTML = items.map(r=>`<div class="night-item"><span class="ni-icon">${r.emoji||'🌙'}</span><span>${r.text}</span></div>`).join('');
+  document.getElementById('noapteCitat').innerHTML = quotesHtml(getQuotes('noapte'), true);
 }
 
-// SCRATCH
-let scratchDataDb = [];
-async function loadScratch(){
-  const {data} = await db.from('desprehope_scratch').select('*').order('ordine');
-  scratchDataDb = data||[];
+let scratchData = [];
+function renderScratch(){
+  scratchData = getItems('scratch');
   buildScratchCards();
-  renderScratchTable(data||[]);
 }
 function buildScratchCards(){
   const grid = document.getElementById('scratchGrid');
-  if(!scratchDataDb.length){ grid.innerHTML='<div class="admin-empty">Niciun card adăugat.</div>'; return; }
+  if(!scratchData.length){ grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun card adăugat.</div>'; return; }
   grid.innerHTML='';
-  scratchDataDb.forEach(msg=>{
+  scratchData.forEach(msg=>{
     const wrap=document.createElement('div');wrap.className='scratch-card';
     const back=document.createElement('div');back.className='scratch-back';
-    back.innerHTML=`<div class="sb-emoji">${msg.emoji}</div><div class="sb-text">${msg.text}</div>`;
+    back.innerHTML=`<div class="sb-emoji">${msg.emoji||'🌸'}</div><div class="sb-text">${msg.text}</div>`;
     wrap.appendChild(back);
     const cv=document.createElement('canvas');cv.width=260;cv.height=160;wrap.appendChild(cv);
     grid.appendChild(wrap);
@@ -1319,166 +1110,115 @@ function buildScratchCards(){
   });
 }
 
-// COMPLIMENTE
 let complimenteDb = [];
-async function loadComplimente(){
-  const {data} = await db.from('desprehope_complimente').select('*').order('ordine');
-  complimenteDb = data||[];
-  renderComplimenteTable(data||[]);
+function renderComplimente(){
+  complimenteDb = getItems('compliment');
 }
+
+function renderFilme(){
+  const items = getItems('film');
+  const grid  = document.getElementById('filmeGrid');
+  if(!items.length){ grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun film adăugat.</div>'; return; }
+  const cats = {};
+  items.forEach(r=>{ const c=r.cat1||'Diverse'; if(!cats[c])cats[c]=[]; cats[c].push(r); });
+  const catEmojis = {'Romantice clasice':'💕','Comedii':'😄','Animații & Seriale':'🎪','Animații':'🎠','Seriale':'📺'};
+  grid.innerHTML = Object.entries(cats).map(([cat,films])=>`
+    <div class="film-col">
+      <h3>${catEmojis[cat]||'🎬'} ${cat}</h3>
+      <ul class="flist">${films.map(f=>`<li class="${f.bool1?'hl':''}">${f.titlu}</li>`).join('')}</ul>
+    </div>`).join('');
+  document.getElementById('citatFilmeSection').innerHTML = quotesHtml(getQuotes('filme'));
+}
+
+function renderMuzica(){
+  const artisti = getItems('muzica_artist');
+  const piese   = getItems('muzica_piesa');
+  document.getElementById('muzicaArtisti').innerHTML = artisti.length
+    ? artisti.map(r=>`<li class="${r.bool1?'hl':''}">${r.titlu}</li>`).join('')
+    : '<li style="color:#9b6a7e">-</li>';
+  document.getElementById('muzicaPiese').innerHTML = piese.length
+    ? piese.map(r=>`<li class="${r.bool1?'hl':''}">${r.titlu}</li>`).join('')
+    : '<li style="color:#9b6a7e">-</li>';
+}
+
+function renderStats(){
+  const items   = getItems('stat');
+  const section = document.getElementById('progressSection');
+  if(!items.length){ section.innerHTML='<div style="color:#9b6a7e;font-style:italic">Nicio statistică adăugată.</div>'; return; }
+  section.innerHTML = items.map(r=>`
+    <div class="prog-item">
+      <div class="prog-label"><span>${r.emoji||''} ${r.titlu}</span><span>${r.num1||0}%</span></div>
+      <div class="prog-bar"><div class="prog-fill" data-w="${r.num1||0}"></div></div>
+    </div>`).join('');
+  progObs.observe(section);
+}
+
+function renderLoveTags(){
+  const items = getItems('love_tag');
+  const wrap  = document.getElementById('loveTags');
+  if(!items.length){ wrap.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun tag adăugat.</div>'; return; }
+  wrap.innerHTML = items.map(r=>`<span class="love-tag">${r.titlu}</span>`).join('');
+  document.getElementById('iubireCitate').innerHTML = quotesHtml(getQuotes('iubire'));
+}
+
+function renderExtra(){
+  const catMap = {
+    extra_personal:'🌍 Informații personale',
+    extra_culori:'🎨 Culorile perfecte',
+    extra_nu_place:'❌ NU-ți place',
+    extra_vise:'🎯 Vise & aspirații',
+    extra_obiceiuri:'🎀 Mici obiceiuri & quirks'
+  };
+  const extraTypes = Object.keys(catMap);
+  const wrap = document.getElementById('extraSections');
+  const allExtra = allItems.filter(r=>extraTypes.includes(r.tip));
+  if(!allExtra.length){ wrap.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun detaliu adăugat.</div>'; return; }
+  const cats = {};
+  allExtra.forEach(r=>{ if(!cats[r.tip])cats[r.tip]=[]; cats[r.tip].push(r); });
+  wrap.innerHTML = extraTypes.filter(t=>cats[t]).map(t=>`
+    <div class="extra-box rev">
+      <h3>${catMap[t]}</h3>
+      <ul class="info-list">${cats[t].map(r=>`<li><span class="il-i">${r.emoji||'📌'}</span>${r.text}</li>`).join('')}</ul>
+    </div>`).join('');
+}
+
+function renderScrisoare(){
+  const paragraf  = getItems('scrisoare_paragraf');
+  const semnatura = getItems('scrisoare_semnatura');
+  const nota      = getItems('scrisoare_nota');
+  const all       = [...paragraf, ...semnatura, ...nota].sort((a,b)=>a.ordine-b.ordine);
+  const card = document.getElementById('letterCard');
+  if(!all.length){ card.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun text adăugat.</div>'; return; }
+  card.innerHTML = all.map(r=>{
+    if(r.tip==='scrisoare_semnatura') return `<div class="letter-sig">${r.text}</div>`;
+    if(r.tip==='scrisoare_nota')      return `<p class="letter-note">${r.text}</p>`;
+    return `<p>${r.text}</p>`;
+  }).join('');
+}
+
+// RANDOMIZER
 let lastRand=-1;
 function spinRand(){
-  if(!complimenteDb.length){showToast('Niciun compliment adăugat în baza de date!','err');return;}
+  complimenteDb = getItems('compliment');
+  if(!complimenteDb.length){showToast('Niciun compliment adăugat!','err');return;}
   const btn=document.querySelector('.rand-btn');
   const em=document.getElementById('randEmoji');
   const tx=document.getElementById('randText');
   btn.disabled=true;let ticks=0;
   const iv=setInterval(()=>{
     const i=Math.floor(Math.random()*complimenteDb.length);
-    em.textContent=complimenteDb[i].emoji;tx.textContent=complimenteDb[i].text;tx.style.opacity='.5';ticks++;
+    em.textContent=complimenteDb[i].emoji||'🌸';tx.textContent=complimenteDb[i].text;tx.style.opacity='.5';ticks++;
     if(ticks>=14){
       clearInterval(iv);let fi;
       do{fi=Math.floor(Math.random()*complimenteDb.length)}while(fi===lastRand&&complimenteDb.length>1);
-      lastRand=fi;em.textContent=complimenteDb[fi].emoji;tx.textContent=complimenteDb[fi].text;tx.style.opacity='1';btn.disabled=false;
-      const rect=document.querySelector('.rand-display').getBoundingClientRect();
-      for(let k=0;k<8;k++){
-        setTimeout(()=>{
-          const p=document.createElement('div');p.className='petal';
-          p.textContent=pemos[Math.floor(Math.random()*pemos.length)];
-          p.style.cssText=`left:${rect.left+rect.width/2+(Math.random()-.5)*80}px;top:${rect.top}px;font-size:${.8+Math.random()}rem;animation-duration:${2+Math.random()*2}s;position:fixed`;
-          document.body.appendChild(p);setTimeout(()=>p.remove(),4000);
-        },k*65);
-      }
+      lastRand=fi;em.textContent=complimenteDb[fi].emoji||'🌸';tx.textContent=complimenteDb[fi].text;tx.style.opacity='1';btn.disabled=false;
     }
   },80);
 }
 
-// FILME
-async function loadFilme(){
-  const {data} = await db.from('desprehope_filme').select('*').order('ordine');
-  const grid = document.getElementById('filmeGrid');
-  if(!data||!data.length){ grid.innerHTML='<div class="admin-empty">Niciun film adăugat.</div>'; return; }
-  // grupăm pe categorii
-  const cats = {};
-  data.forEach(r=>{ if(!cats[r.categorie])cats[r.categorie]=[]; cats[r.categorie].push(r); });
-  const catEmojis = {'Romantice clasice':'💕','Comedii':'😄','Animații & Seriale':'🎪','Animații':'🎠','Seriale':'📺'};
-  grid.innerHTML = Object.entries(cats).map(([cat,films])=>`
-    <div class="film-col">
-      <h3>${catEmojis[cat]||'🎬'} ${cat}</h3>
-      <ul class="flist">${films.map(f=>`<li class="${f.highlight?'hl':''}">${f.titlu}</li>`).join('')}</ul>
-    </div>`).join('');
-  // citate filme
-  const {data:cit} = await db.from('desprehope_citate_filme').select('*').order('ordine');
-  document.getElementById('citatFilmeSection').innerHTML = cit ? cit.map(r=>`<div class="bq rev" style="border-left-color:${r.culoare_bordura||'var(--rose)'}">${r.text}</div>`).join('') : '';
-  setTimeout(observeAll,100);
-  renderFilmeTable(data);
-}
-
-// MUZICĂ
-async function loadMuzica(){
-  const {data} = await db.from('desprehope_muzica').select('*').order('ordine');
-  const artisti = document.getElementById('muzicaArtisti');
-  const piese   = document.getElementById('muzicaPiese');
-  if(!data||!data.length){ artisti.innerHTML='<li style="color:#9b6a7e;font-style:italic">Nimic adăugat.</li>'; return; }
-  const a = data.filter(r=>r.categorie==='artist');
-  const p = data.filter(r=>r.categorie==='piesa');
-  artisti.innerHTML = a.map(r=>`<li class="${r.highlight?'hl':''}">${r.text}</li>`).join('') || '<li style="color:#9b6a7e">-</li>';
-  piese.innerHTML   = p.map(r=>`<li class="${r.highlight?'hl':''}">${r.text}</li>`).join('') || '<li style="color:#9b6a7e">-</li>';
-  renderMuzicaTable(data);
-}
-
-// STATS
-async function loadStats(){
-  const {data} = await db.from('desprehope_stats').select('*').order('ordine');
-  const section = document.getElementById('progressSection');
-  if(!data||!data.length){ section.innerHTML='<div class="admin-empty">Nicio statistică adăugată.</div>'; return; }
-  section.innerHTML = data.map(r=>`
-    <div class="prog-item">
-      <div class="prog-label"><span>${r.emoji||''} ${r.eticheta}</span><span>${r.procent}%</span></div>
-      <div class="prog-bar"><div class="prog-fill" data-w="${r.procent}"></div></div>
-    </div>`).join('');
-  progObs.observe(section);
-  renderStatsTable(data);
-}
-
-// LOVE TAGS
-async function loadLoveTags(){
-  const {data} = await db.from('desprehope_love_tags').select('*').order('ordine');
-  const wrap = document.getElementById('loveTags');
-  if(!data||!data.length){ wrap.innerHTML='<div class="admin-empty">Niciun tag adăugat.</div>'; return; }
-  wrap.innerHTML = data.map(r=>`<span class="love-tag">${r.text}</span>`).join('');
-  // citate iubire
-  const {data:cit} = await db.from('desprehope_citate').select('*').eq('sectiune','iubire').order('ordine');
-  document.getElementById('iubireCitate').innerHTML = cit ? cit.map(r=>`<div class="bq rev" style="border-left-color:${r.culoare_bordura||'var(--rose)'}">${r.text}</div>`).join('') : '';
-  setTimeout(observeAll,100);
-  renderLoveTagsTable(data);
-}
-
-// CITATE (generale)
-async function loadCitate(){
-  const {data} = await db.from('desprehope_citate').select('*').order('ordine');
-  renderCitateTable(data||[]);
-}
-
-// EXTRA
-async function loadExtra(){
-  const {data} = await db.from('desprehope_extra').select('*').order('ordine');
-  const wrap = document.getElementById('extraSections');
-  if(!data||!data.length){ wrap.innerHTML='<div class="admin-empty">Niciun detaliu adăugat.</div>'; return; }
-  const cats = {};
-  data.forEach(r=>{ if(!cats[r.categorie])cats[r.categorie]=[]; cats[r.categorie].push(r); });
-  const catLabels = {personal:'🌍 Informații personale',culori_perfecte:'🎨 Culorile perfecte',nu_place:'❌ NU-ți place',vise:'🎯 Vise & aspirații',obiceiuri:'🎀 Mici obiceiuri & quirks'};
-  wrap.innerHTML = Object.entries(cats).map(([cat,items])=>`
-    <div class="extra-box rev">
-      <h3>${catLabels[cat]||cat}</h3>
-      <ul class="info-list">${items.map(r=>`<li><span class="il-i">${r.emoji||'📌'}</span>${r.text}</li>`).join('')}</ul>
-    </div>`).join('');
-  setTimeout(observeAll,100);
-  renderExtraTable(data);
-}
-
-// SCRISOARE
-async function loadScrisoare(){
-  const {data} = await db.from('desprehope_scrisoare').select('*').order('ordine');
-  const card = document.getElementById('letterCard');
-  if(!data||!data.length){ card.innerHTML='<div class="admin-empty">Niciun text adăugat.</div>'; return; }
-  card.innerHTML = data.map(r=>{
-    if(r.tip==='semnatura') return `<div class="letter-sig">${r.text}</div>`;
-    if(r.tip==='nota') return `<p class="letter-note">${r.text}</p>`;
-    return `<p>${r.text}</p>`;
-  }).join('');
-  renderScrisoareTable(data);
-}
-
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 //  ADMIN PANEL
-// ═══════════════════════════════════════════════════
-
-const ADMIN_TABS = [
-  {id:'setari',label:'Setări'},
-  {id:'info',label:'Info Pills'},
-  {id:'culori',label:'Culori'},
-  {id:'flori',label:'Flori'},
-  {id:'vibes',label:'Vibes'},
-  {id:'emoji',label:'Emoji Strip'},
-  {id:'trasaturi',label:'Suflet'},
-  {id:'noapte',label:'Noapte'},
-  {id:'scratch',label:'Scratch'},
-  {id:'complimente',label:'Complimente'},
-  {id:'filme',label:'Filme'},
-  {id:'citate-filme',label:'Citate Filme'},
-  {id:'muzica',label:'Muzică'},
-  {id:'stats',label:'Statistici'},
-  {id:'love',label:'Love Tags'},
-  {id:'citate',label:'Citate Gen.'},
-  {id:'extra',label:'Extra'},
-  {id:'scrisoare',label:'Scrisoare'},
-];
-
-(function buildAdminTabs(){
-  const tabsEl = document.getElementById('adminTabs');
-  tabsEl.innerHTML = ADMIN_TABS.map((t,i)=>`<button class="atab${i===0?' active':''}" onclick="switchTab('${t.id}')">${t.label}</button>`).join('');
-})();
+// ══════════════════════════════════════════════════════
 
 function switchTab(id){
   document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));
@@ -1487,324 +1227,261 @@ function switchTab(id){
   document.querySelector(`.admin-section[data-tab="${id}"]`).classList.add('active');
 }
 
-function openAdmin(){ document.getElementById('adminOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
+function openAdmin(){
+  document.getElementById('adminOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  updateContentFieldVisibility();
+}
 function closeAdmin(){ document.getElementById('adminOverlay').classList.remove('open'); document.body.style.overflow=''; }
 
-// TOAST
 function showToast(msg,type='ok'){
   const t=document.getElementById('adminToast');
   t.textContent=msg;t.className=`admin-toast ${type} show`;
   setTimeout(()=>t.classList.remove('show'),2800);
 }
 
-// ── CRUD HELPERS
-async function del(table,id,reloadFn){ const {error}=await db.from(table).delete().eq('id',id); if(error){showToast('Eroare ștergere: '+error.message,'err');}else{showToast('✓ Șters!');await reloadFn();} }
-async function upsert(table,obj,reloadFn){ const {error}=await db.from(table).upsert(obj).select(); if(error){showToast('Eroare: '+error.message,'err');}else{showToast('✓ Salvat!');await reloadFn();} }
+async function upsertAndReload(table, obj, reloadFn){
+  const {error}=await db.from(table).upsert(obj).select();
+  if(error){showToast('Eroare: '+error.message,'err');}else{showToast('✓ Salvat!');await reloadFn();}
+}
+async function delAndReload(table, id, reloadFn){
+  const {error}=await db.from(table).delete().eq('id',id);
+  if(error){showToast('Eroare ștergere: '+error.message,'err');}else{showToast('✓ Șters!');await reloadFn();}
+}
 
-function clearForm(prefix){
-  document.querySelectorAll(`[id^="${prefix}-"]`).forEach(el=>{
+function clearForm(p){
+  document.querySelectorAll(`[id^="${p}-"]`).forEach(el=>{
     if(el.type==='checkbox') el.checked=false;
     else if(el.type==='number') el.value=0;
     else if(el.tagName==='SELECT') el.selectedIndex=0;
-    else el.value = el.id.endsWith('culoare')?'var(--rose)':'';
+    else el.value=el.id.endsWith('culoare')||el.id==='q-culoare'?'var(--rose)':'';
   });
 }
 
-function editRow(prefix, data){
-  Object.entries(data).forEach(([k,v])=>{
-    const el = document.getElementById(`${prefix}-${k}`);
-    if(!el) return;
-    if(el.type==='checkbox') el.checked = !!v;
-    else el.value = v ?? '';
-  });
-}
-
-// ── TABLE RENDERERS
-
-function renderTable(containerId, cols, rows, editFn, table, reloadFn){
-  const c = document.getElementById(containerId);
-  if(!rows||!rows.length){ c.innerHTML='<div class="admin-empty">Niciun înregistrare. Adaugă una sus.</div>'; return; }
-  c.innerHTML=`<div class="atable-wrap"><table class="atable">
-    <thead><tr>${cols.map(c=>`<th>${c.label}</th>`).join('')}<th>Acțiuni</th></tr></thead>
-    <tbody>${rows.map(r=>`<tr>${cols.map(col=>{
-      const v = r[col.key]??'';
-      if(col.type==='bool') return `<td>${v?'<span class="tag-hl">✓ da</span>':'—'}</td>`;
-      if(col.type==='cat')  return `<td><span class="tag-cat">${v}</span></td>`;
-      if(col.type==='color')return `<td><span class="color-dot" style="background:${v}"></span>${v}</td>`;
-      return `<td class="txt-clamp" title="${String(v).replace(/"/g,'&quot;')}">${String(v).substring(0,60)}${String(v).length>60?'…':''}</td>`;
-    }).join('')}
-    <td><div class="atd-actions">
-      <button class="btn-edit" onclick='${editFn}(${JSON.stringify(r)})'>✏ Edit</button>
-      <button class="btn-del" onclick="del('${table}',${r.id},${reloadFn})">✕</button>
-    </div></td></tr>`).join('')}
-    </tbody></table></div>`;
-}
-
-// SETĂRI TABLE
+// ── SETTINGS CRUD
 function renderSetariTable(data){
-  renderTable('setari-list',
-    [{key:'cheie',label:'Cheie'},{key:'valoare',label:'Valoare'}],
-    data, 'editSetare', 'desprehope_setari', 'loadSetari');
+  const c=document.getElementById('setari-list');
+  if(!data||!data.length){c.innerHTML='<div class="admin-empty">Nicio setare.</div>';return;}
+  c.innerHTML=`<div class="atable-wrap"><table class="atable">
+    <thead><tr><th>Cheie</th><th>Valoare</th><th>Acțiuni</th></tr></thead>
+    <tbody>${data.map(r=>`<tr>
+      <td>${r.cheie}</td><td class="txt-clamp">${r.valoare}</td>
+      <td><div class="atd-actions">
+        <button class="btn-edit" onclick="editSetare(${JSON.stringify(r).replace(/'/g,'&#39;')})">✏</button>
+        <button class="btn-del" onclick="delAndReload('xenia_settings',${r.id},loadSettings)">✕</button>
+      </div></td>
+    </tr>`).join('')}</tbody></table></div>`;
 }
 function editSetare(r){ document.getElementById('s-cheie').value=r.cheie; document.getElementById('s-valoare').value=r.valoare; }
 async function saveSetare(){
   const cheie=document.getElementById('s-cheie').value.trim();
   const valoare=document.getElementById('s-valoare').value.trim();
   if(!cheie||!valoare){showToast('Completează cheie și valoare!','err');return;}
-  await upsert('desprehope_setari',{cheie,valoare},loadSetari);
+  await upsertAndReload('xenia_settings',{cheie,valoare},loadSettings);
   clearForm('s');
 }
 
-// INFO TABLE
+// ── INFO PILLS (items tip info_pill)
 function renderInfoTable(data){
-  renderTable('info-list',
-    [{key:'emoji',label:'Emoji'},{key:'cheie',label:'Cheie'},{key:'valoare',label:'Valoare'},{key:'ordine',label:'#'}],
-    data, 'editInfo', 'desprehope_info', 'loadInfo');
+  const items=data.filter(r=>r.tip==='info_pill');
+  const c=document.getElementById('info-list');
+  if(!items.length){c.innerHTML='<div class="admin-empty">Niciun pill.</div>';return;}
+  c.innerHTML=`<div class="atable-wrap"><table class="atable">
+    <thead><tr><th>Emoji</th><th>Valoare</th><th>Ordine</th><th>Acțiuni</th></tr></thead>
+    <tbody>${items.map(r=>`<tr>
+      <td>${r.emoji||''}</td><td>${r.titlu}</td><td>${r.ordine}</td>
+      <td><div class="atd-actions">
+        <button class="btn-edit" onclick='editInfo(${JSON.stringify(r)})'>✏</button>
+        <button class="btn-del" onclick="delAndReload('xenia_items',${r.id},reloadItems)">✕</button>
+      </div></td>
+    </tr>`).join('')}</tbody></table></div>`;
 }
-function editInfo(r){ editRow('inf',{id:r.id,cheie:r.cheie,valoare:r.valoare,emoji:r.emoji||'',ordine:r.ordine}); }
+function editInfo(r){
+  document.getElementById('inf-id').value=r.id;
+  document.getElementById('inf-emoji').value=r.emoji||'';
+  document.getElementById('inf-cheie').value=r.cat1||'';
+  document.getElementById('inf-valoare').value=r.titlu;
+  document.getElementById('inf-ordine').value=r.ordine;
+}
 async function saveInfo(){
   const id=document.getElementById('inf-id').value;
-  const obj={cheie:document.getElementById('inf-cheie').value.trim(),valoare:document.getElementById('inf-valoare').value.trim(),emoji:document.getElementById('inf-emoji').value.trim(),ordine:parseInt(document.getElementById('inf-ordine').value)||0};
-  if(!obj.cheie||!obj.valoare){showToast('Completează cheie și valoare!','err');return;}
+  const obj={tip:'info_pill',emoji:document.getElementById('inf-emoji').value.trim(),titlu:document.getElementById('inf-valoare').value.trim(),cat1:document.getElementById('inf-cheie').value.trim(),ordine:parseInt(document.getElementById('inf-ordine').value)||0};
+  if(!obj.titlu){showToast('Completează valoarea!','err');return;}
   if(id) obj.id=parseInt(id);
-  await upsert('desprehope_info',obj,loadInfo);
+  await upsertAndReload('xenia_items',obj,reloadItems);
+  document.getElementById('inf-id').value='';
   clearForm('inf');
 }
 
-// CULORI TABLE
-function renderCuloriTable(data){
-  renderTable('culori-list',
-    [{key:'hex',label:'Culoare',type:'color'},{key:'nume',label:'Nume'},{key:'descriere',label:'Descriere'},{key:'preferata',label:'Preferată',type:'bool'},{key:'ordine',label:'#'}],
-    data, 'editCuloare', 'desprehope_culori', 'loadCulori');
+// ── CONTENT CRUD
+// Câmpuri dinamice per tip
+const tipFields = {
+  culoare:   ['emoji','titlu','hex','hex2','text','pref'],
+  floare:    ['emoji','titlu','text'],
+  vibe:      ['emoji','titlu','text'],
+  emoji_strip:['emoji','titlu'],
+  trasatura: ['emoji','text'],
+  noapte:    ['emoji','text'],
+  scratch:   ['emoji','text'],
+  compliment:['emoji','text'],
+  film:      ['titlu','cat-film','hl'],
+  muzica_artist:['titlu','hl'],
+  muzica_piesa: ['titlu','hl'],
+  stat:      ['emoji','titlu','procent'],
+  love_tag:  ['titlu'],
+  extra_personal:['emoji','text'],
+  extra_culori:  ['emoji','text'],
+  extra_nu_place:['emoji','text'],
+  extra_vise:    ['emoji','text'],
+  extra_obiceiuri:['emoji','text'],
+  scrisoare_paragraf: ['text'],
+  scrisoare_semnatura:['text'],
+  scrisoare_nota:     ['text'],
+  info_pill: ['emoji','titlu'],
+};
+
+function updateContentFieldVisibility(){
+  const tip = document.getElementById('ct-tip').value;
+  const fields = tipFields[tip] || [];
+  const show = (id,show)=>{ const el=document.getElementById(id); if(el) el.style.display=show?'flex':'none'; };
+  show('f-hex',    fields.includes('hex'));
+  show('f-hex2',   fields.includes('hex2'));
+  show('f-pref',   fields.includes('pref'));
+  show('f-cat-film',fields.includes('cat-film'));
+  show('f-hl',     fields.includes('hl'));
+  show('f-procent',fields.includes('procent'));
+  show('f-text',   fields.includes('text'));
+  // titlu/emoji always show if relevant
+  const emojiField = document.getElementById('ct-emoji').parentElement;
+  const titluField = document.getElementById('ct-titlu').parentElement;
+  emojiField.style.display = fields.includes('emoji') ? 'flex' : 'none';
+  titluField.style.display = fields.includes('titlu') ? 'flex' : 'none';
 }
-function editCuloare(r){ editRow('c',{id:r.id,nume:r.nume,hex:r.hex,hex2:r.hex2||'',desc:r.descriere||'',ordine:r.ordine}); document.getElementById('c-pref').checked=!!r.preferata; }
-async function saveCuloare(){
-  const id=document.getElementById('c-id').value;
-  const obj={nume:document.getElementById('c-nume').value.trim(),hex:document.getElementById('c-hex').value.trim(),hex2:document.getElementById('c-hex2').value.trim()||null,descriere:document.getElementById('c-desc').value.trim(),preferata:document.getElementById('c-pref').checked,ordine:parseInt(document.getElementById('c-ordine').value)||0};
-  if(!obj.nume||!obj.hex){showToast('Completează nume și hex!','err');return;}
+document.getElementById('ct-tip').addEventListener('change', updateContentFieldVisibility);
+updateContentFieldVisibility();
+
+async function saveContent(){
+  const id  = document.getElementById('ct-id').value;
+  const tip = document.getElementById('ct-tip').value;
+  const obj = {
+    tip,
+    emoji:  document.getElementById('ct-emoji').value.trim()||null,
+    titlu:  document.getElementById('ct-titlu').value.trim()||null,
+    text:   document.getElementById('ct-text').value.trim()||null,
+    hex:    document.getElementById('ct-hex').value.trim()||null,
+    hex2:   document.getElementById('ct-hex2').value.trim()||null,
+    bool1:  document.getElementById('ct-hl').checked || document.getElementById('ct-pref').checked,
+    num1:   parseInt(document.getElementById('ct-procent').value)||null,
+    cat1:   document.getElementById('ct-cat-film').value.trim()||null,
+    ordine: parseInt(document.getElementById('ct-ordine').value)||0,
+  };
   if(id) obj.id=parseInt(id);
-  await upsert('desprehope_culori',obj,loadCulori);
-  clearForm('c');
+  await upsertAndReload('xenia_items', obj, reloadItems);
+  clearContent();
+}
+function clearContent(){
+  document.getElementById('ct-id').value='';
+  ['ct-emoji','ct-titlu','ct-text','ct-hex','ct-hex2','ct-cat-film'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ct-hl').checked=false;
+  document.getElementById('ct-pref').checked=false;
+  document.getElementById('ct-procent').value=0;
+  document.getElementById('ct-ordine').value=0;
+}
+function editContent(r){
+  document.getElementById('ct-id').value=r.id;
+  document.getElementById('ct-tip').value=r.tip;
+  document.getElementById('ct-emoji').value=r.emoji||'';
+  document.getElementById('ct-titlu').value=r.titlu||'';
+  document.getElementById('ct-text').value=r.text||'';
+  document.getElementById('ct-hex').value=r.hex||'';
+  document.getElementById('ct-hex2').value=r.hex2||'';
+  document.getElementById('ct-hl').checked=!!r.bool1;
+  document.getElementById('ct-pref').checked=!!r.bool1;
+  document.getElementById('ct-procent').value=r.num1||0;
+  document.getElementById('ct-cat-film').value=r.cat1||'';
+  document.getElementById('ct-ordine').value=r.ordine||0;
+  updateContentFieldVisibility();
 }
 
-// FLORI TABLE
-function renderFloriTable(data){
-  renderTable('flori-list',[{key:'emoji',label:'Emoji'},{key:'titlu',label:'Titlu'},{key:'descriere',label:'Descriere'},{key:'ordine',label:'#'}],data,'editFloare','desprehope_flori','loadFlori');
+let contentFilterTip = '';
+function filterContent(prefix){
+  contentFilterTip=prefix;
+  document.querySelectorAll('.admin-section[data-tab="content"] .atab').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  const filtered = prefix ? allItems.filter(r=>r.tip.startsWith(prefix)) : allItems;
+  renderContentTable(filtered);
 }
-function editFloare(r){ editRow('fl',{id:r.id,emoji:r.emoji,titlu:r.titlu,desc:r.descriere||'',ordine:r.ordine}); }
-async function saveFloare(){
-  const id=document.getElementById('fl-id').value;
-  const obj={emoji:document.getElementById('fl-emoji').value.trim(),titlu:document.getElementById('fl-titlu').value.trim(),descriere:document.getElementById('fl-desc').value.trim(),ordine:parseInt(document.getElementById('fl-ordine').value)||0};
-  if(!obj.emoji||!obj.titlu){showToast('Completează emoji și titlu!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsert('desprehope_flori',obj,loadFlori);
-  clearForm('fl');
-}
-
-// VIBES TABLE
-function renderVibesTable(data){
-  renderTable('vibes-list',[{key:'emoji',label:'Emoji'},{key:'titlu',label:'Titlu'},{key:'descriere',label:'Descriere'},{key:'ordine',label:'#'}],data,'editVibe','desprehope_vibes','loadVibes');
-}
-function editVibe(r){ editRow('vb',{id:r.id,emoji:r.emoji,titlu:r.titlu,desc:r.descriere||'',ordine:r.ordine}); }
-async function saveVibe(){
-  const id=document.getElementById('vb-id').value;
-  const obj={emoji:document.getElementById('vb-emoji').value.trim(),titlu:document.getElementById('vb-titlu').value.trim(),descriere:document.getElementById('vb-desc').value.trim(),ordine:parseInt(document.getElementById('vb-ordine').value)||0};
-  if(!obj.emoji||!obj.titlu){showToast('Completează emoji și titlu!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsert('desprehope_vibes',obj,loadVibes);
-  clearForm('vb');
-}
-
-// EMOJI TABLE
-function renderEmojiTable(data){
-  renderTable('emoji-list',[{key:'emoji',label:'Emoji'},{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editEmoji','desprehope_emoji_strip','loadEmojiStrip');
-}
-function editEmoji(r){ editRow('es',{id:r.id,emoji:r.emoji,text:r.text,ordine:r.ordine}); }
-async function saveEmoji(){
-  const id=document.getElementById('es-id').value;
-  const obj={emoji:document.getElementById('es-emoji').value.trim(),text:document.getElementById('es-text').value.trim(),ordine:parseInt(document.getElementById('es-ordine').value)||0};
-  if(!obj.emoji||!obj.text){showToast('Completează emoji și text!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsert('desprehope_emoji_strip',obj,loadEmojiStrip);
-  clearForm('es');
+function renderContentTable(data){
+  const c=document.getElementById('content-list');
+  if(!data||!data.length){c.innerHTML='<div class="admin-empty">Niciun item.</div>';return;}
+  c.innerHTML=`<div class="atable-wrap"><table class="atable">
+    <thead><tr><th>Tip</th><th>Emoji</th><th>Titlu</th><th>Text</th><th>Info</th><th>#</th><th>Acțiuni</th></tr></thead>
+    <tbody>${data.map(r=>`<tr>
+      <td><span class="tip-badge">${r.tip}</span></td>
+      <td>${r.emoji||''}</td>
+      <td class="txt-clamp">${r.titlu||''}</td>
+      <td class="txt-clamp">${(r.text||'').substring(0,50)}${(r.text||'').length>50?'…':''}</td>
+      <td style="font-size:.72rem;color:#9b6a7e">${r.hex?r.hex+' ':''} ${r.bool1?'★':''} ${r.num1!=null?r.num1+'%':''} ${r.cat1||''}</td>
+      <td>${r.ordine}</td>
+      <td><div class="atd-actions">
+        <button class="btn-edit" onclick='editContent(${JSON.stringify(r)})'>✏</button>
+        <button class="btn-del" onclick="delAndReload('xenia_items',${r.id},reloadItems)">✕</button>
+      </div></td>
+    </tr>`).join('')}</tbody></table></div>`;
 }
 
-// TRĂSĂTURI TABLE
-function renderTrasaturiTable(data){
-  renderTable('trasaturi-list',[{key:'emoji',label:'Emoji'},{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editTrasatura','desprehope_trasaturi','loadTrasaturi');
+// ── QUOTES CRUD
+function renderQuotesTable(data){
+  const c=document.getElementById('quotes-list');
+  if(!data||!data.length){c.innerHTML='<div class="admin-empty">Niciun citat.</div>';return;}
+  c.innerHTML=`<div class="atable-wrap"><table class="atable">
+    <thead><tr><th>Secțiune</th><th>Text</th><th>Bordură</th><th>#</th><th>Acțiuni</th></tr></thead>
+    <tbody>${data.map(r=>`<tr>
+      <td><span class="tag-cat">${r.sectiune}</span></td>
+      <td class="txt-clamp">${r.text}</td>
+      <td><span class="color-dot" style="background:${r.culoare_bordura||'var(--rose)'}"></span></td>
+      <td>${r.ordine}</td>
+      <td><div class="atd-actions">
+        <button class="btn-edit" onclick='editQuote(${JSON.stringify(r)})'>✏</button>
+        <button class="btn-del" onclick="delAndReload('xenia_quotes',${r.id},reloadQuotes)">✕</button>
+      </div></td>
+    </tr>`).join('')}</tbody></table></div>`;
 }
-function editTrasatura(r){ editRow('tr',{id:r.id,emoji:r.emoji,text:r.text,ordine:r.ordine}); }
-async function saveTrasatura(){
-  const id=document.getElementById('tr-id').value;
-  const obj={emoji:document.getElementById('tr-emoji').value.trim(),text:document.getElementById('tr-text').value.trim(),ordine:parseInt(document.getElementById('tr-ordine').value)||0};
-  if(!obj.emoji||!obj.text){showToast('Completează câmpurile!','err');return;}
+function editQuote(r){
+  document.getElementById('q-id').value=r.id;
+  document.getElementById('q-text').value=r.text;
+  document.getElementById('q-sectiune').value=r.sectiune||'altele';
+  document.getElementById('q-culoare').value=r.culoare_bordura||'var(--rose)';
+  document.getElementById('q-ordine').value=r.ordine||0;
+}
+async function saveQuote(){
+  const id=document.getElementById('q-id').value;
+  const obj={text:document.getElementById('q-text').value.trim(),sectiune:document.getElementById('q-sectiune').value,culoare_bordura:document.getElementById('q-culoare').value.trim()||'var(--rose)',ordine:parseInt(document.getElementById('q-ordine').value)||0};
+  if(!obj.text){showToast('Completează textul!','err');return;}
   if(id) obj.id=parseInt(id);
-  await upsert('desprehope_trasaturi',obj,loadTrasaturi);
-  clearForm('tr');
+  await upsertAndReload('xenia_quotes',obj,reloadQuotes);
+  clearForm('q');
 }
 
-// NOAPTE TABLE
-function renderNoapteTable(data){
-  renderTable('noapte-list',[{key:'emoji',label:'Emoji'},{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editNoapte','desprehope_noapte','loadNoapte');
+// ── RELOAD HELPERS
+async function reloadItems(){
+  await loadItems();
+  renderPage();
+  // re-render info table (from allItems)
+  renderInfoTable(allItems);
+  const filtered = contentFilterTip ? allItems.filter(r=>r.tip.startsWith(contentFilterTip)) : allItems;
+  renderContentTable(filtered);
 }
-function editNoapte(r){ editRow('n',{id:r.id,emoji:r.emoji,text:r.text,ordine:r.ordine}); }
-async function saveNoapte(){
-  const id=document.getElementById('n-id').value;
-  const obj={emoji:document.getElementById('n-emoji').value.trim(),text:document.getElementById('n-text').value.trim(),ordine:parseInt(document.getElementById('n-ordine').value)||0};
-  if(!obj.emoji||!obj.text){showToast('Completează câmpurile!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsert('desprehope_noapte',obj,loadNoapte);
-  clearForm('n');
-}
-
-// SCRATCH TABLE
-function renderScratchTable(data){
-  renderTable('scratch-list',[{key:'emoji',label:'Emoji'},{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editScratch','desprehope_scratch','loadScratch');
-}
-function editScratch(r){ editRow('sc',{id:r.id,emoji:r.emoji,text:r.text,ordine:r.ordine}); }
-async function saveScratch(){
-  const id=document.getElementById('sc-id').value;
-  const obj={emoji:document.getElementById('sc-emoji').value.trim(),text:document.getElementById('sc-text').value.trim(),ordine:parseInt(document.getElementById('sc-ordine').value)||0};
-  if(!obj.emoji||!obj.text){showToast('Completează câmpurile!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsert('desprehope_scratch',obj,loadScratch);
-  clearForm('sc');
-}
-
-// COMPLIMENTE TABLE
-function renderComplimenteTable(data){
-  renderTable('complimente-list',[{key:'emoji',label:'Emoji'},{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editCompliment','desprehope_complimente','loadComplimente');
-}
-function editCompliment(r){ editRow('co',{id:r.id,emoji:r.emoji,text:r.text,ordine:r.ordine}); }
-async function saveCompliment(){
-  const id=document.getElementById('co-id').value;
-  const obj={emoji:document.getElementById('co-emoji').value.trim(),text:document.getElementById('co-text').value.trim(),ordine:parseInt(document.getElementById('co-ordine').value)||0};
-  if(!obj.emoji||!obj.text){showToast('Completează câmpurile!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsert('desprehope_complimente',obj,loadComplimente);
-  clearForm('co');
-}
-
-// FILME TABLE
-function renderFilmeTable(data){
-  renderTable('filme-list',[{key:'titlu',label:'Titlu'},{key:'categorie',label:'Categorie',type:'cat'},{key:'highlight',label:'💕',type:'bool'},{key:'ordine',label:'#'}],data,'editFilm','desprehope_filme','loadFilme');
-}
-function editFilm(r){ editRow('fm',{id:r.id,titlu:r.titlu,cat:r.categorie,ordine:r.ordine}); document.getElementById('fm-hl').checked=!!r.highlight; }
-async function saveFilm(){
-  const id=document.getElementById('fm-id').value;
-  const obj={titlu:document.getElementById('fm-titlu').value.trim(),categorie:document.getElementById('fm-cat').value.trim(),highlight:document.getElementById('fm-hl').checked,ordine:parseInt(document.getElementById('fm-ordine').value)||0};
-  if(!obj.titlu||!obj.categorie){showToast('Completează titlu și categorie!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsert('desprehope_filme',obj,loadFilme);
-  clearForm('fm');
-}
-
-// CITATE FILME TABLE
-function renderCitatFilmTable(data){
-  renderTable('citate-filme-list',[{key:'text',label:'Text'},{key:'culoare_bordura',label:'Culoare bordură'},{key:'ordine',label:'#'}],data,'editCitatFilm','desprehope_citate_filme','loadCitatFilme');
-}
-async function loadCitatFilme(){
-  const {data} = await db.from('desprehope_citate_filme').select('*').order('ordine');
-  renderCitatFilmTable(data||[]);
-  // refresh film citate on page too
-  const {data:cit}=await db.from('desprehope_citate_filme').select('*').order('ordine');
-  document.getElementById('citatFilmeSection').innerHTML=cit?cit.map(r=>`<div class="bq rev" style="border-left-color:${r.culoare_bordura||'var(--rose)'}">${r.text}</div>`).join(''):'';
+async function reloadQuotes(){
+  await loadQuotes();
+  // refresh quote sections on page
+  document.getElementById('culoriCitate').innerHTML   = quotesHtml(getQuotes('culori'));
+  document.getElementById('floriCitate').innerHTML    = quotesHtml(getQuotes('flori'));
+  document.getElementById('noapteCitat').innerHTML    = quotesHtml(getQuotes('noapte'), true);
+  document.getElementById('iubireCitate').innerHTML   = quotesHtml(getQuotes('iubire'));
+  document.getElementById('citatFilmeSection').innerHTML = quotesHtml(getQuotes('filme'));
   setTimeout(observeAll,100);
-}
-function editCitatFilm(r){ editRow('cf',{id:r.id,culoare:r.culoare_bordura||'var(--rose)',text:r.text,ordine:r.ordine}); }
-async function saveCitatFilm(){
-  const id=document.getElementById('cf-id').value;
-  const obj={text:document.getElementById('cf-text').value.trim(),culoare_bordura:document.getElementById('cf-culoare').value.trim()||'var(--rose)',ordine:parseInt(document.getElementById('cf-ordine').value)||0};
-  if(!obj.text){showToast('Completează textul!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsert('desprehope_citate_filme',obj,loadCitatFilme);
-  clearForm('cf');
-}
-
-// MUZICĂ TABLE
-function renderMuzicaTable(data){
-  renderTable('muzica-list',[{key:'text',label:'Text'},{key:'categorie',label:'Tip',type:'cat'},{key:'highlight',label:'★',type:'bool'},{key:'ordine',label:'#'}],data,'editMuzica','desprehope_muzica','loadMuzica');
-}
-function editMuzica(r){ editRow('mz',{id:r.id,text:r.text,ordine:r.ordine}); document.getElementById('mz-cat').value=r.categorie; document.getElementById('mz-hl').checked=!!r.highlight; }
-async function saveMuzica(){
-  const id=document.getElementById('mz-id').value;
-  const obj={text:document.getElementById('mz-text').value.trim(),categorie:document.getElementById('mz-cat').value,highlight:document.getElementById('mz-hl').checked,ordine:parseInt(document.getElementById('mz-ordine').value)||0};
-  if(!obj.text){showToast('Completează textul!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsert('desprehope_muzica',obj,loadMuzica);
-  clearForm('mz');
-}
-
-// STATS TABLE
-function renderStatsTable(data){
-  renderTable('stats-list',[{key:'emoji',label:'Emoji'},{key:'eticheta',label:'Etichetă'},{key:'procent',label:'%'},{key:'ordine',label:'#'}],data,'editStat','desprehope_stats','loadStats');
-}
-function editStat(r){ editRow('st',{id:r.id,emoji:r.emoji||'',eticheta:r.eticheta,procent:r.procent,ordine:r.ordine}); }
-async function saveStat(){
-  const id=document.getElementById('st-id').value;
-  const obj={emoji:document.getElementById('st-emoji').value.trim(),eticheta:document.getElementById('st-eticheta').value.trim(),procent:parseInt(document.getElementById('st-procent').value)||0,ordine:parseInt(document.getElementById('st-ordine').value)||0};
-  if(!obj.eticheta){showToast('Completează eticheta!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsert('desprehope_stats',obj,loadStats);
-  clearForm('st');
-}
-
-// LOVE TAGS TABLE
-function renderLoveTagsTable(data){
-  renderTable('love-list',[{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editLoveTag','desprehope_love_tags','loadLoveTags');
-}
-function editLoveTag(r){ editRow('lt',{id:r.id,text:r.text,ordine:r.ordine}); }
-async function saveLoveTag(){
-  const id=document.getElementById('lt-id').value;
-  const obj={text:document.getElementById('lt-text').value.trim(),ordine:parseInt(document.getElementById('lt-ordine').value)||0};
-  if(!obj.text){showToast('Completează textul!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsert('desprehope_love_tags',obj,loadLoveTags);
-  clearForm('lt');
-}
-
-// CITATE GENERALE TABLE
-function renderCitateTable(data){
-  renderTable('citate-list',[{key:'sectiune',label:'Secțiune',type:'cat'},{key:'text',label:'Text'},{key:'culoare_bordura',label:'Bordură'},{key:'ordine',label:'#'}],data,'editCitat','desprehope_citate','loadCitate');
-}
-function editCitat(r){ editRow('cit',{id:r.id,text:r.text,ordine:r.ordine}); document.getElementById('cit-sectiune').value=r.sectiune||'altele'; document.getElementById('cit-culoare').value=r.culoare_bordura||'var(--rose)'; }
-async function saveCitat(){
-  const id=document.getElementById('cit-id').value;
-  const obj={text:document.getElementById('cit-text').value.trim(),sectiune:document.getElementById('cit-sectiune').value,culoare_bordura:document.getElementById('cit-culoare').value.trim()||'var(--rose)',ordine:parseInt(document.getElementById('cit-ordine').value)||0};
-  if(!obj.text){showToast('Completează textul!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsert('desprehope_citate',obj,loadCitate);
-  // refresh relevant section on page
-  await loadCulori(); await loadFlori(); await loadNoapte(); await loadLoveTags();
-  clearForm('cit');
-}
-
-// EXTRA TABLE
-function renderExtraTable(data){
-  renderTable('extra-list',[{key:'categorie',label:'Categorie',type:'cat'},{key:'emoji',label:'Emoji'},{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editExtra','desprehope_extra','loadExtra');
-}
-function editExtra(r){ editRow('ex',{id:r.id,emoji:r.emoji||'',text:r.text,ordine:r.ordine}); document.getElementById('ex-cat').value=r.categorie; }
-async function saveExtra(){
-  const id=document.getElementById('ex-id').value;
-  const obj={categorie:document.getElementById('ex-cat').value,emoji:document.getElementById('ex-emoji').value.trim(),text:document.getElementById('ex-text').value.trim(),ordine:parseInt(document.getElementById('ex-ordine').value)||0};
-  if(!obj.text){showToast('Completează textul!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsert('desprehope_extra',obj,loadExtra);
-  clearForm('ex');
-}
-
-// SCRISOARE TABLE
-function renderScrisoareTable(data){
-  renderTable('scrisoare-list',[{key:'tip',label:'Tip',type:'cat'},{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editScrisoare','desprehope_scrisoare','loadScrisoare');
-}
-function editScrisoare(r){ editRow('sl',{id:r.id,text:r.text,ordine:r.ordine}); document.getElementById('sl-tip').value=r.tip||'paragraf'; }
-async function saveScrisoare(){
-  const id=document.getElementById('sl-id').value;
-  const obj={text:document.getElementById('sl-text').value.trim(),tip:document.getElementById('sl-tip').value,ordine:parseInt(document.getElementById('sl-ordine').value)||0};
-  if(!obj.text){showToast('Completează textul!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsert('desprehope_scrisoare',obj,loadScrisoare);
-  clearForm('sl');
+  renderQuotesTable(allQuotes);
 }
 
 // ── INIT
@@ -1812,3 +1489,4 @@ loadAll();
 </script>
 </body>
 </html>
+
