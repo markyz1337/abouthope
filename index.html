@@ -47,10 +47,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 @keyframes petalDrift{0%{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}100%{opacity:0;transform:translateY(105vh) rotate(400deg) scale(.5)}}
 
 /* HERO */
-.hero{min-height:100vh;padding-top:56px;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+.hero{padding-top:56px;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+
 @media(max-width:800px){.hero{grid-template-columns:1fr}}
 .hero-left{display:flex;flex-direction:column;justify-content:center;padding:5rem 4rem 4rem 5rem;position:relative;z-index:2}
-@media(max-width:800px){.hero-left{padding:3.5rem 1.8rem 2rem}}
+@media(max-width:800px){.hero-left{padding:1.5rem 1.8rem}}
+
 .hero-eyebrow{font-size:.7rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:1.4rem;display:flex;align-items:center;gap:.7rem;opacity:0;animation:fsu .9s .1s ease both}
 .hero-eyebrow::before{content:'';display:block;width:32px;height:1px;background:var(--gold)}
 .hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(4.5rem,10vw,8.5rem);font-weight:300;line-height:.92;color:var(--ink);letter-spacing:-.02em;opacity:0;animation:fsu .9s .25s ease both}
@@ -526,8 +528,9 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 
 <!-- PAGE CONTENT -->
 <nav>
-  <span class="nav-logo" id="navLogo">✨ Tribut</span>
+  <span class="nav-logo" id="navLogo" onclick="toggleEditMode()">✨ Tribut</span>
   <div class="nav-links">
+
     <a href="#intro">Intro</a>
     <a href="#culori">Culori</a>
     <a href="#flori">Flori</a>
@@ -539,10 +542,7 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
     <a href="#extra">Extra</a>
     <a href="#litera">Scrisoare</a>
   </div>
-  <div class="nav-btns">
-    <button class="nav-edit-btn" id="editToggleBtn" onclick="toggleEditMode()">✏️ Editează</button>
-    <button class="nav-admin-btn" onclick="openAdmin()">⚙ Admin</button>
-  </div>
+
 </nav>
 
 <!-- HERO -->
@@ -1434,11 +1434,10 @@ let editModeOn=false;
 function toggleEditMode(){
   editModeOn=!editModeOn;
   document.body.classList.toggle('edit-mode-active',editModeOn);
-  const btn=document.getElementById('editToggleBtn');
-  btn.textContent=editModeOn?'✅ Ieși din editare':'✏️ Editează';
-  btn.classList.toggle('active',editModeOn);
+  document.getElementById('navLogo').textContent=editModeOn?'✅ Tribut':'✨ Tribut';
   showToast(editModeOn?'Mod editare activ — apasă ✏️ sau ⠿ pe orice element':'Mod editare dezactivat');
 }
+
 
 function applyEditControls(){}
 
