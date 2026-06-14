@@ -280,38 +280,26 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 .confetti-p{position:fixed;pointer-events:none;z-index:99997;animation:cfall linear forwards}
 @keyframes cfall{0%{opacity:1;transform:translateY(0) rotateZ(0deg)}100%{opacity:0;transform:translateY(100vh) rotateZ(720deg)}}
 
-/* ═══════════════════════════════════
-   EDIT MODE
-═══════════════════════════════════ */
+/* EDIT MODE */
 .edit-mode-active .editable-wrap{position:relative}
 .edit-mode-active .editable-wrap:hover{outline:2px dashed rgba(232,85,122,.5);border-radius:12px}
-
-/* Inline control bar per item */
 .item-ctrl{display:none;position:absolute;top:4px;right:4px;z-index:100;flex-direction:row;gap:3px;background:rgba(22,10,15,.88);border-radius:10px;padding:3px 5px;box-shadow:0 4px 12px rgba(0,0,0,.3)}
 .edit-mode-active .item-ctrl{display:flex}
 .ic-btn{border:none;background:none;cursor:pointer;padding:3px 5px;border-radius:6px;font-size:.75rem;transition:background .18s;color:#f0c4d4;line-height:1}
 .ic-btn:hover{background:rgba(232,85,122,.3)}
 .ic-btn.drag-handle{cursor:grab;color:#9b6a7e}
 .ic-btn.drag-handle:active{cursor:grabbing}
-
-/* Add-item buttons */
 .add-item-btn{display:none;align-items:center;gap:.5rem;margin:1rem auto 0;background:rgba(232,85,122,.1);border:1.5px dashed rgba(232,85,122,.35);color:var(--rose-deep);border-radius:20px;padding:.5rem 1.2rem;font-size:.75rem;font-weight:500;cursor:pointer;transition:all .25s;font-family:'Jost',sans-serif}
 .add-item-btn:hover{background:rgba(232,85,122,.2);border-color:var(--rose)}
 .edit-mode-active .add-item-btn{display:flex}
-
-/* Edit sections row bar for settings edits (hero texts, section texts) */
 .section-edit-icon{display:none;position:absolute;top:8px;right:8px;z-index:50;background:rgba(22,10,15,.8);border:1px solid rgba(232,85,122,.3);color:var(--rose);border-radius:8px;padding:4px 8px;font-size:.7rem;cursor:pointer;transition:all .2s}
 .edit-mode-active .section-edit-icon{display:block}
 .section-edit-wrap{position:relative}
-
-/* Drag placeholder */
 .drag-over-top{border-top:2px solid var(--rose) !important}
 .drag-over-bottom{border-bottom:2px solid var(--rose) !important}
 .dragging-item{opacity:.4;transform:scale(.97) !important}
 
-/* ═══════════════════════════════════
-   EDIT POPUP MODAL
-═══════════════════════════════════ */
+/* EDIT POPUP MODAL */
 #editModal{display:none;position:fixed;inset:0;z-index:98000;background:rgba(22,10,15,.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1rem}
 #editModal.open{display:flex}
 .emodal-box{background:linear-gradient(160deg,#1e0d17,#160a0f);border:1px solid rgba(232,85,122,.25);border-radius:24px;padding:2rem 1.8rem;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.5);position:relative}
@@ -335,9 +323,7 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 .em-btn-cancel{background:rgba(255,255,255,.08);color:#c490a8;border:1px solid rgba(232,85,122,.2)}
 .em-btn-cancel:hover{background:rgba(255,255,255,.13);color:#fdf0f4}
 
-/* ═══════════════════════════════════
-   ADMIN PANEL
-═══════════════════════════════════ */
+/* ADMIN PANEL */
 #adminOverlay{display:none;position:fixed;inset:0;z-index:99000;background:rgba(22,10,15,.97);backdrop-filter:blur(8px);overflow-y:auto;cursor:default}
 #adminOverlay.open{display:block}
 .admin-wrap{max-width:1200px;margin:0 auto;padding:2rem 1.5rem 6rem}
@@ -1008,7 +994,7 @@ const progObs=new IntersectionObserver(entries=>{
 },{threshold:.25});
 
 // ══════════════════════════════════════════════════════
-//  DATA — tabele: xenia_settings | xenia_items | xenia_quotes
+//  DATA — tabele: tribute_settings | tribute_items | tribute_quotes
 // ══════════════════════════════════════════════════════
 let allItems=[];
 let allQuotes=[];
@@ -1020,7 +1006,7 @@ async function loadAll(){
 }
 
 async function loadSettings(){
-  const {data}=await db.from('xenia_settings').select('*').order('cheie');
+  const {data}=await db.from('tribute_settings').select('*').order('cheie');
   if(!data)return;
   settingsCache={};
   data.forEach(r=>settingsCache[r.cheie]=r.valoare);
@@ -1051,11 +1037,11 @@ function applySettings(){
 }
 
 async function loadItems(){
-  const {data}=await db.from('xenia_items').select('*').order('ordine');
+  const {data}=await db.from('tribute_items').select('*').order('ordine');
   allItems=data||[];
 }
 async function loadQuotes(){
-  const {data}=await db.from('xenia_quotes').select('*').order('ordine');
+  const {data}=await db.from('tribute_quotes').select('*').order('ordine');
   allQuotes=data||[];
 }
 function getItems(tip){return allItems.filter(r=>r.tip===tip)}
@@ -1088,7 +1074,6 @@ function renderPage(){
   renderQuotesTable(allQuotes);
   renderInfoTable(allItems);
   setTimeout(observeAll,120);
-  // Re-apply edit controls if in edit mode
   if(editModeOn) applyEditControls();
 }
 
@@ -1298,7 +1283,6 @@ function renderScrisoare(){
   }).join('');
 }
 
-// item control buttons HTML
 function itemCtrl(r){
   return `<div class="item-ctrl">
     <button class="ic-btn drag-handle" title="Reordonează" draggable="true" onmousedown="startDrag(event,${r.id})">⠿</button>
@@ -1341,17 +1325,14 @@ function toggleEditMode(){
   showToast(editModeOn?'Mod editare activ — apasă ✏️ sau ⠿ pe orice element':'Mod editare dezactivat');
 }
 
-function applyEditControls(){
-  // controls are already rendered inline via itemCtrl(), nothing extra needed
-}
+function applyEditControls(){}
 
-// ── DRAG & DROP reorder
+// ── DRAG & DROP
 let dragId=null;
 let dragOverId=null;
 
-function startDrag(e, id){
+function startDrag(e,id){
   dragId=id;
-  // use HTML5 drag on the parent editable-wrap
   const wrap=e.target.closest('.editable-wrap');
   if(!wrap)return;
   wrap.setAttribute('draggable','true');
@@ -1377,28 +1358,25 @@ function onDragOver(e){
   const rect=el.getBoundingClientRect();
   const mid=rect.top+rect.height/2;
   el.classList.remove('drag-over-top','drag-over-bottom');
-  if(e.clientY<mid) el.classList.add('drag-over-top');
+  if(e.clientY<mid)el.classList.add('drag-over-top');
   else el.classList.add('drag-over-bottom');
   dragOverId=parseInt(el.dataset.id);
 }
-function onDragLeave(e){
-  e.currentTarget.classList.remove('drag-over-top','drag-over-bottom');
-}
+function onDragLeave(e){e.currentTarget.classList.remove('drag-over-top','drag-over-bottom');}
 async function onDrop(e){
   e.preventDefault();
   const target=e.currentTarget;
   const targetId=parseInt(target.dataset.id);
   target.classList.remove('drag-over-top','drag-over-bottom');
   if(!dragId||dragId===targetId)return;
-  // find the two items and swap ordine
   const a=allItems.find(r=>r.id===dragId);
   const b=allItems.find(r=>r.id===targetId);
   if(!a||!b)return;
   const aOrd=a.ordine,bOrd=b.ordine;
   a.ordine=bOrd;b.ordine=aOrd;
   await Promise.all([
-    db.from('xenia_items').update({ordine:bOrd}).eq('id',dragId),
-    db.from('xenia_items').update({ordine:aOrd}).eq('id',targetId)
+    db.from('tribute_items').update({ordine:bOrd}).eq('id',dragId),
+    db.from('tribute_items').update({ordine:aOrd}).eq('id',targetId)
   ]);
   showToast('✓ Ordine salvată');
   await reloadItems();
@@ -1449,16 +1427,16 @@ function openEditModalItem(id){
   const r=allItems.find(x=>x.id===id);
   if(!r)return;
   const fields=tipFields[r.tip]||['emoji','titlu','text'];
-  buildEditModal('✏️ Editează — '+r.tip, fields, r, async(vals)=>{
+  buildEditModal('✏️ Editează — '+r.tip,fields,r,async(vals)=>{
     const obj={id:r.id,tip:r.tip};
     fields.forEach(f=>{
-      if(f==='pref') obj.bool1=vals.pref;
-      else if(f==='bool1') obj.bool1=vals.bool1;
-      else if(f==='num1') obj.num1=parseInt(vals.num1)||0;
-      else if(f==='ordine') obj.ordine=parseInt(vals.ordine)||0;
+      if(f==='pref')obj.bool1=vals.pref;
+      else if(f==='bool1')obj.bool1=vals.bool1;
+      else if(f==='num1')obj.num1=parseInt(vals.num1)||0;
+      else if(f==='ordine')obj.ordine=parseInt(vals.ordine)||0;
       else obj[f]=vals[f]||null;
     });
-    const {error}=await db.from('xenia_items').upsert(obj).select();
+    const {error}=await db.from('tribute_items').upsert(obj).select();
     if(error){showToast('Eroare: '+error.message,'err');return;}
     showToast('✓ Salvat!');
     closeEditModal();
@@ -1468,16 +1446,16 @@ function openEditModalItem(id){
 
 function openAddModal(tip){
   const fields=tipFields[tip]||['emoji','titlu','text'];
-  buildEditModal('➕ Adaugă — '+tip, fields, {ordine: allItems.filter(r=>r.tip===tip).length}, async(vals)=>{
+  buildEditModal('➕ Adaugă — '+tip,fields,{ordine:allItems.filter(r=>r.tip===tip).length},async(vals)=>{
     const obj={tip};
     fields.forEach(f=>{
-      if(f==='pref') obj.bool1=vals.pref;
-      else if(f==='bool1') obj.bool1=vals.bool1;
-      else if(f==='num1') obj.num1=parseInt(vals.num1)||0;
-      else if(f==='ordine') obj.ordine=parseInt(vals.ordine)||0;
+      if(f==='pref')obj.bool1=vals.pref;
+      else if(f==='bool1')obj.bool1=vals.bool1;
+      else if(f==='num1')obj.num1=parseInt(vals.num1)||0;
+      else if(f==='ordine')obj.ordine=parseInt(vals.ordine)||0;
       else obj[f]=vals[f]||null;
     });
-    const {error}=await db.from('xenia_items').insert(obj).select();
+    const {error}=await db.from('tribute_items').insert(obj).select();
     if(error){showToast('Eroare: '+error.message,'err');return;}
     showToast('✓ Adăugat!');
     closeEditModal();
@@ -1485,7 +1463,7 @@ function openAddModal(tip){
   });
 }
 
-function buildEditModal(title, fields, data, saveFn){
+function buildEditModal(title,fields,data,saveFn){
   document.getElementById('eModalTitle').textContent=title;
   const container=document.getElementById('eModalFields');
   container.innerHTML='';
@@ -1525,21 +1503,18 @@ function closeEditModal(){
   editModalSaveFn=null;
 }
 
-// Close modal on backdrop click
 document.getElementById('editModal').addEventListener('click',e=>{
   if(e.target===document.getElementById('editModal'))closeEditModal();
 });
 
-// ── SETTING EDIT from page
-function editSetting(key, label){
+function editSetting(key,label){
   const current=settingsCache[key]||'';
-  buildEditModal('✏️ '+label, [], {}, async()=>{});
-  // override with single field
+  buildEditModal('✏️ '+label,[],{},async()=>{});
   const container=document.getElementById('eModalFields');
   container.innerHTML=`<div class="ef-row full"><div class="efield full"><label>${label}</label><textarea id="em-setting" rows="4">${current}</textarea></div></div>`;
   editModalSaveFn=async()=>{
     const val=document.getElementById('em-setting').value;
-    const {error}=await db.from('xenia_settings').upsert({cheie:key,valoare:val}).select();
+    const {error}=await db.from('tribute_settings').upsert({cheie:key,valoare:val}).select();
     if(error){showToast('Eroare: '+error.message,'err');return;}
     settingsCache[key]=val;
     showToast('✓ Salvat!');
@@ -1559,7 +1534,7 @@ function editSettingGroup(keys){
   </div></div>`).join('');
   editModalSaveFn=async()=>{
     const updates=keys.map(k=>({cheie:k,valoare:document.getElementById('em-sg-'+k).value}));
-    await Promise.all(updates.map(u=>db.from('xenia_settings').upsert(u).select()));
+    await Promise.all(updates.map(u=>db.from('tribute_settings').upsert(u).select()));
     updates.forEach(u=>settingsCache[u.cheie]=u.valoare);
     showToast('✓ Salvat!');
     closeEditModal();
@@ -1570,10 +1545,9 @@ function editSettingGroup(keys){
   document.getElementById('editModal').classList.add('open');
 }
 
-// ── DELETE ITEM
 async function deleteItem(id){
   if(!confirm('Ștergi acest element?'))return;
-  const {error}=await db.from('xenia_items').delete().eq('id',id);
+  const {error}=await db.from('tribute_items').delete().eq('id',id);
   if(error){showToast('Eroare: '+error.message,'err');return;}
   showToast('✓ Șters!');
   await reloadItems();
@@ -1597,7 +1571,6 @@ function showToast(msg,type='ok'){
   setTimeout(()=>t.classList.remove('show'),2800);
 }
 
-// SETTINGS
 function renderSetariTable(data){
   const c=document.getElementById('setari-list');
   if(!data||!data.length){c.innerHTML='<div class="admin-empty">Nicio setare.</div>';return;}
@@ -1615,20 +1588,19 @@ function renderSetariTable(data){
 function editSS(r){document.getElementById('s-cheie').value=r.cheie;document.getElementById('s-valoare').value=r.valoare;}
 async function delSetting(id){
   if(!confirm('Ștergi setarea?'))return;
-  await db.from('xenia_settings').delete().eq('id',id);
+  await db.from('tribute_settings').delete().eq('id',id);
   showToast('✓ Șters!');await loadSettings();
 }
 async function saveSetare(){
   const cheie=document.getElementById('s-cheie').value.trim();
   const valoare=document.getElementById('s-valoare').value.trim();
   if(!cheie||!valoare){showToast('Completează ambele câmpuri!','err');return;}
-  const {error}=await db.from('xenia_settings').upsert({cheie,valoare}).select();
+  const {error}=await db.from('tribute_settings').upsert({cheie,valoare}).select();
   if(error){showToast('Eroare: '+error.message,'err');return;}
   showToast('✓ Salvat!');clearSForm();await loadSettings();
 }
 function clearSForm(){document.getElementById('s-cheie').value='';document.getElementById('s-valoare').value='';}
 
-// INFO PILLS
 function renderInfoTable(data){
   const items=data.filter(r=>r.tip==='info_pill');
   const c=document.getElementById('info-list');
@@ -1660,12 +1632,11 @@ async function saveInfo(){
   const obj={tip:'info_pill',emoji:document.getElementById('inf-emoji').value.trim(),titlu:document.getElementById('inf-valoare').value.trim(),ordine:parseInt(document.getElementById('inf-ordine').value)||0};
   if(!obj.titlu){showToast('Completează textul!','err');return;}
   if(id)obj.id=parseInt(id);
-  const {error}=await db.from('xenia_items').upsert(obj).select();
+  const {error}=await db.from('tribute_items').upsert(obj).select();
   if(error){showToast('Eroare: '+error.message,'err');return;}
   showToast('✓ Salvat!');clearInfoForm();await reloadItems();
 }
 
-// CONTENT
 function updateAdminFieldVis(){
   const tip=document.getElementById('ct-tip').value;
   const f=tipFields[tip]||[];
@@ -1693,7 +1664,7 @@ async function saveContent(){
     cat1:document.getElementById('ct-cat-film').value.trim()||null,
     ordine:parseInt(document.getElementById('ct-ordine').value)||0};
   if(id)obj.id=parseInt(id);
-  const {error}=await db.from('xenia_items').upsert(obj).select();
+  const {error}=await db.from('tribute_items').upsert(obj).select();
   if(error){showToast('Eroare: '+error.message,'err');return;}
   showToast('✓ Salvat!');clearContentForm();await reloadItems();
 }
@@ -1739,7 +1710,6 @@ function renderContentTable(data){
     </tr>`).join('')}</tbody></table></div>`;
 }
 
-// QUOTES
 function renderQuotesTable(data){
   const c=document.getElementById('quotes-list');
   if(!data||!data.length){c.innerHTML='<div class="admin-empty">Niciun citat.</div>';return;}
@@ -1764,7 +1734,7 @@ function editQuoteRow(r){
 }
 async function delQuote(id){
   if(!confirm('Ștergi citatul?'))return;
-  await db.from('xenia_quotes').delete().eq('id',id);
+  await db.from('tribute_quotes').delete().eq('id',id);
   showToast('✓ Șters!');await reloadQuotes();
 }
 function clearQForm(){
@@ -1776,12 +1746,11 @@ async function saveQuote(){
   const obj={text:document.getElementById('q-text').value.trim(),sectiune:document.getElementById('q-sectiune').value,culoare_bordura:document.getElementById('q-culoare').value.trim()||'var(--rose)',ordine:parseInt(document.getElementById('q-ordine').value)||0};
   if(!obj.text){showToast('Completează textul!','err');return;}
   if(id)obj.id=parseInt(id);
-  const {error}=await db.from('xenia_quotes').upsert(obj).select();
+  const {error}=await db.from('tribute_quotes').upsert(obj).select();
   if(error){showToast('Eroare: '+error.message,'err');return;}
   showToast('✓ Salvat!');clearQForm();await reloadQuotes();
 }
 
-// RELOAD HELPERS
 async function reloadItems(){
   await loadItems();
   renderPage();
