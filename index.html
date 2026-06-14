@@ -210,6 +210,11 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .rand-btn{background:linear-gradient(135deg,var(--rose),var(--rose-deep));color:white;border:none;padding:.9rem 2.4rem;border-radius:50px;font-family:'Jost',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;position:relative;z-index:1;box-shadow:0 8px 24px rgba(232,85,122,.4);transition:all .3s;letter-spacing:.05em}
 .rand-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 32px rgba(232,85,122,.55)}
 .rand-btn:active{transform:scale(.97)}
+.compliment-list{display:flex;flex-direction:column;gap:.6rem;margin-top:1.5rem;position:relative;z-index:1;text-align:left}
+.compliment-item{background:rgba(255,255,255,.04);border:1px solid rgba(232,85,122,.15);border-radius:14px;padding:.8rem 1rem;display:flex;align-items:flex-start;gap:.7rem;color:#f0c4d4;font-size:.85rem;line-height:1.6;font-weight:300;transition:all .3s}
+.compliment-item:hover{background:rgba(232,85,122,.07);border-color:rgba(232,85,122,.27)}
+.ci-icon{font-size:1.1rem;flex-shrink:0}
+
 
 /* FILMS */
 .films-bg{background:white;padding:6rem 2rem}
@@ -407,7 +412,6 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
     </div>
     <div class="admin-tabs">
       <button class="atab active"  onclick="switchTab('settings')">⚙️ Setări & Info</button>
-      <button class="atab"         onclick="switchTab('content')">🌸 Conținut</button>
       <button class="atab"         onclick="switchTab('quotes')">💬 Citate</button>
     </div>
 
@@ -492,84 +496,7 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
       <div id="info-list"><div class="admin-loading">Se încarcă...</div></div>
     </div>
 
-    <!-- TAB 2: CONTENT -->
-    <div class="admin-section" data-tab="content">
-      <div class="admin-section-title">🌸 Conținut</div>
-      <div class="aform">
-        <div class="aform-grid">
-          <div class="afield">
-            <label>Tip</label>
-            <select id="ct-tip">
-              <optgroup label="Vizual">
-                <option value="culoare">🎨 Culoare</option>
-                <option value="floare">🌷 Floare</option>
-                <option value="vibe">🎀 Vibe</option>
-                <option value="emoji_strip">🪄 Emoji Strip</option>
-              </optgroup>
-              <optgroup label="Personalitate">
-                <option value="trasatura">🌙 Trăsătură suflet</option>
-                <option value="noapte">✨ Moment noapte</option>
-              </optgroup>
-              <optgroup label="Interactiv">
-                <option value="scratch">🌸 Scratch Card</option>
-                <option value="compliment">💌 Compliment</option>
-              </optgroup>
-              <optgroup label="Film / Muzică">
-                <option value="film">🎬 Film</option>
-                <option value="muzica_artist">🎶 Artist</option>
-                <option value="muzica_piesa">🎵 Piesă</option>
-              </optgroup>
-              <optgroup label="Statistici & Tags">
-                <option value="stat">📊 Statistică</option>
-                <option value="love_tag">💕 Love Tag</option>
-              </optgroup>
-              <optgroup label="Extra & Scrisoare">
-                <option value="extra_personal">🌍 Extra: Personal</option>
-                <option value="extra_culori">🎨 Extra: Culori</option>
-                <option value="extra_nu_place">❌ Extra: Nu place</option>
-                <option value="extra_vise">🎯 Extra: Vise</option>
-                <option value="extra_obiceiuri">🎀 Extra: Obiceiuri</option>
-                <option value="scrisoare_paragraf">💌 Scrisoare: Paragraf</option>
-                <option value="scrisoare_semnatura">✍️ Scrisoare: Semnătură</option>
-                <option value="scrisoare_nota">📝 Scrisoare: Notă</option>
-              </optgroup>
-            </select>
-          </div>
-          <div class="afield"><label>Emoji</label><input id="ct-emoji" placeholder="🌸"></div>
-          <div class="afield"><label>Titlu / Cheie</label><input id="ct-titlu" placeholder="titlu..."></div>
-          <div class="afield"><label>Ordine</label><input id="ct-ordine" type="number" value="0"></div>
-          <div class="afield" id="f-hex"><label>Hex 1</label><input id="ct-hex" placeholder="#f9c6d8"></div>
-          <div class="afield" id="f-hex2"><label>Hex 2 (gradient)</label><input id="ct-hex2" placeholder="#f4a0c0"></div>
-          <div class="afield" id="f-pref"><label>Preferată <input id="ct-pref" type="checkbox"></label></div>
-          <div class="afield" id="f-cat-film"><label>Categorie film</label><input id="ct-cat-film" placeholder="Romantice clasice"></div>
-          <div class="afield" id="f-hl"><label>Highlight 💕 <input id="ct-hl" type="checkbox"></label></div>
-          <div class="afield" id="f-procent"><label>Procent (0-100)</label><input id="ct-procent" type="number" min="0" max="100" value="0"></div>
-          <div class="afield" id="f-text" style="grid-column:1/-1"><label>Text / Descriere</label><textarea id="ct-text"></textarea></div>
-        </div>
-        <div class="aform-actions">
-          <button class="abtn abtn-primary" onclick="saveContent()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearContentForm()">✕</button>
-        </div>
-        <input type="hidden" id="ct-id">
-      </div>
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem">
-        <span style="color:#c490a8;font-size:.75rem;align-self:center">Filtrează:</span>
-        <button class="atab active" id="f-all" onclick="filterContent('')">Toate</button>
-        <button class="atab" onclick="filterContent('culoare')">Culori</button>
-        <button class="atab" onclick="filterContent('floare')">Flori</button>
-        <button class="atab" onclick="filterContent('vibe')">Vibes</button>
-        <button class="atab" onclick="filterContent('trasatura')">Suflet</button>
-        <button class="atab" onclick="filterContent('noapte')">Noapte</button>
-        <button class="atab" onclick="filterContent('scratch')">Scratch</button>
-        <button class="atab" onclick="filterContent('compliment')">Complimente</button>
-        <button class="atab" onclick="filterContent('film')">Filme</button>
-        <button class="atab" onclick="filterContent('muzica')">Muzică</button>
-        <button class="atab" onclick="filterContent('stat')">Stats</button>
-        <button class="atab" onclick="filterContent('love_tag')">Love</button>
-        <button class="atab" onclick="filterContent('extra')">Extra</button>
-        <button class="atab" onclick="filterContent('scrisoare')">Scrisoare</button>
-        <button class="atab" onclick="filterContent('emoji_strip')">Emoji</button>
-      </div>
+
       <div id="content-list"><div class="admin-loading">Se încarcă...</div></div>
     </div>
 
@@ -786,8 +713,10 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
     </div>
     <button class="rand-btn" onclick="spinRand()">✨ Surprinde-mă</button>
     <button class="add-item-btn" style="margin:1rem auto 0;position:relative;z-index:1" onclick="openAddModal('compliment')">+ Adaugă compliment</button>
+    <div class="compliment-list" id="complimenteList"></div>
   </div>
 </div>
+
 
 <div class="divider">🌸 🌷 🌸 🌷 🌸</div>
 
@@ -1148,13 +1077,13 @@ function renderPage(){
   renderTrasaturi();
   renderNoapte();
   renderScratch();
+  renderComplimente();
   renderFilme();
   renderMuzica();
   renderStats();
   renderLoveTags();
   renderExtra();
   renderScrisoare();
-  renderContentTable(allItems);
   renderQuotesTable(allQuotes);
   renderInfoTable(allItems);
   setTimeout(observeAll,120);
@@ -1244,6 +1173,9 @@ function renderNoapte(){
   document.getElementById('noapteCitat').innerHTML=quotesHtml(getQuotes('noapte'),true);
 }
 
+
+
+
 function renderScratch(){
   const scratchData=getItems('scratch');
   const grid=document.getElementById('scratchGrid');
@@ -1279,6 +1211,17 @@ function renderScratch(){
     cv.addEventListener('touchend',()=>scraping=false);
   });
 }
+
+function renderComplimente(){
+  const items=getItems('compliment');
+  const wrap=document.getElementById('complimenteList');
+  if(!items.length){wrap.innerHTML='<div style="color:#c490a8;font-style:italic;text-align:center;font-size:.85rem">Niciun compliment adăugat încă.</div>';return;}
+  wrap.innerHTML=items.map(r=>`<div class="compliment-item editable-wrap" data-id="${r.id}" data-tip="compliment" style="position:relative">
+    ${itemCtrl(r)}
+    <span class="ci-icon">${r.emoji||'🌸'}</span><span>${r.text||''}</span>
+  </div>`).join('');
+}
+
 
 function renderFilme(){
   const items=getItems('film');
@@ -1630,12 +1573,28 @@ function editSetting(key,label){
   document.getElementById('editModal').classList.add('open');
 }
 
+const settingLabels={
+  birthday_date:'Data nașterii (MM-DD)',
+  birthday_label:'Etichetă afișată (ex: 15 Martie 🎂)',
+  birthday_msg:'Mesaj countdown normal',
+  birthday_msg_day:'Mesaj în ziua nașterii',
+  birthday_msg_week:'Mesaj când e săptămâna zilei',
+  birthday_bday_text:'Text banner ziua nașterii 🎉',
+  sunset_quote:'Citatul mare (apus)',
+  sunset_attr:'Atribuire citat',
+  love_intro:'Text introductiv Iubire',
+  actress_badge:'Badge actriță preferată',
+  actor_badge:'Badge actor preferat',
+  pers_title:'Titlu secțiune Suflet',
+};
+
 function editSettingGroup(keys){
   const container=document.getElementById('eModalFields');
-  document.getElementById('eModalTitle').textContent='✏️ Editează setări';
+  document.getElementById('eModalTitle').textContent='✏️ Editează';
   container.innerHTML=keys.map(k=>`<div class="ef-row full"><div class="efield full">
-    <label>${k}</label><input id="em-sg-${k}" value="${(settingsCache[k]||'').replace(/"/g,'&quot;')}">
+    <label>${settingLabels[k]||k}</label><input id="em-sg-${k}" value="${(settingsCache[k]||'').replace(/"/g,'&quot;')}">
   </div></div>`).join('');
+
   editModalSaveFn=async()=>{
     const updates=keys.map(k=>({cheie:k,valoare:document.getElementById('em-sg-'+k).value}));
     await Promise.all(updates.map(u=>db.from('tribute_settings').upsert(u).select()));
@@ -1666,7 +1625,8 @@ function switchTab(id){
   document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));
   event.target.classList.add('active');
 }
-function openAdmin(){document.getElementById('adminOverlay').classList.add('open');document.body.style.overflow='hidden';updateAdminFieldVis();}
+function openAdmin(){document.getElementById('adminOverlay').classList.add('open');document.body.style.overflow='hidden';}
+
 function closeAdmin(){document.getElementById('adminOverlay').classList.remove('open');document.body.style.overflow='';}
 
 function showToast(msg,type='ok'){
@@ -1718,60 +1678,7 @@ async function saveInfo(){
   showToast('✓ Salvat!');clearInfoForm();await reloadItems();
 }
 
-function updateAdminFieldVis(){
-  const tip=document.getElementById('ct-tip').value;
-  const f=tipFields[tip]||[];
-  const show=(id,v)=>{const el=document.getElementById(id);if(el)el.style.display=v?'flex':'none';};
-  show('f-hex',f.includes('hex'));show('f-hex2',f.includes('hex2'));show('f-pref',f.includes('pref'));
-  show('f-cat-film',f.includes('cat1'));show('f-hl',f.includes('bool1'));show('f-procent',f.includes('num1'));show('f-text',f.includes('text'));
-  const emojiF=document.getElementById('ct-emoji').parentElement;
-  const titluF=document.getElementById('ct-titlu').parentElement;
-  if(emojiF)emojiF.style.display=f.includes('emoji')?'flex':'none';
-  if(titluF)titluF.style.display=f.includes('titlu')?'flex':'none';
-}
-document.getElementById('ct-tip').addEventListener('change',updateAdminFieldVis);
 
-async function saveContent(){
-  const id=document.getElementById('ct-id').value;
-  const tip=document.getElementById('ct-tip').value;
-  const obj={tip,
-    emoji:document.getElementById('ct-emoji').value.trim()||null,
-    titlu:document.getElementById('ct-titlu').value.trim()||null,
-    text:document.getElementById('ct-text').value.trim()||null,
-    hex:document.getElementById('ct-hex').value.trim()||null,
-    hex2:document.getElementById('ct-hex2').value.trim()||null,
-    bool1:document.getElementById('ct-hl').checked||document.getElementById('ct-pref').checked,
-    num1:parseInt(document.getElementById('ct-procent').value)||null,
-    cat1:document.getElementById('ct-cat-film').value.trim()||null,
-    ordine:parseInt(document.getElementById('ct-ordine').value)||0};
-  if(id)obj.id=parseInt(id);
-  const {error}=await db.from('tribute_items').upsert(obj).select();
-  if(error){showToast('Eroare: '+error.message,'err');return;}
-  showToast('✓ Salvat!');clearContentForm();await reloadItems();
-}
-function clearContentForm(){
-  document.getElementById('ct-id').value='';
-  ['ct-emoji','ct-titlu','ct-text','ct-hex','ct-hex2','ct-cat-film'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('ct-hl').checked=false;document.getElementById('ct-pref').checked=false;
-  document.getElementById('ct-procent').value=0;document.getElementById('ct-ordine').value=0;
-}
-function editContent(r){
-  document.getElementById('ct-id').value=r.id;document.getElementById('ct-tip').value=r.tip;
-  document.getElementById('ct-emoji').value=r.emoji||'';document.getElementById('ct-titlu').value=r.titlu||'';
-  document.getElementById('ct-text').value=r.text||'';document.getElementById('ct-hex').value=r.hex||'';
-  document.getElementById('ct-hex2').value=r.hex2||'';document.getElementById('ct-hl').checked=!!r.bool1;
-  document.getElementById('ct-pref').checked=!!r.bool1;document.getElementById('ct-procent').value=r.num1||0;
-  document.getElementById('ct-cat-film').value=r.cat1||'';document.getElementById('ct-ordine').value=r.ordine||0;
-  updateAdminFieldVis();
-}
-let contentFilterTip='';
-function filterContent(prefix){
-  contentFilterTip=prefix;
-  document.querySelectorAll('.admin-section[data-tab="content"] .atab').forEach(b=>b.classList.remove('active'));
-  if(event&&event.target)event.target.classList.add('active');
-  const filtered=prefix?allItems.filter(r=>r.tip.startsWith(prefix)):allItems;
-  renderContentTable(filtered);
-}
 function renderContentTable(data){
   const c=document.getElementById('content-list');
   if(!data||!data.length){c.innerHTML='<div class="admin-empty">Niciun item.</div>';return;}
