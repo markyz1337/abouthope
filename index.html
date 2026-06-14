@@ -1708,13 +1708,16 @@ container.innerHTML=keys.map(k=>`<div class="ef-row full"><div class="efield ful
 
   editModalSaveFn=async()=>{
     const updates=keys.map(k=>({cheie:k,valoare:document.getElementById('em-sg-'+k).value}));
-    await Promise.all(updates.map(u=>db.from('tribute_settings').upsert(u).select()));
+    const results=await Promise.all(updates.map(u=>db.from('tribute_settings').upsert(u,{onConflict:'cheie'}).select()));
+    const err=results.find(r=>r.error);
+    if(err){showToast('Eroare: '+err.error.message,'err');return;}
     updates.forEach(u=>settingsCache[u.cheie]=u.valoare);
     showToast('✓ Salvat!');
     closeEditModal();
     applySettings();
     await loadSettings();
   };
+
   document.getElementById('eModalSaveBtn').onclick=editModalSaveFn;
   document.getElementById('editModal').classList.add('open');
 }
