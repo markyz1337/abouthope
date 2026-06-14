@@ -554,11 +554,17 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 
 <!-- HERO -->
 <section class="hero" id="intro" style="max-width:100%;padding:0;padding-top:56px">
-  <div class="hero-left">
+<div class="hero-left section-edit-wrap" style="position:relative">
+  <button class="section-edit-icon" style="top:70px;right:8px;z-index:10" 
+    onclick="editSettingGroup(['hero_eyebrow','hero_name','hero_tagline','hero_note','hero_bg_letter'])">✏️ Hero</button>
     <div class="hero-eyebrow" id="heroEyebrow">✦ O pagină pentru tine</div>
     <h1 class="hero-name"><em id="heroName">Numele</em></h1>
     <p class="hero-tagline" id="heroTagline">o descriere frumoasă 🌸</p>
-    <div class="info-pills" id="infoPills">
+<div class="info-pills" id="infoPills">
+  <span class="pill"><span>⏳</span>Se încarcă...</span>
+</div>
+<button class="add-item-btn" style="margin-bottom:1rem" onclick="openAddModal('info_pill')">+ Adaugă pill</button>
+
       <span class="pill"><span>⏳</span>Se încarcă...</span>
     </div>
     <p class="hero-note" id="heroNote">Se încarcă...</p>
@@ -574,8 +580,9 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
       <span class="bloom">🌸</span><span class="bloom">🌷</span><span class="bloom">🌺</span>
       <span class="bloom">✨</span><span class="bloom">💕</span><span class="bloom">🪷</span>
     </div>
-    <div class="hero-card">
-      <span class="hc-emoji">🌸</span>
+<div class="hero-card section-edit-wrap" style="position:relative">
+  <button class="section-edit-icon" onclick="editSettingGroup(['hero_card_name','hero_card_sub'])">✏️</button>
+  <span class="hc-emoji">🌸</span>
       <div class="hc-name" id="heroCardName">Tribut</div>
       <div class="hc-sub" id="heroCardSub">o pagină specială</div>
       <div class="hc-divider"></div>
@@ -679,15 +686,17 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 <!-- NOAPTE -->
 <div class="night-bg" id="noapte">
   <canvas id="nightCanvas"></canvas>
-  <div class="night-inner">
-    <span class="night-moon">🌙</span>
-    <h2 class="s-title" style="color:#fdf0f4">Noaptea, ești tu cu adevărat <em style="color:#ff80ab">✨</em></h2>
-    <div class="s-rule" style="margin-bottom:1.5rem"><span class="s-rule-line" style="background:linear-gradient(to right,transparent,rgba(232,85,122,.3))"></span><span class="s-rule-icon" style="color:rgba(232,85,122,.4)">✦</span><span class="s-rule-line right" style="background:linear-gradient(to left,transparent,rgba(232,85,122,.3))"></span></div>
-    <p class="night-sub" id="nightSub">Liniștea nopții, gândurile care nu se opresc — asta ești tu când lumea doarme.</p>
-    <div class="night-grid" id="noapteGrid"><div style="color:#c490a8;font-style:italic">Se încarcă...</div></div>
-    <button class="add-item-btn" onclick="openAddModal('noapte')">+ Adaugă moment</button>
-    <div id="noapteCitat" style="margin-top:2.5rem"></div>
-  </div>
+<div class="night-inner section-edit-wrap" style="position:relative">
+  <button class="section-edit-icon" onclick="editSetting('night_sub','Subtitlu secțiune Noapte')">✏️ Sub</button>
+  <span class="night-moon">🌙</span>
+  <h2 class="s-title" style="color:#fdf0f4">Noaptea, ești tu cu adevărat <em style="color:#ff80ab">✨</em></h2>
+  <div class="s-rule" style="margin-bottom:1.5rem"><span class="s-rule-line" style="background:linear-gradient(to right,transparent,rgba(232,85,122,.3))"></span><span class="s-rule-icon" style="color:rgba(232,85,122,.4)">✦</span><span class="s-rule-line right" style="background:linear-gradient(to left,transparent,rgba(232,85,122,.3))"></span></div>
+  <p class="night-sub" id="nightSub">Liniștea nopții, gândurile care nu se opresc — asta ești tu când lumea doarme.</p>
+  <div class="night-grid" id="noapteGrid"><div style="color:#c490a8;font-style:italic">Se încarcă...</div></div>
+  <button class="add-item-btn" onclick="openAddModal('noapte')">+ Adaugă moment</button>
+  <div id="noapteCitat" style="margin-top:2.5rem"></div>
+</div>
+
 </div>
 
 <!-- SCRATCH -->
@@ -826,7 +835,9 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 </div>
 
 <!-- FOOTER -->
-<footer>
+<footer class="section-edit-wrap" style="position:relative">
+  <button class="section-edit-icon" style="top:8px;right:8px" 
+    onclick="editSettingGroup(['nav_logo','footer_line1','footer_line2'])">✏️</button>
   <span class="footer-heart">💗</span>
   <p id="footerLine1">O pagină specială 🌸</p>
   <p id="footerLine2" style="margin-top:.4rem;font-size:.73rem;opacity:.6"></p>
@@ -1060,12 +1071,77 @@ async function loadQuotes(){
 function getItems(tip){return allItems.filter(r=>r.tip===tip)}
 function getQuotes(sectiune){return allQuotes.filter(r=>r.sectiune===sectiune)}
 
-function quotesHtml(arr,darkStyle=false){
-  return arr.map(r=>{
-    const bg=darkStyle?'background:rgba(255,255,255,.04);color:#ffd6e7;':'';
-    return `<div class="bq rev" style="${bg}border-left-color:${r.culoare_bordura||'var(--rose)'}">${r.text}</div>`;
-  }).join('');
+function quotesEditHtml(arr, sectiune, darkStyle = false) {
+  const bg = darkStyle ? 'background:rgba(255,255,255,.04);color:#ffd6e7;' : '';
+  const items = arr.map(r => `
+    <div class="bq rev editable-wrap" data-id="${r.id}" data-tip="__quote__" style="${bg}border-left-color:${r.culoare_bordura||'var(--rose)'};position:relative">
+      <div class="item-ctrl">
+        <button class="ic-btn" onclick="moveQuote(${r.id},-1,'${sectiune}')">▲</button>
+        <button class="ic-btn" onclick="moveQuote(${r.id},+1,'${sectiune}')">▼</button>
+        <button class="ic-btn" onclick="openEditModalQuote(${r.id})">✏️</button>
+        <button class="ic-btn" onclick="delQuote(${r.id})">🗑️</button>
+      </div>
+      ${r.text}
+    </div>`).join('');
+  return items + `<button class="add-item-btn" onclick="openAddModalQuote('${sectiune}')">+ Adaugă citat</button>`;
 }
+
+
+function openAddModalQuote(sectiune) {
+  buildEditModal('➕ Citat — ' + sectiune, [], {}, async () => {});
+  const container = document.getElementById('eModalFields');
+  container.innerHTML = `
+    <div class="ef-row full"><div class="efield full"><label>Text citat</label><textarea id="em-q-text" rows="4"></textarea></div></div>
+    <div class="ef-row"><div class="efield"><label>Culoare bordură CSS</label><input id="em-q-color" value="var(--rose)"></div>
+    <div class="efield"><label>Ordine</label><input type="number" id="em-q-ord" value="${allQuotes.filter(r=>r.sectiune===sectiune).length}"></div></div>`;
+  editModalSaveFn = async () => {
+    const obj = {
+      text: document.getElementById('em-q-text').value.trim(),
+      sectiune,
+      culoare_bordura: document.getElementById('em-q-color').value || 'var(--rose)',
+      ordine: parseInt(document.getElementById('em-q-ord').value) || 0
+    };
+    if (!obj.text) { showToast('Completează textul!', 'err'); return; }
+    const { error } = await db.from('tribute_quotes').insert(obj).select();
+    if (error) { showToast('Eroare: ' + error.message, 'err'); return; }
+    showToast('✓ Adăugat!'); closeEditModal(); await reloadQuotes();
+  };
+  document.getElementById('eModalSaveBtn').onclick = editModalSaveFn;
+  document.getElementById('editModal').classList.add('open');
+}
+
+function openEditModalQuote(id) {
+  const r = allQuotes.find(x => x.id === id);
+  if (!r) return;
+  buildEditModal('✏️ Editează citat', [], {}, async () => {});
+  const container = document.getElementById('eModalFields');
+  container.innerHTML = `
+    <div class="ef-row full"><div class="efield full"><label>Text citat</label><textarea id="em-q-text" rows="4">${r.text||''}</textarea></div></div>
+    <div class="ef-row"><div class="efield"><label>Culoare bordură CSS</label><input id="em-q-color" value="${r.culoare_bordura||'var(--rose)'}"></div>
+    <div class="efield"><label>Ordine</label><input type="number" id="em-q-ord" value="${r.ordine||0}"></div></div>`;
+  editModalSaveFn = async () => {
+    const obj = { id: r.id, text: document.getElementById('em-q-text').value.trim(), culoare_bordura: document.getElementById('em-q-color').value || 'var(--rose)', ordine: parseInt(document.getElementById('em-q-ord').value) || 0 };
+    const { error } = await db.from('tribute_quotes').upsert(obj).select();
+    if (error) { showToast('Eroare: ' + error.message, 'err'); return; }
+    showToast('✓ Salvat!'); closeEditModal(); await reloadQuotes();
+  };
+  document.getElementById('eModalSaveBtn').onclick = editModalSaveFn;
+  document.getElementById('editModal').classList.add('open');
+}
+
+async function moveQuote(id, dir, sectiune) {
+  const arr = allQuotes.filter(r => r.sectiune === sectiune).sort((a, b) => a.ordine - b.ordine);
+  const idx = arr.findIndex(r => r.id === id);
+  const swapIdx = idx + dir;
+  if (swapIdx < 0 || swapIdx >= arr.length) return;
+  const a = arr[idx], b = arr[swapIdx];
+  await Promise.all([
+    db.from('tribute_quotes').update({ ordine: b.ordine }).eq('id', a.id),
+    db.from('tribute_quotes').update({ ordine: a.ordine }).eq('id', b.id)
+  ]);
+  showToast('✓ Mutat!'); await reloadQuotes();
+}
+
 
 // ── RENDER PAGE
 function renderPage(){
@@ -1095,7 +1171,10 @@ function renderInfoPills(){
   const pillsEl=document.getElementById('infoPills');
   const cardEl=document.getElementById('heroCardFacts');
   if(!pills.length){pillsEl.innerHTML='';cardEl.innerHTML='';return;}
-  pillsEl.innerHTML=pills.map(r=>`<span class="pill">${r.emoji||''} ${r.titlu}</span>`).join('');
+pillsEl.innerHTML = pills.map(r => `
+  <span class="pill editable-wrap" data-id="${r.id}" data-tip="info_pill" style="position:relative">
+    ${itemCtrl(r)}${r.emoji||''} ${r.titlu}
+  </span>`).join('');
   cardEl.innerHTML=pills.slice(0,4).map(r=>`<div class="hc-fact"><span class="hf-icon">${r.emoji||'📌'}</span><span>${r.titlu}</span></div>`).join('');
 }
 
@@ -1113,7 +1192,9 @@ function renderCulori(){
       ${r.bool1?'<span class="swatch-fav">♡ Preferată</span>':''}
     </div>`;
   }).join('');
-  document.getElementById('culoriCitate').innerHTML=quotesHtml(getQuotes('culori'));
+document.getElementById('culoriCitate').innerHTML=quotesEditHtml(getQuotes('culori'),'culori');
+
+
 }
 
 function renderFlori(){
@@ -1126,7 +1207,8 @@ function renderFlori(){
     <div class="fc-title">${r.titlu||''}</div>
     <div class="fc-text">${r.text||''}</div>
   </div>`).join('');
-  document.getElementById('floriCitate').innerHTML=quotesHtml(getQuotes('flori'));
+document.getElementById('floriCitate').innerHTML=quotesEditHtml(getQuotes('flori'),'flori');
+
 }
 
 function renderVibes(){
@@ -1170,7 +1252,8 @@ function renderNoapte(){
     ${itemCtrl(r)}
     <span class="ni-icon">${r.emoji||'🌙'}</span><span>${r.text||''}</span>
   </div>`).join('');
-  document.getElementById('noapteCitat').innerHTML=quotesHtml(getQuotes('noapte'),true);
+document.getElementById('noapteCitat').innerHTML=quotesEditHtml(getQuotes('noapte'),'noapte',true);
+
 }
 
 
@@ -1236,7 +1319,8 @@ function renderFilme(){
       <ul class="flist">${films.map(f=>`<li class="${f.bool1?'hl':''} editable-wrap" data-id="${f.id}" data-tip="film" style="position:relative">
         ${itemCtrl(f)}<span>${f.titlu||''}</span></li>`).join('')}</ul>
     </div>`).join('');
-  document.getElementById('citatFilmeSection').innerHTML=quotesHtml(getQuotes('filme'));
+document.getElementById('citatFilmeSection').innerHTML=quotesEditHtml(getQuotes('filme'),'filme');
+
 }
 
 function renderMuzica(){
@@ -1268,7 +1352,8 @@ function renderLoveTags(){
   const wrap=document.getElementById('loveTags');
   if(!items.length){wrap.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun tag adăugat.</div>';return;}
   wrap.innerHTML=items.map(r=>`<span class="love-tag editable-wrap" data-id="${r.id}" data-tip="love_tag" style="position:relative">${itemCtrl(r)}${r.titlu||''}</span>`).join('');
-  document.getElementById('iubireCitate').innerHTML=quotesHtml(getQuotes('iubire'));
+document.getElementById('iubireCitate').innerHTML=quotesEditHtml(getQuotes('iubire'),'iubire');
+
 }
 
 function renderExtra(){
@@ -1588,12 +1673,43 @@ const settingLabels={
   pers_title:'Titlu secțiune Suflet',
 };
 
+const settingDescriptions={
+  hero_eyebrow:     'Textul mic deasupra numelui — ex: „O pagină pentru tine"',
+  hero_name:        'Numele mare afișat în hero — ex: „Xenia"',
+  hero_tagline:     'Descrierea scurtă sub nume — ex: „suflet de primăvară 🌸"',
+  hero_note:        'Nota italică mică de sub tagline',
+  hero_bg_letter:   'Litera decorativă mare din dreapta — ex: „X"',
+  hero_card_name:   'Numele din cardul alb din dreapta',
+  hero_card_sub:    'Subtitlul mic din card — ex: „o pagină specială"',
+  birthday_date:    'Format MM-DD — ex: 05-04 pentru 4 Mai',
+  birthday_label:   'Text afișat sub titlu — ex: „4 Mai 🎂"',
+  birthday_msg:     'Mesaj afișat când mai sunt multe zile',
+  birthday_msg_week:'Mesaj când mai e mai puțin de o săptămână',
+  birthday_msg_day: 'Mesaj afișat chiar în ziua nașterii',
+  birthday_bday_text:'Textul mare festiv din ziua nașterii — ex: „🎉 La mulți ani!"',
+  sunset_quote:     'Citatul mare afișat pe fundalul întunecat cu apus',
+  sunset_attr:      'Atribuirea citatului — ex: „— un gând special"',
+  night_sub:        'Subtitlul italic din secțiunea Noapte',
+  love_intro:       'Paragraful introductiv din secțiunea Iubire',
+  actress_badge:    'Badge-ul cu actrița preferată — ex: „🌟 Audrey Hepburn"',
+  actor_badge:      'Badge-ul cu actorul preferat — ex: „⭐ Timothée Chalamet"',
+  pers_title:       'Titlul secțiunii despre personalitate — ex: „Sufletul tău"',
+  nav_logo:         'Textul logo-ului din bara de navigație',
+  footer_line1:     'Prima linie din footer',
+  footer_line2:     'A doua linie din footer, mai mică',
+};
+
+
+
 function editSettingGroup(keys){
   const container=document.getElementById('eModalFields');
   document.getElementById('eModalTitle').textContent='✏️ Editează';
-  container.innerHTML=keys.map(k=>`<div class="ef-row full"><div class="efield full">
-    <label>${settingLabels[k]||k}</label><input id="em-sg-${k}" value="${(settingsCache[k]||'').replace(/"/g,'&quot;')}">
+container.innerHTML=keys.map(k=>`<div class="ef-row full"><div class="efield full">
+    <label>${settingLabels[k]||k}</label>
+    <small style="color:#9b6a7e;font-size:.72rem;margin-bottom:.3rem;display:block">${settingDescriptions[k]||''}</small>
+    <input id="em-sg-${k}" value="${(settingsCache[k]||'').replace(/"/g,'&quot;')}">
   </div></div>`).join('');
+
 
   editModalSaveFn=async()=>{
     const updates=keys.map(k=>({cheie:k,valoare:document.getElementById('em-sg-'+k).value}));
@@ -1745,14 +1861,15 @@ async function reloadItems(){
 }
 async function reloadQuotes(){
   await loadQuotes();
-  document.getElementById('culoriCitate').innerHTML=quotesHtml(getQuotes('culori'));
-  document.getElementById('floriCitate').innerHTML=quotesHtml(getQuotes('flori'));
-  document.getElementById('noapteCitat').innerHTML=quotesHtml(getQuotes('noapte'),true);
-  document.getElementById('iubireCitate').innerHTML=quotesHtml(getQuotes('iubire'));
-  document.getElementById('citatFilmeSection').innerHTML=quotesHtml(getQuotes('filme'));
-  setTimeout(observeAll,100);
+  document.getElementById('culoriCitate').innerHTML = quotesEditHtml(getQuotes('culori'), 'culori');
+  document.getElementById('floriCitate').innerHTML = quotesEditHtml(getQuotes('flori'), 'flori');
+  document.getElementById('noapteCitat').innerHTML = quotesEditHtml(getQuotes('noapte'), 'noapte', true);
+  document.getElementById('iubireCitate').innerHTML = quotesEditHtml(getQuotes('iubire'), 'iubire');
+  document.getElementById('citatFilmeSection').innerHTML = quotesEditHtml(getQuotes('filme'), 'filme');
+  setTimeout(observeAll, 100);
   renderQuotesTable(allQuotes);
 }
+
 
 // INIT
 loadAll();
