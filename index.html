@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✨ Ksiușca ✨ — Xenia</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Jost:wght@200;300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --rose:#e8557a; --rose-deep:#b53060; --rose-pale:#fdf0f4;
+  --rose-blush:#fce8ef; --rose-mist:#f9d5e3; --cream:#fefaf8;
+  --ink:#1c0c14; --ink-soft:#3d1f2c; --gold:#c9956a;
+  --gold-light:#f0d8c8; --text-body:#4a2535; --baby-pink:#f9c6d8;
+  --wine:#7b1c3c; --navy:#1a2a4a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-body);overflow-x:hidden;cursor:none}
+
+/* ── CURSOR */
+#cur{position:fixed;width:8px;height:8px;background:var(--rose);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:transform .08s;mix-blend-mode:multiply}
+#cur2{position:fixed;width:32px;height:32px;border:1px solid var(--rose);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);opacity:.45;transition:all .18s ease}
+
+/* ── NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 3rem;height:56px;background:rgba(253,240,244,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(232,85,122,.12)}
+.nav-logo{font-family:'Great Vibes',cursive;font-size:1.6rem;color:var(--rose-deep);letter-spacing:.02em;white-space:nowrap}
+.nav-links{display:flex;gap:.2rem;align-items:center;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{text-decoration:none;color:var(--ink-soft);font-size:.68rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:.35rem .75rem;border-radius:20px;transition:all .25s;white-space:nowrap}
+.nav-links a:hover{background:var(--rose);color:#fff}
+.nav-admin-btn{background:var(--wine);color:#fdf0f4;border:none;padding:.35rem .9rem;border-radius:20px;font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .25s;font-family:'Jost',sans-serif}
+.nav-admin-btn:hover{background:var(--rose-deep);transform:translateY(-1px)}
+@media(max-width:900px){nav{padding:0 1.2rem}.nav-logo{font-size:1.3rem}.nav-links a{font-size:.6rem;padding:.3rem .55rem}}
+
+/* ── STARS */
+.stars-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.star{position:absolute;width:2px;height:2px;background:var(--rose);border-radius:50%;opacity:0;animation:twinkle 5s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:0}50%{opacity:.22}}
+
+/* ── PETALS */
+.petal{position:fixed;pointer-events:none;z-index:9999;opacity:0;animation:petalDrift linear forwards}
+@keyframes petalDrift{0%{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}100%{opacity:0;transform:translateY(105vh) rotate(400deg) scale(.5)}}
+
+/* ── HERO */
+.hero{min-height:100vh;padding-top:56px;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+@media(max-width:800px){.hero{grid-template-columns:1fr}}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:5rem 4rem 4rem 5rem;position:relative;z-index:2}
+@media(max-width:800px){.hero-left{padding:3.5rem 1.8rem 2rem}}
+.hero-eyebrow{font-size:.7rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:1.4rem;display:flex;align-items:center;gap:.7rem;opacity:0;animation:fsu .9s .1s ease both}
+.hero-eyebrow::before{content:'';display:block;width:32px;height:1px;background:var(--gold)}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(4.5rem,10vw,8.5rem);font-weight:300;line-height:.92;color:var(--ink);letter-spacing:-.02em;opacity:0;animation:fsu .9s .25s ease both}
+.hero-name em{font-style:italic;background:linear-gradient(135deg,var(--rose-deep),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-tagline{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:italic;font-weight:300;color:var(--rose-deep);margin:1.2rem 0 2.5rem;line-height:1.6;opacity:0;animation:fsu .9s .4s ease both}
+.info-pills{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.5rem;opacity:0;animation:fsu .9s .55s ease both}
+.pill{display:inline-flex;align-items:center;gap:.45rem;background:white;border:1px solid rgba(232,85,122,.18);border-radius:40px;padding:.42rem 1rem;font-size:.78rem;font-weight:400;color:var(--ink-soft);box-shadow:0 2px 10px rgba(232,85,122,.07);transition:all .3s}
+.pill:hover{border-color:var(--rose);box-shadow:0 4px 16px rgba(232,85,122,.18);transform:translateY(-2px)}
+.hero-note{font-size:.85rem;font-weight:300;color:var(--text-body);line-height:1.9;border-left:2px solid var(--rose-mist);padding-left:1.2rem;font-style:italic;opacity:0;animation:fsu .9s .7s ease both;max-width:380px}
+.scroll-cta{margin-top:2.8rem;display:flex;align-items:center;gap:.8rem;opacity:0;animation:fsu .9s .85s ease both}
+.scroll-line{width:40px;height:1px;background:linear-gradient(to right,var(--rose),transparent)}
+.scroll-cta span{font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--rose);font-weight:500}
+.scroll-dot{width:6px;height:6px;border-radius:50%;background:var(--rose);animation:blink 1.8s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
+.hero-right{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--rose-blush) 0%,var(--rose-mist) 60%,#f4cad8 100%)}
+@media(max-width:800px){.hero-right{height:55vw;min-height:260px}}
+.hero-bg-letter{position:absolute;font-family:'Cormorant Garamond',serif;font-size:55vw;font-weight:700;line-height:.8;color:rgba(232,85,122,.06);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;user-select:none}
+@media(max-width:800px){.hero-bg-letter{font-size:80vw}}
+.floating-blooms{position:absolute;inset:0;pointer-events:none}
+.bloom{position:absolute;font-size:2rem;opacity:.18;animation:bloomFloat 9s ease-in-out infinite}
+.bloom:nth-child(1){top:8%;left:20%;font-size:1.4rem;animation-delay:0s}
+.bloom:nth-child(2){top:20%;right:14%;font-size:2.4rem;animation-delay:1.2s}
+.bloom:nth-child(3){top:50%;left:10%;font-size:1.8rem;animation-delay:2.5s}
+.bloom:nth-child(4){top:65%;right:18%;font-size:1.5rem;animation-delay:.7s}
+.bloom:nth-child(5){bottom:12%;left:35%;font-size:2rem;animation-delay:3.5s}
+.bloom:nth-child(6){top:35%;right:30%;font-size:1.2rem;animation-delay:1.8s}
+@keyframes bloomFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-22px) rotate(8deg)}}
+.hero-card{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(320px,80%);background:rgba(255,255,255,.72);backdrop-filter:blur(20px);border-radius:28px;border:1px solid rgba(255,255,255,.7);padding:2rem 1.8rem;box-shadow:0 20px 60px rgba(181,48,96,.15),inset 0 1px 0 rgba(255,255,255,.8);text-align:center;animation:cardEntrance 1.1s .6s cubic-bezier(.175,.885,.32,1.275) both}
+@keyframes cardEntrance{from{opacity:0;transform:translate(-50%,-40%) scale(.9)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.hc-emoji{font-size:3.2rem;display:block;margin-bottom:.8rem;animation:hcPulse 3s ease-in-out infinite}
+@keyframes hcPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.hc-name{font-family:'Great Vibes',cursive;font-size:2.5rem;background:linear-gradient(135deg,var(--rose-deep),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:.3rem}
+.hc-sub{font-size:.78rem;font-weight:300;color:var(--ink-soft);letter-spacing:.05em;font-style:italic}
+.hc-divider{height:1px;background:linear-gradient(to right,transparent,var(--rose-mist),transparent);margin:1rem 0}
+.hc-facts{display:flex;flex-direction:column;gap:.4rem;font-size:.75rem;color:var(--text-body);font-weight:300;line-height:1.6;text-align:left}
+.hc-fact{display:flex;gap:.5rem;align-items:flex-start}
+.hc-fact .hf-icon{flex-shrink:0;font-size:.85rem}
+@keyframes fsu{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTIONS */
+section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative;z-index:1}
+.sect-wide{max-width:100%;padding:6rem 2rem;position:relative;z-index:1}
+.sect-inner{max-width:1140px;margin:0 auto}
+.s-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,6vw,4rem);font-weight:300;letter-spacing:-.01em;color:var(--ink);text-align:center;margin-bottom:.6rem;line-height:1}
+.s-title em{font-style:italic;color:var(--rose-deep)}
+.s-rule{display:flex;align-items:center;gap:1rem;justify-content:center;margin-bottom:3.5rem}
+.s-rule-line{flex:1;max-width:100px;height:1px;background:linear-gradient(to right,transparent,var(--rose-mist))}
+.s-rule-line.right{background:linear-gradient(to left,transparent,var(--rose-mist))}
+.s-rule-icon{font-size:1.1rem;opacity:.6}
+
+/* ── PALETTE */
+.palette-sect{padding:4rem 2rem;max-width:1140px;margin:0 auto;position:relative;z-index:1}
+.palette-grid{display:flex;flex-wrap:wrap;gap:1.2rem;justify-content:center;margin-bottom:2rem}
+.palette-swatch{display:flex;flex-direction:column;align-items:center;gap:.7rem;cursor:default;opacity:0;transform:translateY(18px)}
+.palette-swatch.vis{animation:cardIn .5s ease forwards}
+.swatch-circle{width:80px;height:80px;border-radius:50%;box-shadow:0 8px 24px rgba(0,0,0,.12);transition:transform .3s,box-shadow .3s}
+.palette-swatch:hover .swatch-circle{transform:scale(1.1) translateY(-4px);box-shadow:0 14px 36px rgba(0,0,0,.2)}
+.swatch-label{font-family:'Cormorant Garamond',serif;font-size:.92rem;font-weight:600;color:var(--ink-soft);text-align:center}
+.swatch-note{font-size:.72rem;color:#9b6a7e;font-style:italic;text-align:center;max-width:90px}
+.swatch-fav{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--rose);font-weight:600;background:var(--rose-blush);border-radius:20px;padding:.18rem .6rem;border:1px solid rgba(232,85,122,.2)}
+
+/* ── COUNTDOWN */
+.cd-wrap{padding:3rem 2rem;max-width:100%}
+.cd-inner{max-width:900px;margin:0 auto;background:linear-gradient(135deg,#fff8fb,white,#fff0f5);border-radius:32px;border:1px solid rgba(232,85,122,.13);padding:3.5rem 3rem;box-shadow:0 12px 50px rgba(232,85,122,.09);text-align:center;position:relative;overflow:hidden}
+.cd-inner::before{content:'🎂';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:16rem;opacity:.03;pointer-events:none}
+.cd-sub{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--rose-deep);opacity:.7;margin-bottom:2.5rem;letter-spacing:.05em}
+.cd-boxes{display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap;margin-bottom:2rem;position:relative;z-index:1}
+.cd-box{background:white;border-radius:22px;padding:1.4rem 1rem;min-width:96px;border:1.5px solid rgba(232,85,122,.13);box-shadow:0 4px 20px rgba(232,85,122,.08);transition:all .3s}
+.cd-box:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(232,85,122,.18);border-color:rgba(232,85,122,.3)}
+.cd-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:600;background:linear-gradient(135deg,var(--rose-deep),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;line-height:1;margin-bottom:.3rem}
+.cd-lbl{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:#9b6a7e;font-weight:500}
+.cd-msg{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--ink-soft);line-height:1.8;max-width:500px;margin:0 auto;position:relative;z-index:1}
+.cd-bday{display:none;font-family:'Great Vibes',cursive;font-size:2.2rem;color:var(--rose);animation:hcPulse 1.5s ease-in-out infinite;position:relative;z-index:1}
+
+/* ── FLOWER CARDS */
+.flowers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.4rem}
+.flower-card{background:white;border-radius:22px;padding:2rem 1.8rem;border:1px solid rgba(232,85,122,.1);box-shadow:0 4px 18px rgba(232,85,122,.07);transition:all .4s cubic-bezier(.175,.885,.32,1.275);position:relative;overflow:hidden;opacity:0;transform:translateY(28px)}
+.flower-card.vis{animation:cardIn .6s cubic-bezier(.175,.885,.32,1.275) forwards}
+@keyframes cardIn{to{opacity:1;transform:translateY(0)}}
+.flower-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 50px rgba(232,85,122,.17);border-color:rgba(232,85,122,.28)}
+.flower-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose-mist),var(--rose),var(--rose-mist))}
+.fc-icon{font-size:2.4rem;display:block;margin-bottom:.9rem}
+.fc-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;color:var(--rose-deep);margin-bottom:.5rem}
+.fc-text{font-size:.85rem;line-height:1.75;color:#6d4a57;font-weight:300}
+
+/* ── BLOCKQUOTE */
+.bq{background:linear-gradient(135deg,#fff8fb,#fdf2f6);border-left:3px solid var(--rose);border-radius:0 20px 20px 0;padding:2rem 2.5rem;margin:2rem 0;position:relative;font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:var(--ink-soft);line-height:1.85;opacity:0;transform:translateX(-28px);transition:all .7s ease}
+.bq.vis{opacity:1;transform:translateX(0)}
+.bq::before{content:'"';position:absolute;top:-16px;left:12px;font-size:6rem;font-family:'Cormorant Garamond',serif;color:var(--rose-mist);line-height:1;pointer-events:none}
+
+/* ── VIBES */
+.vibes-bg{background:linear-gradient(160deg,#fff8fb 0%,white 50%,#fff4f8 100%);padding:6rem 2rem}
+.vibes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:1rem}
+.vibe-card{background:white;border-radius:18px;padding:1.4rem 1rem;text-align:center;border:1px solid rgba(232,85,122,.09);box-shadow:0 3px 12px rgba(232,85,122,.06);cursor:default;transition:all .32s;opacity:0;transform:translateY(18px)}
+.vibe-card.vis{animation:cardIn .5s ease forwards}
+.vibe-card:hover{transform:translateY(-6px) rotate(-1.5deg);box-shadow:0 14px 34px rgba(232,85,122,.14);border-color:rgba(232,85,122,.22)}
+.vc-icon{font-size:2.2rem;display:block;margin-bottom:.5rem}
+.vc-label{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--rose-deep);margin-bottom:.25rem}
+.vc-text{font-size:.73rem;color:#8b5a6e;line-height:1.45;font-weight:300}
+
+/* ── EMOJI STRIP */
+.strip-wrap{overflow:hidden;padding:2rem 2rem 4rem}
+.emoji-strip{display:flex;gap:.9rem;overflow-x:auto;padding:1rem 0;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.emoji-strip::-webkit-scrollbar{display:none}
+.ef{flex-shrink:0;width:110px;height:110px;background:white;border-radius:14px;box-shadow:0 4px 14px rgba(232,85,122,.09);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;padding:.7rem;text-align:center;border:1.5px solid rgba(232,85,122,.1);cursor:pointer;transition:all .3s}
+.ef:hover{transform:rotate(-3deg) scale(1.07);border-color:var(--rose)}
+.ef-i{font-size:2.2rem}
+.ef-t{font-size:.62rem;color:#9b6a7e;line-height:1.3;font-weight:400}
+
+/* ── PERSONALITY DARK */
+.pers-bg{background:linear-gradient(160deg,#160a0f 0%,#1e0d17 100%);padding:6rem 2rem;position:relative;overflow:hidden}
+.pers-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 15% 15%,rgba(232,85,122,.12) 0%,transparent 42%),radial-gradient(ellipse at 85% 85%,rgba(181,48,96,.08) 0%,transparent 38%)}
+.pers-bg .s-title{color:#fdf0f4}
+.pers-bg .s-rule-line{background:linear-gradient(to right,transparent,rgba(232,85,122,.3))}
+.pers-bg .s-rule-line.right{background:linear-gradient(to left,transparent,rgba(232,85,122,.3))}
+.traits-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:.9rem;position:relative;z-index:1}
+.trait-item{display:flex;align-items:flex-start;gap:.8rem;padding:1rem 1.2rem;background:rgba(255,255,255,.04);border:1px solid rgba(232,85,122,.12);border-radius:14px;font-size:.86rem;line-height:1.65;color:#f0c4d4;font-weight:300;transition:all .3s;opacity:0;transform:translateY(16px);backdrop-filter:blur(6px)}
+.trait-item.vis{opacity:1;transform:translateY(0)}
+.trait-item:hover{background:rgba(232,85,122,.08);border-color:rgba(232,85,122,.28);transform:translateY(-2px)}
+.trait-item .ti-icon{font-size:1.2rem;flex-shrink:0;margin-top:.1rem}
+
+/* ── NIGHT */
+.night-bg{background:linear-gradient(180deg,#0d0614 0%,#160a10 60%,#0d0614 100%);padding:6rem 2rem;position:relative;overflow:hidden}
+#nightCanvas{position:absolute;inset:0;pointer-events:none;z-index:0}
+.night-inner{position:relative;z-index:1;max-width:1000px;margin:0 auto;text-align:center}
+.night-inner .s-title{color:#fdf0f4}
+.night-inner .s-rule-line{background:linear-gradient(to right,transparent,rgba(232,85,122,.3))}
+.night-inner .s-rule-line.right{background:linear-gradient(to left,transparent,rgba(232,85,122,.3))}
+.night-moon{font-size:4rem;display:block;margin-bottom:1.2rem;filter:drop-shadow(0 0 24px rgba(232,85,122,.45));animation:moonGlow 4s ease-in-out infinite}
+@keyframes moonGlow{0%,100%{filter:drop-shadow(0 0 24px rgba(232,85,122,.45))}50%{filter:drop-shadow(0 0 36px rgba(232,85,122,.7))}}
+.night-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:#c490a8;margin-bottom:2.5rem;line-height:1.8}
+.night-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:.9rem;margin-top:1.5rem}
+.night-item{background:rgba(255,255,255,.03);border:1px solid rgba(232,85,122,.13);border-radius:14px;padding:1.1rem 1.3rem;display:flex;align-items:flex-start;gap:.8rem;color:#f0c4d4;font-size:.86rem;line-height:1.65;font-weight:300;backdrop-filter:blur(8px);transition:all .3s;opacity:0;transform:translateY(18px);text-align:left}
+.night-item.vis{opacity:1;transform:translateY(0)}
+.night-item:hover{background:rgba(232,85,122,.07);border-color:rgba(232,85,122,.27);transform:translateY(-2px)}
+.ni-icon{font-size:1.2rem;flex-shrink:0}
+
+/* ── SCRATCH */
+.scratch-sect{padding:5rem 2rem;text-align:center}
+.scratch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.4rem;margin-top:2rem;max-width:950px;margin-left:auto;margin-right:auto}
+.scratch-card{position:relative;border-radius:22px;overflow:hidden;box-shadow:0 8px 28px rgba(232,85,122,.14);height:160px;cursor:crosshair}
+.scratch-back{position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,#fff8fb,#fdf0f4);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;border-radius:22px;border:2px solid rgba(232,85,122,.18)}
+.sb-emoji{font-size:2.3rem;margin-bottom:.5rem}
+.sb-text{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--ink-soft);line-height:1.55;font-style:italic;text-align:center}
+.scratch-card canvas{position:absolute;inset:0;z-index:2;border-radius:22px;touch-action:none}
+.scratch-hint{font-size:.8rem;color:var(--rose-deep);margin-top:1.2rem;opacity:.65;letter-spacing:.08em;font-style:italic}
+
+/* ── RANDOMIZER */
+.rand-wrap{padding:0 2rem 4rem;max-width:100%}
+.rand-box{max-width:680px;margin:0 auto;background:linear-gradient(160deg,#160a0f,#1e0d17);border-radius:30px;padding:4rem 2.5rem;text-align:center;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.rand-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(232,85,122,.18) 0%,transparent 60%)}
+.rand-title{font-family:'Great Vibes',cursive;font-size:2.6rem;color:#fdf0f4;margin-bottom:.4rem;position:relative;z-index:1}
+.rand-sub{color:#c490a8;font-size:.85rem;margin-bottom:2rem;position:relative;z-index:1}
+.rand-display{background:rgba(255,255,255,.05);border:1px solid rgba(232,85,122,.18);border-radius:20px;padding:2rem;margin:0 auto 1.5rem;max-width:500px;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:1;backdrop-filter:blur(5px)}
+.rd-emoji{font-size:2.8rem;margin-bottom:.5rem;display:block}
+.rd-text{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:#fdf0f4;line-height:1.65;text-align:center;transition:opacity .2s}
+.rand-btn{background:linear-gradient(135deg,var(--rose),var(--rose-deep));color:white;border:none;padding:.9rem 2.4rem;border-radius:50px;font-family:'Jost',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;position:relative;z-index:1;box-shadow:0 8px 24px rgba(232,85,122,.4);transition:all .3s;letter-spacing:.05em}
+.rand-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 32px rgba(232,85,122,.55)}
+.rand-btn:active{transform:scale(.97)}
+
+/* ── FILMS */
+.films-bg{background:white;padding:6rem 2rem}
+.actress-badge{display:inline-flex;align-items:center;gap:.6rem;background:linear-gradient(135deg,#fff8fb,#fdf0f4);border:1.5px solid rgba(232,85,122,.2);border-radius:50px;padding:.55rem 1.4rem;font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;color:var(--rose-deep);box-shadow:0 3px 14px rgba(232,85,122,.1);margin-bottom:2.5rem}
+.films-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.4rem}
+.film-col{background:linear-gradient(160deg,#fff8fb,white);border-radius:20px;padding:2rem 1.8rem;border:1px solid rgba(232,85,122,.1);box-shadow:0 4px 16px rgba(232,85,122,.06)}
+.film-col h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--rose);margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem}
+.flist{list-style:none}
+.flist li{padding:.45rem 0;border-bottom:1px solid #fce8ef;font-size:.83rem;display:flex;align-items:center;gap:.5rem;color:var(--text-body);transition:color .25s;font-weight:300}
+.flist li:hover{color:var(--rose)}
+.flist li::before{content:'🌸';font-size:.65rem;flex-shrink:0}
+.flist li.hl{font-weight:500;color:var(--rose-deep)}
+.flist li.hl::before{content:'💕';font-size:.7rem}
+
+/* ── MUSIC */
+.music-bg{background:linear-gradient(160deg,#fff0f5,#fdf8fb,#fef5f0);padding:6rem 2rem}
+.music-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem}
+@media(max-width:680px){.music-grid{grid-template-columns:1fr}}
+
+/* ── PROGRESS */
+.prog-item{margin-bottom:1.6rem}
+.prog-label{display:flex;justify-content:space-between;margin-bottom:.45rem;font-size:.82rem;color:var(--text-body);font-weight:400}
+.prog-label span:last-child{color:var(--rose);font-weight:600}
+.prog-bar{height:5px;background:#fce8ef;border-radius:10px;overflow:hidden}
+.prog-fill{height:100%;border-radius:10px;width:0;background:linear-gradient(to right,var(--rose-mist),var(--rose));transition:width 1.6s cubic-bezier(.4,0,.2,1)}
+
+/* ── LOVE */
+.love-bg{background:white;padding:6rem 2rem}
+.love-intro{font-family:'Cormorant Garamond',serif;font-size:1.15rem;line-height:2;color:var(--ink-soft);max-width:680px;margin:0 auto 2.5rem;text-align:center;font-weight:300}
+.love-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;margin-top:1.5rem}
+.love-tag{background:white;border:1.5px solid rgba(232,85,122,.18);border-radius:50px;padding:.5rem 1.2rem;font-size:.8rem;color:var(--rose-deep);transition:all .3s;cursor:default;opacity:0;transform:scale(.85);box-shadow:0 2px 8px rgba(232,85,122,.05)}
+.love-tag.vis{animation:tagPop .45s cubic-bezier(.175,.885,.32,1.275) forwards}
+@keyframes tagPop{to{opacity:1;transform:scale(1)}}
+.love-tag:hover{background:var(--rose);color:white;border-color:var(--rose);transform:scale(1.06)}
+
+/* ── EXTRA */
+.extra-bg{background:linear-gradient(160deg,#fdf8fb,#fff0f5);padding:6rem 2rem}
+.extra-box{background:white;border-radius:22px;padding:2.5rem 2rem;border:1px solid rgba(232,85,122,.1);box-shadow:0 6px 24px rgba(232,85,122,.07);margin-bottom:1.8rem}
+.extra-box h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--rose-deep);margin-bottom:1.4rem;display:flex;align-items:center;gap:.5rem}
+.info-list{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem}
+.info-list li{display:flex;align-items:flex-start;gap:.5rem;font-size:.83rem;line-height:1.65;color:var(--text-body);font-weight:300;padding:.4rem .6rem;border-radius:8px;transition:background .2s}
+.info-list li:hover{background:var(--rose-blush)}
+.info-list li .il-i{flex-shrink:0;font-size:.9rem}
+
+/* ── LETTER */
+.letter-bg{background:linear-gradient(180deg,#fdf0f4,#fff8fb);padding:6rem 2rem}
+.letter-card{background:white;border-radius:30px;padding:4rem 3.5rem;max-width:800px;margin:0 auto;box-shadow:0 16px 60px rgba(232,85,122,.1);border:1px solid rgba(232,85,122,.12);position:relative;overflow:hidden;text-align:center}
+.letter-card::before{content:'💌';position:absolute;font-size:16rem;opacity:.03;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.letter-card p{font-family:'Cormorant Garamond',serif;font-size:1.08rem;line-height:2.1;color:var(--ink-soft);max-width:640px;margin:0 auto 1.5rem;position:relative;z-index:1;font-weight:300}
+.letter-sig{font-family:'Great Vibes',cursive;font-size:2.5rem;color:var(--rose);position:relative;z-index:1}
+.letter-note{font-size:.78rem;color:#999;margin-top:1.5rem;position:relative;z-index:1;font-weight:300;font-style:italic}
+
+/* ── FOOTER */
+footer{background:var(--ink);text-align:center;padding:5rem 2rem 2.5rem;position:relative;overflow:hidden}
+footer::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(232,85,122,.1) 0%,transparent 58%)}
+.footer-heart{font-size:3rem;display:block;margin-bottom:1rem;animation:hcPulse 2s ease-in-out infinite;position:relative;z-index:1}
+footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:1;font-weight:300}
+
+/* ── MISC */
+.divider{text-align:center;padding:.8rem 2rem;font-size:1.2rem;letter-spacing:.6rem;opacity:.35;user-select:none}
+.rev{opacity:0;transform:translateY(36px);transition:all .8s cubic-bezier(.4,0,.2,1)}
+.rev.vis{opacity:1;transform:translateY(0)}
+.sunset-quote{background:linear-gradient(135deg,#1a0a0f,#2d0d1c,#1a0a0f);padding:5rem 2rem;position:relative;overflow:hidden;text-align:center}
+.sunset-quote::before{content:'🌅';position:absolute;font-size:14rem;opacity:.05;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.sq-inner{max-width:700px;margin:0 auto;position:relative;z-index:1}
+.sq-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,4vw,2rem);font-style:italic;color:#fdf0f4;line-height:1.9;margin-bottom:1.2rem}
+.sq-attr{font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(232,85,122,.6);font-weight:500}
+.confetti-p{position:fixed;pointer-events:none;z-index:99997;animation:cfall linear forwards}
+@keyframes cfall{0%{opacity:1;transform:translateY(0) rotateZ(0deg)}100%{opacity:0;transform:translateY(100vh) rotateZ(720deg)}}
+
+/* ══════════════════════════════════════════════
+   ADMIN PANEL
+══════════════════════════════════════════════ */
+#adminOverlay{display:none;position:fixed;inset:0;z-index:99000;background:rgba(22,10,15,.97);backdrop-filter:blur(8px);overflow-y:auto;cursor:default}
+#adminOverlay.open{display:block}
+.admin-wrap{max-width:1200px;margin:0 auto;padding:2rem 1.5rem 6rem}
+.admin-header{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 0 2rem;border-bottom:1px solid rgba(232,85,122,.2);margin-bottom:2rem}
+.admin-title{font-family:'Great Vibes',cursive;font-size:2.2rem;color:var(--rose)}
+.admin-close{background:rgba(232,85,122,.15);border:1px solid rgba(232,85,122,.3);color:var(--rose);width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0}
+.admin-close:hover{background:var(--rose);color:#fff}
+.admin-tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.5rem}
+.atab{background:rgba(255,255,255,.05);border:1px solid rgba(232,85,122,.15);color:#c490a8;padding:.45rem 1rem;border-radius:20px;cursor:pointer;font-size:.72rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;transition:all .25s;white-space:nowrap;font-family:'Jost',sans-serif}
+.atab.active,.atab:hover{background:var(--rose);color:#fff;border-color:var(--rose)}
+.admin-section{display:none}
+.admin-section.active{display:block}
+.admin-section-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;color:#fdf0f4;margin-bottom:1.5rem;display:flex;align-items:center;gap:.6rem}
+/* Form */
+.aform{background:rgba(255,255,255,.04);border:1px solid rgba(232,85,122,.15);border-radius:16px;padding:1.5rem;margin-bottom:2rem}
+.aform-title{color:#f0c4d4;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;font-weight:500;margin-bottom:1.2rem}
+.aform-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.8rem;margin-bottom:1rem}
+.afield{display:flex;flex-direction:column;gap:.3rem}
+.afield label{font-size:.72rem;color:#c490a8;letter-spacing:.08em;text-transform:uppercase;font-weight:500}
+.afield input,.afield textarea,.afield select{background:rgba(255,255,255,.07);border:1px solid rgba(232,85,122,.2);border-radius:8px;color:#fdf0f4;padding:.6rem .8rem;font-family:'Jost',sans-serif;font-size:.85rem;transition:border .2s;width:100%}
+.afield input:focus,.afield textarea:focus,.afield select:focus{outline:none;border-color:var(--rose)}
+.afield textarea{resize:vertical;min-height:80px}
+.afield input[type="checkbox"]{width:auto;accent-color:var(--rose)}
+.afield select option{background:#1e0d17;color:#fdf0f4}
+.aform-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+.abtn{padding:.55rem 1.2rem;border-radius:20px;border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:.8rem;font-weight:500;transition:all .25s;letter-spacing:.05em}
+.abtn-primary{background:var(--rose);color:#fff}
+.abtn-primary:hover{background:var(--rose-deep);transform:translateY(-1px)}
+.abtn-secondary{background:rgba(255,255,255,.08);color:#c490a8;border:1px solid rgba(232,85,122,.2)}
+.abtn-secondary:hover{background:rgba(255,255,255,.12);color:#fdf0f4}
+.abtn-danger{background:rgba(180,30,60,.3);color:#ff80ab;border:1px solid rgba(180,30,60,.4)}
+.abtn-danger:hover{background:rgba(180,30,60,.5)}
+/* Table */
+.atable-wrap{overflow-x:auto}
+.atable{width:100%;border-collapse:collapse;font-size:.82rem}
+.atable th{text-align:left;padding:.7rem 1rem;border-bottom:1px solid rgba(232,85,122,.2);color:#c490a8;font-weight:500;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.atable td{padding:.65rem 1rem;border-bottom:1px solid rgba(255,255,255,.04);color:#f0c4d4;vertical-align:middle}
+.atable tr:hover td{background:rgba(255,255,255,.03)}
+.atable .tag-cat{background:rgba(232,85,122,.15);color:var(--rose);border-radius:12px;padding:.15rem .55rem;font-size:.7rem;white-space:nowrap}
+.atable .tag-hl{background:rgba(100,200,100,.12);color:#a0e4a0;border-radius:12px;padding:.15rem .5rem;font-size:.7rem}
+.atd-actions{display:flex;gap:.4rem}
+.atd-actions button{padding:.28rem .65rem;border-radius:10px;border:none;cursor:pointer;font-size:.72rem;font-family:'Jost',sans-serif;transition:all .2s}
+.btn-edit{background:rgba(232,85,122,.15);color:var(--rose)}
+.btn-edit:hover{background:var(--rose);color:#fff}
+.btn-del{background:rgba(180,30,60,.2);color:#ff80ab}
+.btn-del:hover{background:rgba(180,30,60,.5)}
+/* Status */
+.admin-toast{position:fixed;bottom:2rem;right:2rem;background:rgba(22,10,15,.95);border:1px solid rgba(232,85,122,.3);border-radius:14px;padding:1rem 1.5rem;color:#fdf0f4;font-size:.85rem;z-index:99999;opacity:0;transform:translateY(20px);transition:all .3s;pointer-events:none}
+.admin-toast.show{opacity:1;transform:translateY(0)}
+.admin-toast.ok{border-color:#5cba8a;color:#a0e4a0}
+.admin-toast.err{border-color:var(--rose);color:#ff80ab}
+.admin-loading{text-align:center;padding:3rem;color:#c490a8;font-style:italic}
+.admin-empty{text-align:center;padding:2rem;color:#9b6a7e;font-style:italic;font-size:.9rem}
+.atable .txt-clamp{max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Color preview */
+.color-dot{display:inline-block;width:16px;height:16px;border-radius:50%;vertical-align:middle;margin-right:.4rem;border:1px solid rgba(255,255,255,.15)}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur2"></div>
+<div class="stars-bg" id="starsBg"></div>
+
+<!-- ─── TOAST -->
+<div class="admin-toast" id="adminToast"></div>
+
+<!-- ══════════════════════════════════════════════
+     ADMIN OVERLAY
+══════════════════════════════════════════════ -->
+<div id="adminOverlay">
+  <div class="admin-wrap">
+    <div class="admin-header">
+      <div class="admin-title">✨ Admin — Ksiușca</div>
+      <button class="admin-close" onclick="closeAdmin()">✕</button>
+    </div>
+
+    <div class="admin-tabs" id="adminTabs"></div>
+
+    <!-- TAB: SETĂRI -->
+    <div class="admin-section active" data-tab="setari">
+      <div class="admin-section-title">⚙️ Setări globale</div>
+      <div class="aform">
+        <div class="aform-title">Adaugă / modifică setare</div>
+        <div class="aform-grid">
+          <div class="afield"><label>Cheie</label><input id="s-cheie" placeholder="ex: hero_tagline"></div>
+          <div class="afield"><label>Valoare</label><input id="s-valoare" placeholder="valoarea..."></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveSetare()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('s')">✕ Anulează</button>
+        </div>
+      </div>
+      <div id="setari-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: INFO -->
+    <div class="admin-section" data-tab="info">
+      <div class="admin-section-title">📛 Informații hero</div>
+      <div class="aform">
+        <div class="aform-title">Adaugă / editează pill</div>
+        <div class="aform-grid">
+          <div class="afield"><label>Cheie</label><input id="inf-cheie" placeholder="ex: zodie"></div>
+          <div class="afield"><label>Valoare</label><input id="inf-valoare" placeholder="ex: Taur ♉"></div>
+          <div class="afield"><label>Emoji</label><input id="inf-emoji" placeholder="🎂"></div>
+          <div class="afield"><label>Ordine</label><input id="inf-ordine" type="number" value="0"></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveInfo()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('inf')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="inf-id">
+      </div>
+      <div id="info-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: CULORI -->
+    <div class="admin-section" data-tab="culori">
+      <div class="admin-section-title">🎨 Culori</div>
+      <div class="aform">
+        <div class="aform-title">Adaugă / editează culoare</div>
+        <div class="aform-grid">
+          <div class="afield"><label>Nume</label><input id="c-nume" placeholder="Baby Pink"></div>
+          <div class="afield"><label>Hex 1</label><input id="c-hex" placeholder="#f9c6d8"></div>
+          <div class="afield"><label>Hex 2 (gradient, opțional)</label><input id="c-hex2" placeholder="#f4a0c0"></div>
+          <div class="afield"><label>Descriere</label><input id="c-desc" placeholder="Dulceața ta interioară"></div>
+          <div class="afield"><label>Ordine</label><input id="c-ordine" type="number" value="0"></div>
+          <div class="afield"><label>Preferată <input id="c-pref" type="checkbox"></label></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveCuloare()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('c')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="c-id">
+      </div>
+      <div id="culori-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: FLORI -->
+    <div class="admin-section" data-tab="flori">
+      <div class="admin-section-title">🌷 Flori</div>
+      <div class="aform">
+        <div class="aform-grid">
+          <div class="afield"><label>Emoji</label><input id="fl-emoji" placeholder="🌸"></div>
+          <div class="afield"><label>Titlu</label><input id="fl-titlu" placeholder="Bujori"></div>
+          <div class="afield"><label>Ordine</label><input id="fl-ordine" type="number" value="0"></div>
+          <div class="afield" style="grid-column:1/-1"><label>Descriere</label><textarea id="fl-desc" placeholder="Descriere..."></textarea></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveFloare()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('fl')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="fl-id">
+      </div>
+      <div id="flori-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: VIBES -->
+    <div class="admin-section" data-tab="vibes">
+      <div class="admin-section-title">🎀 Vibes</div>
+      <div class="aform">
+        <div class="aform-grid">
+          <div class="afield"><label>Emoji</label><input id="vb-emoji" placeholder="☕"></div>
+          <div class="afield"><label>Titlu</label><input id="vb-titlu" placeholder="Cafea de dimineață"></div>
+          <div class="afield"><label>Ordine</label><input id="vb-ordine" type="number" value="0"></div>
+          <div class="afield" style="grid-column:1/-1"><label>Descriere</label><textarea id="vb-desc" placeholder="Descriere scurtă..."></textarea></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveVibe()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('vb')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="vb-id">
+      </div>
+      <div id="vibes-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: EMOJI STRIP -->
+    <div class="admin-section" data-tab="emoji">
+      <div class="admin-section-title">🪄 Emoji Strip</div>
+      <div class="aform">
+        <div class="aform-grid">
+          <div class="afield"><label>Emoji</label><input id="es-emoji" placeholder="🎀"></div>
+          <div class="afield"><label>Text</label><input id="es-text" placeholder="Roz interior (Barbie)"></div>
+          <div class="afield"><label>Ordine</label><input id="es-ordine" type="number" value="0"></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveEmoji()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('es')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="es-id">
+      </div>
+      <div id="emoji-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: TRĂSĂTURI -->
+    <div class="admin-section" data-tab="trasaturi">
+      <div class="admin-section-title">🌙 Trăsături personalitate</div>
+      <div class="aform">
+        <div class="aform-grid">
+          <div class="afield"><label>Emoji</label><input id="tr-emoji" placeholder="🌟"></div>
+          <div class="afield"><label>Ordine</label><input id="tr-ordine" type="number" value="0"></div>
+          <div class="afield" style="grid-column:1/-1"><label>Text</label><textarea id="tr-text" placeholder="Descriere trăsătură..."></textarea></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveTrasatura()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('tr')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="tr-id">
+      </div>
+      <div id="trasaturi-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: NOAPTE -->
+    <div class="admin-section" data-tab="noapte">
+      <div class="admin-section-title">✨ Momente noapte</div>
+      <div class="aform">
+        <div class="aform-grid">
+          <div class="afield"><label>Emoji</label><input id="n-emoji" placeholder="🌧️"></div>
+          <div class="afield"><label>Ordine</label><input id="n-ordine" type="number" value="0"></div>
+          <div class="afield" style="grid-column:1/-1"><label>Text</label><textarea id="n-text" placeholder="Text moment..."></textarea></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveNoapte()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('n')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="n-id">
+      </div>
+      <div id="noapte-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: SCRATCH -->
+    <div class="admin-section" data-tab="scratch">
+      <div class="admin-section-title">🌸 Scratch Cards</div>
+      <div class="aform">
+        <div class="aform-grid">
+          <div class="afield"><label>Emoji</label><input id="sc-emoji" placeholder="🌸"></div>
+          <div class="afield"><label>Ordine</label><input id="sc-ordine" type="number" value="0"></div>
+          <div class="afield" style="grid-column:1/-1"><label>Text (mesajul ascuns)</label><textarea id="sc-text" placeholder="Mesaj pentru card..."></textarea></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveScratch()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('sc')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="sc-id">
+      </div>
+      <div id="scratch-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: COMPLIMENTE -->
+    <div class="admin-section" data-tab="complimente">
+      <div class="admin-section-title">💌 Complimente Randomizer</div>
+      <div class="aform">
+        <div class="aform-grid">
+          <div class="afield"><label>Emoji</label><input id="co-emoji" placeholder="🌸"></div>
+          <div class="afield"><label>Ordine</label><input id="co-ordine" type="number" value="0"></div>
+          <div class="afield" style="grid-column:1/-1"><label>Text compliment</label><textarea id="co-text" placeholder="Compliment..."></textarea></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveCompliment()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('co')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="co-id">
+      </div>
+      <div id="complimente-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: FILME -->
+    <div class="admin-section" data-tab="filme">
+      <div class="admin-section-title">🎬 Filme & Seriale</div>
+      <div class="aform">
+        <div class="aform-grid">
+          <div class="afield"><label>Titlu film</label><input id="fm-titlu" placeholder="The Notebook"></div>
+          <div class="afield"><label>Categorie</label><input id="fm-cat" placeholder="Romantice clasice"></div>
+          <div class="afield"><label>Ordine</label><input id="fm-ordine" type="number" value="0"></div>
+          <div class="afield"><label>Highlight (💕) <input id="fm-hl" type="checkbox"></label></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveFilm()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('fm')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="fm-id">
+      </div>
+      <div id="filme-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: CITATE FILME -->
+    <div class="admin-section" data-tab="citate-filme">
+      <div class="admin-section-title">💬 Citate despre filme</div>
+      <div class="aform">
+        <div class="aform-grid">
+          <div class="afield"><label>Culoare bordură CSS</label><input id="cf-culoare" placeholder="var(--rose)" value="var(--rose)"></div>
+          <div class="afield"><label>Ordine</label><input id="cf-ordine" type="number" value="0"></div>
+          <div class="afield" style="grid-column:1/-1"><label>Text citat</label><textarea id="cf-text" placeholder="Citat despre un film..."></textarea></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveCitatFilm()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('cf')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="cf-id">
+      </div>
+      <div id="citate-filme-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: MUZICĂ -->
+    <div class="admin-section" data-tab="muzica">
+      <div class="admin-section-title">🎵 Muzică</div>
+      <div class="aform">
+        <div class="aform-grid">
+          <div class="afield"><label>Text (artist sau piesă)</label><input id="mz-text" placeholder="Bruno Mars"></div>
+          <div class="afield">
+            <label>Categorie</label>
+            <select id="mz-cat">
+              <option value="artist">Artist</option>
+              <option value="piesa">Piesă preferată</option>
+            </select>
+          </div>
+          <div class="afield"><label>Ordine</label><input id="mz-ordine" type="number" value="0"></div>
+          <div class="afield"><label>Highlight <input id="mz-hl" type="checkbox"></label></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveMuzica()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('mz')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="mz-id">
+      </div>
+      <div id="muzica-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: STATISTICI -->
+    <div class="admin-section" data-tab="stats">
+      <div class="admin-section-title">📊 Statistici (progress bars)</div>
+      <div class="aform">
+        <div class="aform-grid">
+          <div class="afield"><label>Emoji</label><input id="st-emoji" placeholder="☕"></div>
+          <div class="afield"><label>Etichetă</label><input id="st-eticheta" placeholder="Dependență de cafea"></div>
+          <div class="afield"><label>Procent (0-100)</label><input id="st-procent" type="number" min="0" max="100" value="0"></div>
+          <div class="afield"><label>Ordine</label><input id="st-ordine" type="number" value="0"></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveStat()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('st')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="st-id">
+      </div>
+      <div id="stats-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: LOVE TAGS -->
+    <div class="admin-section" data-tab="love">
+      <div class="admin-section-title">💕 Love Language Tags</div>
+      <div class="aform">
+        <div class="aform-grid">
+          <div class="afield"><label>Text tag</label><input id="lt-text" placeholder="Ținutul de mână 🤝"></div>
+          <div class="afield"><label>Ordine</label><input id="lt-ordine" type="number" value="0"></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveLoveTag()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('lt')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="lt-id">
+      </div>
+      <div id="love-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: CITATE -->
+    <div class="admin-section" data-tab="citate">
+      <div class="admin-section-title">💬 Citate generale (blockquotes)</div>
+      <div class="aform">
+        <div class="aform-grid">
+          <div class="afield">
+            <label>Secțiune</label>
+            <select id="cit-sectiune">
+              <option value="culori">Culori</option>
+              <option value="flori">Flori</option>
+              <option value="noapte">Noapte</option>
+              <option value="iubire">Iubire</option>
+              <option value="altele">Altele</option>
+            </select>
+          </div>
+          <div class="afield"><label>Culoare bordură</label><input id="cit-culoare" placeholder="var(--rose)" value="var(--rose)"></div>
+          <div class="afield"><label>Ordine</label><input id="cit-ordine" type="number" value="0"></div>
+          <div class="afield" style="grid-column:1/-1"><label>Text citat</label><textarea id="cit-text" placeholder="Textul citatului..."></textarea></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveCitat()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('cit')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="cit-id">
+      </div>
+      <div id="citate-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: EXTRA -->
+    <div class="admin-section" data-tab="extra">
+      <div class="admin-section-title">✨ Detalii Extra</div>
+      <div class="aform">
+        <div class="aform-grid">
+          <div class="afield">
+            <label>Categorie</label>
+            <select id="ex-cat">
+              <option value="personal">Personal</option>
+              <option value="culori_perfecte">Culori perfecte</option>
+              <option value="nu_place">Nu-ți place</option>
+              <option value="vise">Vise & aspirații</option>
+              <option value="obiceiuri">Obiceiuri & quirks</option>
+            </select>
+          </div>
+          <div class="afield"><label>Emoji</label><input id="ex-emoji" placeholder="🌟"></div>
+          <div class="afield"><label>Ordine</label><input id="ex-ordine" type="number" value="0"></div>
+          <div class="afield" style="grid-column:1/-1"><label>Text</label><textarea id="ex-text" placeholder="Detaliu..."></textarea></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveExtra()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('ex')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="ex-id">
+      </div>
+      <div id="extra-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+    <!-- TAB: SCRISOARE -->
+    <div class="admin-section" data-tab="scrisoare">
+      <div class="admin-section-title">💌 Scrisoarea finală</div>
+      <div class="aform">
+        <div class="aform-grid">
+          <div class="afield">
+            <label>Tip</label>
+            <select id="sl-tip">
+              <option value="paragraf">Paragraf</option>
+              <option value="semnatura">Semnătură</option>
+              <option value="nota">Notă</option>
+            </select>
+          </div>
+          <div class="afield"><label>Ordine</label><input id="sl-ordine" type="number" value="0"></div>
+          <div class="afield" style="grid-column:1/-1"><label>Text</label><textarea id="sl-text" placeholder="Textul paragrafului..."></textarea></div>
+        </div>
+        <div class="aform-actions">
+          <button class="abtn abtn-primary" onclick="saveScrisoare()">💾 Salvează</button>
+          <button class="abtn abtn-secondary" onclick="clearForm('sl')">✕ Anulează</button>
+        </div>
+        <input type="hidden" id="sl-id">
+      </div>
+      <div id="scrisoare-list"><div class="admin-loading">Se încarcă...</div></div>
+    </div>
+
+  </div><!-- /admin-wrap -->
+</div><!-- /adminOverlay -->
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE CONTENT
+═══════════════════════════════════════════════════ -->
+<nav>
+  <span class="nav-logo">Ksiușca</span>
+  <div class="nav-links">
+    <a href="#intro">Intro</a>
+    <a href="#culori">Culori</a>
+    <a href="#flori">Flori</a>
+    <a href="#vibes">Vibes</a>
+    <a href="#personalitate">Suflet</a>
+    <a href="#filme">Filme</a>
+    <a href="#muzica">Muzică</a>
+    <a href="#iubire">Iubire</a>
+    <a href="#extra">Extra</a>
+    <a href="#litera">Scrisoare</a>
+  </div>
+  <button class="nav-admin-btn" onclick="openAdmin()">⚙ Admin</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="intro" style="max-width:100%;padding:0;padding-top:56px">
+  <div class="hero-left">
+    <div class="hero-eyebrow">✦ O pagină pentru tine</div>
+    <h1 class="hero-name"><em id="heroName">Kseny</em></h1>
+    <p class="hero-tagline" id="heroTagline">sau Ksiunea, o pisicuță în suflet 🐾</p>
+    <div class="info-pills" id="infoPills">
+      <span class="pill"><span class="pi">⏳</span>Se încarcă...</span>
+    </div>
+    <p class="hero-note" id="heroNote">Se încarcă...</p>
+    <div class="scroll-cta">
+      <span class="scroll-line"></span>
+      <span>Derulează în jos</span>
+      <span class="scroll-dot"></span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-bg-letter">X</div>
+    <div class="floating-blooms">
+      <span class="bloom">🌸</span><span class="bloom">🌷</span><span class="bloom">🌺</span>
+      <span class="bloom">✨</span><span class="bloom">💕</span><span class="bloom">🪷</span>
+    </div>
+    <div class="hero-card">
+      <span class="hc-emoji">🌸</span>
+      <div class="hc-name">Ksiușca</div>
+      <div class="hc-sub">o pisicuță în suflet</div>
+      <div class="hc-divider"></div>
+      <div class="hc-facts" id="heroCardFacts">
+        <div class="hc-fact"><span class="hf-icon">⏳</span><span>Se încarcă...</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTDOWN -->
+<div class="cd-wrap">
+  <div class="cd-inner rev">
+    <h2 class="s-title" style="margin-bottom:.6rem">Până la ziua ta <em>🎂</em></h2>
+    <p class="cd-sub">4 mai — când Taurul a venit pe lume ♉</p>
+    <div class="cd-boxes">
+      <div class="cd-box"><span class="cd-num" id="cd-days">--</span><span class="cd-lbl">Zile</span></div>
+      <div class="cd-box"><span class="cd-num" id="cd-hours">--</span><span class="cd-lbl">Ore</span></div>
+      <div class="cd-box"><span class="cd-num" id="cd-minutes">--</span><span class="cd-lbl">Minute</span></div>
+      <div class="cd-box"><span class="cd-num" id="cd-seconds">--</span><span class="cd-lbl">Secunde</span></div>
+    </div>
+    <p class="cd-msg" id="cd-msg">Fiecare secundă te aduce mai aproape de ziua ta specială 🌸</p>
+    <p class="cd-bday" id="cd-bday">🎉 La mulți ani, Xiuș! 🎂 Azi e ziua ta! 🎉</p>
+  </div>
+</div>
+
+<!-- CULORI -->
+<div class="palette-sect" id="culori">
+  <div style="text-align:center;margin-bottom:.2rem">
+    <h2 class="s-title rev">Culorile tale <em>🎨</em></h2>
+    <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">🌸</span><span class="s-rule-line right"></span></div>
+  </div>
+  <p class="rev" style="text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--ink-soft);font-size:1.05rem;margin-bottom:2.5rem;max-width:560px;margin-left:auto;margin-right:auto;">
+    Preferatele tale sunt instabile — ba albastru, ba roz, ba negru. Și asta e perfect. Ești o femeie cu mai multe fațete. 🌈
+  </p>
+  <div class="palette-grid" id="culoriGrid"><div style="color:#9b6a7e;font-style:italic;width:100%;text-align:center">Se încarcă...</div></div>
+  <div id="culoriCitate"></div>
+</div>
+
+<div class="divider">🌸 🌷 🌸 🌷 🌸</div>
+
+<!-- FLORI -->
+<section id="flori">
+  <div style="text-align:center;margin-bottom:.2rem">
+    <h2 class="s-title rev">Florile tale <em>🌷</em></h2>
+    <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">🌸</span><span class="s-rule-line right"></span></div>
+  </div>
+  <div class="flowers-grid" id="floriGrid"><div style="color:#9b6a7e;font-style:italic">Se încarcă...</div></div>
+  <div id="floriCitate" style="margin-top:3rem"></div>
+</section>
+
+<div class="divider">🌸 🌷 🌸 🌷 🌸</div>
+
+<!-- VIBES -->
+<div class="vibes-bg" id="vibes">
+  <div style="max-width:1140px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:.2rem">
+      <h2 class="s-title rev">Vibe-ul tău <em>🎀</em></h2>
+      <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">✨</span><span class="s-rule-line right"></span></div>
+    </div>
+    <div class="vibes-grid" id="vibesGrid"><div style="color:#9b6a7e;font-style:italic">Se încarcă...</div></div>
+  </div>
+</div>
+
+<!-- SUNSET QUOTE -->
+<div class="sunset-quote">
+  <div class="sq-inner rev">
+    <div style="font-size:3rem;margin-bottom:1rem">🌅</div>
+    <p class="sq-text">„Apusurile demonstrează că și sfârșitul poate fi frumos."</p>
+    <span class="sq-attr">— filozofia Xeniei</span>
+  </div>
+</div>
+
+<div class="divider">🌹 ✨ 🌹 ✨ 🌹</div>
+
+<!-- EMOJI STRIP -->
+<div class="strip-wrap">
+  <h2 class="s-title rev" style="text-align:center;margin-bottom:.6rem">Lucruri care te fac <em>tu</em> 🪄</h2>
+  <div class="s-rule rev" style="margin-bottom:1.5rem"><span class="s-rule-line"></span><span class="s-rule-icon">🐾</span><span class="s-rule-line right"></span></div>
+  <div class="emoji-strip" id="emojiStrip"><div style="color:#9b6a7e;font-style:italic;padding:1rem">Se încarcă...</div></div>
+</div>
+
+<!-- PERSONALITATE -->
+<div class="pers-bg" id="personalitate">
+  <div class="sect-inner">
+    <div style="text-align:center;margin-bottom:.2rem">
+      <h2 class="s-title rev">Sufletul tău, Xiuș <em style="color:#ffd6e7">🌙</em></h2>
+      <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon" style="color:rgba(232,85,122,.5)">✦</span><span class="s-rule-line right"></span></div>
+    </div>
+    <div class="traits-grid" id="trasaturiGrid"><div style="color:#c490a8;font-style:italic">Se încarcă...</div></div>
+  </div>
+</div>
+
+<div class="divider" style="background:linear-gradient(135deg,#160a0f,#1e0d17);color:rgba(232,85,122,.4);padding:1.5rem">🌸 💕 🌸 💕 🌸</div>
+
+<!-- NOAPTE -->
+<div class="night-bg" id="noapte">
+  <canvas id="nightCanvas"></canvas>
+  <div class="night-inner">
+    <span class="night-moon">🌙</span>
+    <h2 class="s-title" style="color:#fdf0f4">Noaptea, ești tu cu adevărat <em style="color:#ff80ab">✨</em></h2>
+    <div class="s-rule" style="margin-bottom:1.5rem"><span class="s-rule-line" style="background:linear-gradient(to right,transparent,rgba(232,85,122,.3))"></span><span class="s-rule-icon" style="color:rgba(232,85,122,.4)">✦</span><span class="s-rule-line right" style="background:linear-gradient(to left,transparent,rgba(232,85,122,.3))"></span></div>
+    <p class="night-sub">Liniștea ploii, plimbările nocturne, gândurile care nu se opresc — asta ești tu când lumea doarme.</p>
+    <div class="night-grid" id="noapteGrid"><div style="color:#c490a8;font-style:italic">Se încarcă...</div></div>
+    <div id="noapteCitat" style="margin-top:2.5rem"></div>
+  </div>
+</div>
+
+<!-- SCRATCH -->
+<div style="padding:0 2rem">
+  <div class="scratch-sect rev">
+    <h2 class="s-title" style="margin-bottom:.4rem">Răzuiește și descoperă <em>🌸</em></h2>
+    <div class="s-rule" style="margin-bottom:.8rem"><span class="s-rule-line"></span><span class="s-rule-icon">✨</span><span class="s-rule-line right"></span></div>
+    <p style="color:var(--rose-deep);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1rem">Fiecare card ascunde un gând pentru tine</p>
+    <p class="scratch-hint">✨ Desenează cu mouseul sau degetul pentru a răzui ✨</p>
+    <div class="scratch-grid" id="scratchGrid"></div>
+  </div>
+</div>
+
+<!-- RANDOMIZER -->
+<div class="rand-wrap">
+  <div class="rand-box rev">
+    <p class="rand-title">✨ Un gând pentru tine ✨</p>
+    <p class="rand-sub">Apasă butonul — primești un compliment sau un adevăr despre tine</p>
+    <div class="rand-display">
+      <span class="rd-emoji" id="randEmoji">🌸</span>
+      <p class="rd-text" id="randText">Apasă butonul de mai jos 💕</p>
+    </div>
+    <button class="rand-btn" onclick="spinRand()">✨ Surprinde-mă</button>
+  </div>
+</div>
+
+<div class="divider">🌸 🌷 🌸 🌷 🌸</div>
+
+<!-- FILME -->
+<div class="films-bg" id="filme">
+  <div class="sect-inner">
+    <div style="text-align:center">
+      <h2 class="s-title rev">Filmele & Serialele tale <em>🎬</em></h2>
+      <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">🎬</span><span class="s-rule-line right"></span></div>
+      <div class="rev" style="margin-bottom:2rem">
+        <span class="actress-badge">🌟 Actriță preferată: <strong>Angelina Jolie</strong> — putere, eleganță, profunzime</span>
+      </div>
+    </div>
+    <div class="films-grid rev" id="filmeGrid"><div style="color:#9b6a7e;font-style:italic">Se încarcă...</div></div>
+    <div id="citatFilmeSection" style="margin-top:2.5rem"></div>
+  </div>
+</div>
+
+<!-- MUZICĂ -->
+<div class="music-bg" id="muzica">
+  <div class="sect-inner">
+    <div style="text-align:center;margin-bottom:.2rem">
+      <h2 class="s-title rev">Muzica ta <em>🎵</em></h2>
+      <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">🎶</span><span class="s-rule-line right"></span></div>
+    </div>
+    <div class="extra-box rev">
+      <div class="music-grid">
+        <div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--rose);margin-bottom:1.2rem">🎶 Artiștii tăi</h3>
+          <ul class="flist" id="muzicaArtisti"></ul>
+        </div>
+        <div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--rose);margin-bottom:1.2rem">✨ Piesele tale</h3>
+          <ul class="flist" id="muzicaPiese"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<section>
+  <div style="text-align:center;margin-bottom:.2rem">
+    <h2 class="s-title rev">Cât de mult... <em>💗</em></h2>
+    <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">📊</span><span class="s-rule-line right"></span></div>
+  </div>
+  <div class="extra-box rev" id="progressSection">
+    <div class="admin-loading">Se încarcă...</div>
+  </div>
+</section>
+
+<!-- IUBIRE -->
+<div class="love-bg" id="iubire">
+  <div class="sect-inner">
+    <div style="text-align:center">
+      <h2 class="s-title rev">Iubirea ta <em>💌</em></h2>
+      <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">💕</span><span class="s-rule-line right"></span></div>
+    </div>
+    <p class="love-intro rev" id="loveIntro">Știi să iubești. Toate filmele tale au tematică de iubire — nu pentru că ești naivă, ci pentru că <em>crezi în ea</em>.</p>
+    <h3 style="font-family:'Great Vibes',cursive;font-size:1.8rem;color:var(--rose);text-align:center;margin-bottom:.8rem">Love language-ul tău 💕</h3>
+    <div class="love-tags" id="loveTags"><div style="color:#9b6a7e;font-style:italic">Se încarcă...</div></div>
+    <div id="iubireCitate" style="margin-top:3rem"></div>
+  </div>
+</div>
+
+<!-- EXTRA -->
+<div class="extra-bg" id="extra">
+  <div class="sect-inner">
+    <div style="text-align:center;margin-bottom:.2rem">
+      <h2 class="s-title rev">Detalii speciale <em>✨</em></h2>
+      <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">🌸</span><span class="s-rule-line right"></span></div>
+    </div>
+    <div id="extraSections"></div>
+  </div>
+</div>
+
+<!-- SCRISOARE -->
+<div class="letter-bg" id="litera">
+  <div class="sect-inner" style="max-width:900px">
+    <div style="text-align:center;margin-bottom:.2rem">
+      <h2 class="s-title rev">O scrisoare pentru tine <em>💌</em></h2>
+      <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">💌</span><span class="s-rule-line right"></span></div>
+    </div>
+    <div class="letter-card rev" id="letterCard">
+      <div class="admin-loading">Se încarcă...</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-heart">💗</span>
+  <p id="footerName">Xenia · aka Xiușa 🐾 pisicuță în altă viață</p>
+  <p style="margin-top:.4rem;font-size:.73rem;opacity:.6">
+    Universitatea de Medicină Nicolae Testemițanu, Republica Moldova 🇲🇩<br>
+    Familia Cozmic · 4 mai · Taur ♉<br>🌸 baby pink · wine red · navy blue 🌸
+  </p>
+</footer>
+
+<!-- ══════════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════════ -->
+<script>
+// ── SUPABASE
+const SB_URL  = 'https://fndjrfieitieqzafhyzz.supabase.co';
+const SB_KEY  = 'sb_publishable_bHDKjiKAVHqW199ICw7i2g_O3olYMAr';
+const { createClient } = supabase;
+const db = createClient(SB_URL, SB_KEY);
+
+// ── CURSOR
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,cx=0,cy=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function loop(){cx+=(mx-cx)*.14;cy+=(my-cy)*.14;cur2.style.left=cx+'px';cur2.style.top=cy+'px';requestAnimationFrame(loop)})();
+
+// ── STARS
+const sb2=document.getElementById('starsBg');
+for(let i=0;i<28;i++){const s=document.createElement('div');s.className='star';s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*5}s;animation-duration:${2+Math.random()*4}s`;sb2.appendChild(s)}
+
+// ── PETALS
+const pemos=['🌸','🌷','💕','✨','🌺','🪷','💗'];
+document.addEventListener('click',e=>{
+  if(e.target.closest('#adminOverlay'))return;
+  for(let i=0;i<5;i++){
+    const p=document.createElement('div');p.className='petal';
+    p.textContent=pemos[Math.floor(Math.random()*pemos.length)];
+    p.style.cssText=`left:${e.clientX+(Math.random()-.5)*50}px;top:${e.clientY}px;font-size:${.8+Math.random()*1.1}rem;animation-duration:${2+Math.random()*2}s;position:fixed`;
+    document.body.appendChild(p);setTimeout(()=>p.remove(),4000);
+  }
+});
+setInterval(()=>{
+  const p=document.createElement('div');p.className='petal';
+  p.textContent=pemos[Math.floor(Math.random()*4)];
+  p.style.cssText=`left:${Math.random()*100}vw;top:-30px;font-size:${.7+Math.random()*.8}rem;animation-duration:${7+Math.random()*6}s;position:fixed`;
+  document.body.appendChild(p);setTimeout(()=>p.remove(),14000);
+},2800);
+
+// ── SCROLL REVEAL
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('vis'),80)});
+},{threshold:.08});
+function observeAll(){
+  document.querySelectorAll('.rev,.flower-card,.vibe-card,.love-tag,.trait-item,.bq,.night-item,.palette-swatch').forEach(el=>{if(!el.classList.contains('vis'))obs.observe(el)});
+}
+observeAll();
+
+// ── COUNTDOWN
+function updateCD(){
+  const now=new Date(),y=now.getFullYear();
+  let next=new Date(y,4,4,0,0,0);
+  if(now>=next)next=new Date(y+1,4,4,0,0,0);
+  const isToday=now.getMonth()===4&&now.getDate()===4;
+  if(isToday){
+    document.getElementById('cd-msg').style.display='none';
+    document.getElementById('cd-bday').style.display='block';
+    document.querySelectorAll('.cd-box').forEach(b=>b.style.display='none');
+    launchConfetti();return;
+  }
+  const diff=next-now;
+  const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+  document.getElementById('cd-days').textContent=String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent=String(h).padStart(2,'0');
+  document.getElementById('cd-minutes').textContent=String(m).padStart(2,'0');
+  document.getElementById('cd-seconds').textContent=String(s).padStart(2,'0');
+  const msg=document.getElementById('cd-msg');
+  if(d===0)msg.textContent='Mâine e ziua ta, Xiuș! 🎂✨';
+  else if(d<=7)msg.textContent=`Doar ${d} zile rămase — pregătește-te să strălucești! 🌸`;
+  else if(d<=30)msg.textContent=`Luna aceasta e luna ta, Xiuș! 🌷`;
+}
+function launchConfetti(){
+  const cols=['#e8557a','#ff80ab','#fce8ef','#b53060','#fdf0f4'];
+  for(let i=0;i<120;i++){
+    setTimeout(()=>{
+      const c=document.createElement('div');c.className='confetti-p';
+      c.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${cols[Math.floor(Math.random()*cols.length)]};width:${6+Math.random()*7}px;height:${6+Math.random()*7}px;border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${3+Math.random()*4}s;animation-delay:${Math.random()}s`;
+      document.body.appendChild(c);setTimeout(()=>c.remove(),8000);
+    },i*30);
+  }
+}
+updateCD();setInterval(updateCD,1000);
+
+// ── NIGHT CANVAS
+const nc=document.getElementById('nightCanvas');
+const ns=document.querySelector('.night-bg');
+function resizeNC(){nc.width=ns.offsetWidth;nc.height=ns.offsetHeight}
+resizeNC();window.addEventListener('resize',resizeNC);
+const nctx=nc.getContext('2d');
+const dots2=Array.from({length:90},()=>({x:Math.random(),y:Math.random(),r:.3+Math.random()*1.4,a:.2+Math.random()*.6,sp:.002+Math.random()*.006,ph:Math.random()*Math.PI*2}));
+const stars3=[];
+function spawnStar2(){stars3.push({x:Math.random()*nc.width,y:Math.random()*(nc.height*.5),len:40+Math.random()*80,sp:3+Math.random()*4,angle:Math.PI/4+(Math.random()-.5)*.3,alpha:1,trail:[]})}
+let naf2;
+function drawNight(){
+  nctx.clearRect(0,0,nc.width,nc.height);
+  const t=Date.now()*.001;
+  dots2.forEach(d=>{
+    const al=d.a*(.5+.5*Math.sin(t*d.sp*10+d.ph));
+    nctx.beginPath();nctx.arc(d.x*nc.width,d.y*nc.height,d.r,0,Math.PI*2);
+    nctx.fillStyle=`rgba(255,200,220,${al})`;nctx.fill();
+  });
+  for(let i=stars3.length-1;i>=0;i--){
+    const s=stars3[i];
+    s.x+=Math.cos(s.angle)*s.sp;s.y+=Math.sin(s.angle)*s.sp;s.alpha-=.013;
+    s.trail.push({x:s.x,y:s.y});if(s.trail.length>22)s.trail.shift();
+    if(s.trail.length>1){
+      for(let j=1;j<s.trail.length;j++){
+        const pr=j/s.trail.length;
+        nctx.beginPath();nctx.moveTo(s.trail[j-1].x,s.trail[j-1].y);nctx.lineTo(s.trail[j].x,s.trail[j].y);
+        nctx.strokeStyle=`rgba(255,180,210,${pr*s.alpha*.8})`;nctx.lineWidth=pr*2;nctx.stroke();
+      }
+    }
+    nctx.beginPath();nctx.arc(s.x,s.y,2,0,Math.PI*2);nctx.fillStyle=`rgba(255,220,235,${s.alpha})`;nctx.fill();
+    if(s.alpha<=0||s.x>nc.width+50||s.y>nc.height+50)stars3.splice(i,1);
+  }
+  naf2=requestAnimationFrame(drawNight);
+}
+const nightObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{e.isIntersecting?drawNight():cancelAnimationFrame(naf2)});
+},{threshold:.1});
+nightObs.observe(ns);
+setInterval(()=>{if(stars3.length<5)spawnStar2()},1900);
+setTimeout(spawnStar2,600);
+
+// ── PROGRESS OBSERVER
+const progObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.prog-fill').forEach(f=>{f.style.width=f.dataset.w+'%'});
+      progObs.unobserve(e.target);
+    }
+  });
+},{threshold:.25});
+
+// ═══════════════════════════════════════════════════
+//  SUPABASE DATA LOADING
+// ═══════════════════════════════════════════════════
+
+async function loadAll(){
+  await Promise.all([
+    loadSetari(),
+    loadInfo(),
+    loadCulori(),
+    loadFlori(),
+    loadVibes(),
+    loadEmojiStrip(),
+    loadTrasaturi(),
+    loadNoapte(),
+    loadScratch(),
+    loadComplimente(),
+    loadFilme(),
+    loadMuzica(),
+    loadStats(),
+    loadLoveTags(),
+    loadCitate(),
+    loadExtra(),
+    loadScrisoare(),
+  ]);
+}
+
+// SETĂRI
+let setariCache = {};
+async function loadSetari(){
+  const {data} = await db.from('desprehope_setari').select('*').order('cheie');
+  if(!data) return;
+  setariCache = {};
+  data.forEach(r => setariCache[r.cheie] = r.valoare);
+  // aplică setările
+  if(setariCache.hero_name) document.getElementById('heroName').textContent = setariCache.hero_name;
+  if(setariCache.hero_tagline) document.getElementById('heroTagline').textContent = setariCache.hero_tagline;
+  if(setariCache.hero_note) document.getElementById('heroNote').textContent = setariCache.hero_note;
+  if(setariCache.footer_name) document.getElementById('footerName').textContent = setariCache.footer_name;
+  if(setariCache.love_intro) document.getElementById('loveIntro').innerHTML = setariCache.love_intro;
+  renderSetariTable(data);
+}
+
+// INFO PILLS
+async function loadInfo(){
+  const {data} = await db.from('desprehope_info').select('*').order('ordine');
+  if(!data) return;
+  // hero pills
+  const pills = document.getElementById('infoPills');
+  const card  = document.getElementById('heroCardFacts');
+  if(data.length){
+    pills.innerHTML = data.map(r=>`<span class="pill"><span class="pi">${r.emoji||''}</span>${r.valoare}</span>`).join('');
+    card.innerHTML  = data.slice(0,4).map(r=>`<div class="hc-fact"><span class="hf-icon">${r.emoji||'📌'}</span><span>${r.valoare}</span></div>`).join('');
+  } else {
+    pills.innerHTML = '';
+    card.innerHTML  = '';
+  }
+  renderInfoTable(data);
+}
+
+// CULORI
+async function loadCulori(){
+  const {data} = await db.from('desprehope_culori').select('*').order('ordine');
+  const grid = document.getElementById('culoriGrid');
+  if(!data||!data.length){ grid.innerHTML='<div class="admin-empty">Nicio culoare adăugată.</div>'; return; }
+  grid.innerHTML = data.map(r=>{
+    const bg = r.hex2 ? `background:linear-gradient(135deg,${r.hex},${r.hex2})` : `background:${r.hex}`;
+    return `<div class="palette-swatch rev">
+      <div class="swatch-circle" style="${bg}"></div>
+      <div class="swatch-label">${r.nume}</div>
+      ${r.descriere?`<div class="swatch-note">${r.descriere}</div>`:''}
+      ${r.preferata?'<span class="swatch-fav">♡ Preferată</span>':''}
+    </div>`;
+  }).join('');
+  // citate culori
+  const {data:cit} = await db.from('desprehope_citate').select('*').eq('sectiune','culori').order('ordine');
+  document.getElementById('culoriCitate').innerHTML = cit ? cit.map(r=>`<div class="bq rev" style="border-left-color:${r.culoare_bordura||'var(--rose)'}">${r.text}</div>`).join('') : '';
+  setTimeout(observeAll,100);
+  renderCuloriTable(data);
+}
+
+// FLORI
+async function loadFlori(){
+  const {data} = await db.from('desprehope_flori').select('*').order('ordine');
+  const grid = document.getElementById('floriGrid');
+  if(!data||!data.length){ grid.innerHTML='<div class="admin-empty">Nicio floare adăugată.</div>'; return; }
+  grid.innerHTML = data.map(r=>`<div class="flower-card">
+    <span class="fc-icon">${r.emoji}</span>
+    <div class="fc-title">${r.titlu}</div>
+    <div class="fc-text">${r.descriere||''}</div>
+  </div>`).join('');
+  const {data:cit} = await db.from('desprehope_citate').select('*').eq('sectiune','flori').order('ordine');
+  document.getElementById('floriCitate').innerHTML = cit ? cit.map(r=>`<div class="bq rev" style="border-left-color:${r.culoare_bordura||'var(--rose)'}">${r.text}</div>`).join('') : '';
+  setTimeout(observeAll,100);
+  renderFloriTable(data);
+}
+
+// VIBES
+async function loadVibes(){
+  const {data} = await db.from('desprehope_vibes').select('*').order('ordine');
+  const grid = document.getElementById('vibesGrid');
+  if(!data||!data.length){ grid.innerHTML='<div class="admin-empty">Niciun vibe adăugat.</div>'; return; }
+  grid.innerHTML = data.map(r=>`<div class="vibe-card">
+    <span class="vc-icon">${r.emoji}</span>
+    <div class="vc-label">${r.titlu}</div>
+    <div class="vc-text">${r.descriere||''}</div>
+  </div>`).join('');
+  setTimeout(observeAll,100);
+  renderVibesTable(data);
+}
+
+// EMOJI STRIP
+async function loadEmojiStrip(){
+  const {data} = await db.from('desprehope_emoji_strip').select('*').order('ordine');
+  const strip = document.getElementById('emojiStrip');
+  if(!data||!data.length){ strip.innerHTML='<div style="color:#9b6a7e;font-style:italic;padding:1rem">Nimic adăugat.</div>'; return; }
+  strip.innerHTML = data.map(r=>`<div class="ef"><span class="ef-i">${r.emoji}</span><span class="ef-t">${r.text}</span></div>`).join('');
+  renderEmojiTable(data);
+}
+
+// TRĂSĂTURI
+async function loadTrasaturi(){
+  const {data} = await db.from('desprehope_trasaturi').select('*').order('ordine');
+  const grid = document.getElementById('trasaturiGrid');
+  if(!data||!data.length){ grid.innerHTML='<div style="color:#c490a8;font-style:italic">Nicio trăsătură adăugată.</div>'; return; }
+  grid.innerHTML = data.map(r=>`<div class="trait-item">
+    <span class="ti-icon">${r.emoji}</span><span>${r.text}</span>
+  </div>`).join('');
+  setTimeout(observeAll,100);
+  renderTrasaturiTable(data);
+}
+
+// NOAPTE
+async function loadNoapte(){
+  const {data} = await db.from('desprehope_noapte').select('*').order('ordine');
+  const grid = document.getElementById('noapteGrid');
+  if(!data||!data.length){ grid.innerHTML='<div style="color:#c490a8;font-style:italic">Nimic adăugat.</div>'; return; }
+  grid.innerHTML = data.map(r=>`<div class="night-item">
+    <span class="ni-icon">${r.emoji}</span><span>${r.text}</span>
+  </div>`).join('');
+  const {data:cit} = await db.from('desprehope_citate').select('*').eq('sectiune','noapte').order('ordine');
+  document.getElementById('noapteCitat').innerHTML = cit ? cit.map(r=>`<div class="bq rev" style="background:rgba(255,255,255,.04);color:#ffd6e7;border-left-color:${r.culoare_bordura||'#ff80ab'}">${r.text}</div>`).join('') : '';
+  setTimeout(observeAll,100);
+  renderNoapteTable(data);
+}
+
+// SCRATCH
+let scratchDataDb = [];
+async function loadScratch(){
+  const {data} = await db.from('desprehope_scratch').select('*').order('ordine');
+  scratchDataDb = data||[];
+  buildScratchCards();
+  renderScratchTable(data||[]);
+}
+function buildScratchCards(){
+  const grid = document.getElementById('scratchGrid');
+  if(!scratchDataDb.length){ grid.innerHTML='<div class="admin-empty">Niciun card adăugat.</div>'; return; }
+  grid.innerHTML='';
+  scratchDataDb.forEach(msg=>{
+    const wrap=document.createElement('div');wrap.className='scratch-card';
+    const back=document.createElement('div');back.className='scratch-back';
+    back.innerHTML=`<div class="sb-emoji">${msg.emoji}</div><div class="sb-text">${msg.text}</div>`;
+    wrap.appendChild(back);
+    const cv=document.createElement('canvas');cv.width=260;cv.height=160;wrap.appendChild(cv);
+    grid.appendChild(wrap);
+    const cxt=cv.getContext('2d');
+    const g=cxt.createLinearGradient(0,0,260,160);
+    g.addColorStop(0,'#e8557a');g.addColorStop(.5,'#f06292');g.addColorStop(1,'#b53060');
+    cxt.fillStyle=g;cxt.beginPath();
+    if(cxt.roundRect)cxt.roundRect(0,0,260,160,20);else cxt.rect(0,0,260,160);
+    cxt.fill();
+    cxt.fillStyle='rgba(255,255,255,.75)';cxt.font='bold 14px Jost,sans-serif';cxt.textAlign='center';
+    cxt.fillText('✨ Răzuiește ✨',130,72);
+    cxt.font='11px Jost,sans-serif';cxt.fillText('cu mouseul sau degetul',130,92);
+    let scraping=false,revealed=false;
+    function scratch(x,y){cxt.globalCompositeOperation='destination-out';cxt.beginPath();cxt.arc(x,y,24,0,Math.PI*2);cxt.fill();if(!revealed){const id=cxt.getImageData(0,0,260,160);let cl=0;for(let i=3;i<id.data.length;i+=4)if(id.data[i]<128)cl++;if(cl/(260*160)>.45){revealed=true;cxt.clearRect(0,0,260,160)}}}
+    function gp(e,c){const r=c.getBoundingClientRect(),sx=c.width/r.width,sy=c.height/r.height;if(e.touches)return{x:(e.touches[0].clientX-r.left)*sx,y:(e.touches[0].clientY-r.top)*sy};return{x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy}}
+    cv.addEventListener('mousedown',e=>{scraping=true;const p=gp(e,cv);scratch(p.x,p.y)});
+    cv.addEventListener('mousemove',e=>{if(scraping){const p=gp(e,cv);scratch(p.x,p.y)}});
+    cv.addEventListener('mouseup',()=>scraping=false);cv.addEventListener('mouseleave',()=>scraping=false);
+    cv.addEventListener('touchstart',e=>{e.preventDefault();scraping=true;const p=gp(e,cv);scratch(p.x,p.y)},{passive:false});
+    cv.addEventListener('touchmove',e=>{e.preventDefault();if(scraping){const p=gp(e,cv);scratch(p.x,p.y)}},{passive:false});
+    cv.addEventListener('touchend',()=>scraping=false);
+  });
+}
+
+// COMPLIMENTE
+let complimenteDb = [];
+async function loadComplimente(){
+  const {data} = await db.from('desprehope_complimente').select('*').order('ordine');
+  complimenteDb = data||[];
+  renderComplimenteTable(data||[]);
+}
+let lastRand=-1;
+function spinRand(){
+  if(!complimenteDb.length){showToast('Niciun compliment adăugat în baza de date!','err');return;}
+  const btn=document.querySelector('.rand-btn');
+  const em=document.getElementById('randEmoji');
+  const tx=document.getElementById('randText');
+  btn.disabled=true;let ticks=0;
+  const iv=setInterval(()=>{
+    const i=Math.floor(Math.random()*complimenteDb.length);
+    em.textContent=complimenteDb[i].emoji;tx.textContent=complimenteDb[i].text;tx.style.opacity='.5';ticks++;
+    if(ticks>=14){
+      clearInterval(iv);let fi;
+      do{fi=Math.floor(Math.random()*complimenteDb.length)}while(fi===lastRand&&complimenteDb.length>1);
+      lastRand=fi;em.textContent=complimenteDb[fi].emoji;tx.textContent=complimenteDb[fi].text;tx.style.opacity='1';btn.disabled=false;
+      const rect=document.querySelector('.rand-display').getBoundingClientRect();
+      for(let k=0;k<8;k++){
+        setTimeout(()=>{
+          const p=document.createElement('div');p.className='petal';
+          p.textContent=pemos[Math.floor(Math.random()*pemos.length)];
+          p.style.cssText=`left:${rect.left+rect.width/2+(Math.random()-.5)*80}px;top:${rect.top}px;font-size:${.8+Math.random()}rem;animation-duration:${2+Math.random()*2}s;position:fixed`;
+          document.body.appendChild(p);setTimeout(()=>p.remove(),4000);
+        },k*65);
+      }
+    }
+  },80);
+}
+
+// FILME
+async function loadFilme(){
+  const {data} = await db.from('desprehope_filme').select('*').order('ordine');
+  const grid = document.getElementById('filmeGrid');
+  if(!data||!data.length){ grid.innerHTML='<div class="admin-empty">Niciun film adăugat.</div>'; return; }
+  // grupăm pe categorii
+  const cats = {};
+  data.forEach(r=>{ if(!cats[r.categorie])cats[r.categorie]=[]; cats[r.categorie].push(r); });
+  const catEmojis = {'Romantice clasice':'💕','Comedii':'😄','Animații & Seriale':'🎪','Animații':'🎠','Seriale':'📺'};
+  grid.innerHTML = Object.entries(cats).map(([cat,films])=>`
+    <div class="film-col">
+      <h3>${catEmojis[cat]||'🎬'} ${cat}</h3>
+      <ul class="flist">${films.map(f=>`<li class="${f.highlight?'hl':''}">${f.titlu}</li>`).join('')}</ul>
+    </div>`).join('');
+  // citate filme
+  const {data:cit} = await db.from('desprehope_citate_filme').select('*').order('ordine');
+  document.getElementById('citatFilmeSection').innerHTML = cit ? cit.map(r=>`<div class="bq rev" style="border-left-color:${r.culoare_bordura||'var(--rose)'}">${r.text}</div>`).join('') : '';
+  setTimeout(observeAll,100);
+  renderFilmeTable(data);
+}
+
+// MUZICĂ
+async function loadMuzica(){
+  const {data} = await db.from('desprehope_muzica').select('*').order('ordine');
+  const artisti = document.getElementById('muzicaArtisti');
+  const piese   = document.getElementById('muzicaPiese');
+  if(!data||!data.length){ artisti.innerHTML='<li style="color:#9b6a7e;font-style:italic">Nimic adăugat.</li>'; return; }
+  const a = data.filter(r=>r.categorie==='artist');
+  const p = data.filter(r=>r.categorie==='piesa');
+  artisti.innerHTML = a.map(r=>`<li class="${r.highlight?'hl':''}">${r.text}</li>`).join('') || '<li style="color:#9b6a7e">-</li>';
+  piese.innerHTML   = p.map(r=>`<li class="${r.highlight?'hl':''}">${r.text}</li>`).join('') || '<li style="color:#9b6a7e">-</li>';
+  renderMuzicaTable(data);
+}
+
+// STATS
+async function loadStats(){
+  const {data} = await db.from('desprehope_stats').select('*').order('ordine');
+  const section = document.getElementById('progressSection');
+  if(!data||!data.length){ section.innerHTML='<div class="admin-empty">Nicio statistică adăugată.</div>'; return; }
+  section.innerHTML = data.map(r=>`
+    <div class="prog-item">
+      <div class="prog-label"><span>${r.emoji||''} ${r.eticheta}</span><span>${r.procent}%</span></div>
+      <div class="prog-bar"><div class="prog-fill" data-w="${r.procent}"></div></div>
+    </div>`).join('');
+  progObs.observe(section);
+  renderStatsTable(data);
+}
+
+// LOVE TAGS
+async function loadLoveTags(){
+  const {data} = await db.from('desprehope_love_tags').select('*').order('ordine');
+  const wrap = document.getElementById('loveTags');
+  if(!data||!data.length){ wrap.innerHTML='<div class="admin-empty">Niciun tag adăugat.</div>'; return; }
+  wrap.innerHTML = data.map(r=>`<span class="love-tag">${r.text}</span>`).join('');
+  // citate iubire
+  const {data:cit} = await db.from('desprehope_citate').select('*').eq('sectiune','iubire').order('ordine');
+  document.getElementById('iubireCitate').innerHTML = cit ? cit.map(r=>`<div class="bq rev" style="border-left-color:${r.culoare_bordura||'var(--rose)'}">${r.text}</div>`).join('') : '';
+  setTimeout(observeAll,100);
+  renderLoveTagsTable(data);
+}
+
+// CITATE (generale)
+async function loadCitate(){
+  const {data} = await db.from('desprehope_citate').select('*').order('ordine');
+  renderCitateTable(data||[]);
+}
+
+// EXTRA
+async function loadExtra(){
+  const {data} = await db.from('desprehope_extra').select('*').order('ordine');
+  const wrap = document.getElementById('extraSections');
+  if(!data||!data.length){ wrap.innerHTML='<div class="admin-empty">Niciun detaliu adăugat.</div>'; return; }
+  const cats = {};
+  data.forEach(r=>{ if(!cats[r.categorie])cats[r.categorie]=[]; cats[r.categorie].push(r); });
+  const catLabels = {personal:'🌍 Informații personale',culori_perfecte:'🎨 Culorile perfecte',nu_place:'❌ NU-ți place',vise:'🎯 Vise & aspirații',obiceiuri:'🎀 Mici obiceiuri & quirks'};
+  wrap.innerHTML = Object.entries(cats).map(([cat,items])=>`
+    <div class="extra-box rev">
+      <h3>${catLabels[cat]||cat}</h3>
+      <ul class="info-list">${items.map(r=>`<li><span class="il-i">${r.emoji||'📌'}</span>${r.text}</li>`).join('')}</ul>
+    </div>`).join('');
+  setTimeout(observeAll,100);
+  renderExtraTable(data);
+}
+
+// SCRISOARE
+async function loadScrisoare(){
+  const {data} = await db.from('desprehope_scrisoare').select('*').order('ordine');
+  const card = document.getElementById('letterCard');
+  if(!data||!data.length){ card.innerHTML='<div class="admin-empty">Niciun text adăugat.</div>'; return; }
+  card.innerHTML = data.map(r=>{
+    if(r.tip==='semnatura') return `<div class="letter-sig">${r.text}</div>`;
+    if(r.tip==='nota') return `<p class="letter-note">${r.text}</p>`;
+    return `<p>${r.text}</p>`;
+  }).join('');
+  renderScrisoareTable(data);
+}
+
+// ═══════════════════════════════════════════════════
+//  ADMIN PANEL
+// ═══════════════════════════════════════════════════
+
+const ADMIN_TABS = [
+  {id:'setari',label:'Setări'},
+  {id:'info',label:'Info Pills'},
+  {id:'culori',label:'Culori'},
+  {id:'flori',label:'Flori'},
+  {id:'vibes',label:'Vibes'},
+  {id:'emoji',label:'Emoji Strip'},
+  {id:'trasaturi',label:'Suflet'},
+  {id:'noapte',label:'Noapte'},
+  {id:'scratch',label:'Scratch'},
+  {id:'complimente',label:'Complimente'},
+  {id:'filme',label:'Filme'},
+  {id:'citate-filme',label:'Citate Filme'},
+  {id:'muzica',label:'Muzică'},
+  {id:'stats',label:'Statistici'},
+  {id:'love',label:'Love Tags'},
+  {id:'citate',label:'Citate Gen.'},
+  {id:'extra',label:'Extra'},
+  {id:'scrisoare',label:'Scrisoare'},
+];
+
+(function buildAdminTabs(){
+  const tabsEl = document.getElementById('adminTabs');
+  tabsEl.innerHTML = ADMIN_TABS.map((t,i)=>`<button class="atab${i===0?' active':''}" onclick="switchTab('${t.id}')">${t.label}</button>`).join('');
+})();
+
+function switchTab(id){
+  document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));
+  document.querySelector(`.atab[onclick="switchTab('${id}')"]`).classList.add('active');
+  document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
+  document.querySelector(`.admin-section[data-tab="${id}"]`).classList.add('active');
+}
+
+function openAdmin(){ document.getElementById('adminOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeAdmin(){ document.getElementById('adminOverlay').classList.remove('open'); document.body.style.overflow=''; }
+
+// TOAST
+function showToast(msg,type='ok'){
+  const t=document.getElementById('adminToast');
+  t.textContent=msg;t.className=`admin-toast ${type} show`;
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ── CRUD HELPERS
+async function del(table,id,reloadFn){ const {error}=await db.from(table).delete().eq('id',id); if(error){showToast('Eroare ștergere: '+error.message,'err');}else{showToast('✓ Șters!');await reloadFn();} }
+async function upsert(table,obj,reloadFn){ const {error}=await db.from(table).upsert(obj).select(); if(error){showToast('Eroare: '+error.message,'err');}else{showToast('✓ Salvat!');await reloadFn();} }
+
+function clearForm(prefix){
+  document.querySelectorAll(`[id^="${prefix}-"]`).forEach(el=>{
+    if(el.type==='checkbox') el.checked=false;
+    else if(el.type==='number') el.value=0;
+    else if(el.tagName==='SELECT') el.selectedIndex=0;
+    else el.value = el.id.endsWith('culoare')?'var(--rose)':'';
+  });
+}
+
+function editRow(prefix, data){
+  Object.entries(data).forEach(([k,v])=>{
+    const el = document.getElementById(`${prefix}-${k}`);
+    if(!el) return;
+    if(el.type==='checkbox') el.checked = !!v;
+    else el.value = v ?? '';
+  });
+}
+
+// ── TABLE RENDERERS
+
+function renderTable(containerId, cols, rows, editFn, table, reloadFn){
+  const c = document.getElementById(containerId);
+  if(!rows||!rows.length){ c.innerHTML='<div class="admin-empty">Niciun înregistrare. Adaugă una sus.</div>'; return; }
+  c.innerHTML=`<div class="atable-wrap"><table class="atable">
+    <thead><tr>${cols.map(c=>`<th>${c.label}</th>`).join('')}<th>Acțiuni</th></tr></thead>
+    <tbody>${rows.map(r=>`<tr>${cols.map(col=>{
+      const v = r[col.key]??'';
+      if(col.type==='bool') return `<td>${v?'<span class="tag-hl">✓ da</span>':'—'}</td>`;
+      if(col.type==='cat')  return `<td><span class="tag-cat">${v}</span></td>`;
+      if(col.type==='color')return `<td><span class="color-dot" style="background:${v}"></span>${v}</td>`;
+      return `<td class="txt-clamp" title="${String(v).replace(/"/g,'&quot;')}">${String(v).substring(0,60)}${String(v).length>60?'…':''}</td>`;
+    }).join('')}
+    <td><div class="atd-actions">
+      <button class="btn-edit" onclick='${editFn}(${JSON.stringify(r)})'>✏ Edit</button>
+      <button class="btn-del" onclick="del('${table}',${r.id},${reloadFn})">✕</button>
+    </div></td></tr>`).join('')}
+    </tbody></table></div>`;
+}
+
+// SETĂRI TABLE
+function renderSetariTable(data){
+  renderTable('setari-list',
+    [{key:'cheie',label:'Cheie'},{key:'valoare',label:'Valoare'}],
+    data, 'editSetare', 'desprehope_setari', 'loadSetari');
+}
+function editSetare(r){ document.getElementById('s-cheie').value=r.cheie; document.getElementById('s-valoare').value=r.valoare; }
+async function saveSetare(){
+  const cheie=document.getElementById('s-cheie').value.trim();
+  const valoare=document.getElementById('s-valoare').value.trim();
+  if(!cheie||!valoare){showToast('Completează cheie și valoare!','err');return;}
+  await upsert('desprehope_setari',{cheie,valoare},loadSetari);
+  clearForm('s');
+}
+
+// INFO TABLE
+function renderInfoTable(data){
+  renderTable('info-list',
+    [{key:'emoji',label:'Emoji'},{key:'cheie',label:'Cheie'},{key:'valoare',label:'Valoare'},{key:'ordine',label:'#'}],
+    data, 'editInfo', 'desprehope_info', 'loadInfo');
+}
+function editInfo(r){ editRow('inf',{id:r.id,cheie:r.cheie,valoare:r.valoare,emoji:r.emoji||'',ordine:r.ordine}); }
+async function saveInfo(){
+  const id=document.getElementById('inf-id').value;
+  const obj={cheie:document.getElementById('inf-cheie').value.trim(),valoare:document.getElementById('inf-valoare').value.trim(),emoji:document.getElementById('inf-emoji').value.trim(),ordine:parseInt(document.getElementById('inf-ordine').value)||0};
+  if(!obj.cheie||!obj.valoare){showToast('Completează cheie și valoare!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_info',obj,loadInfo);
+  clearForm('inf');
+}
+
+// CULORI TABLE
+function renderCuloriTable(data){
+  renderTable('culori-list',
+    [{key:'hex',label:'Culoare',type:'color'},{key:'nume',label:'Nume'},{key:'descriere',label:'Descriere'},{key:'preferata',label:'Preferată',type:'bool'},{key:'ordine',label:'#'}],
+    data, 'editCuloare', 'desprehope_culori', 'loadCulori');
+}
+function editCuloare(r){ editRow('c',{id:r.id,nume:r.nume,hex:r.hex,hex2:r.hex2||'',desc:r.descriere||'',ordine:r.ordine}); document.getElementById('c-pref').checked=!!r.preferata; }
+async function saveCuloare(){
+  const id=document.getElementById('c-id').value;
+  const obj={nume:document.getElementById('c-nume').value.trim(),hex:document.getElementById('c-hex').value.trim(),hex2:document.getElementById('c-hex2').value.trim()||null,descriere:document.getElementById('c-desc').value.trim(),preferata:document.getElementById('c-pref').checked,ordine:parseInt(document.getElementById('c-ordine').value)||0};
+  if(!obj.nume||!obj.hex){showToast('Completează nume și hex!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_culori',obj,loadCulori);
+  clearForm('c');
+}
+
+// FLORI TABLE
+function renderFloriTable(data){
+  renderTable('flori-list',[{key:'emoji',label:'Emoji'},{key:'titlu',label:'Titlu'},{key:'descriere',label:'Descriere'},{key:'ordine',label:'#'}],data,'editFloare','desprehope_flori','loadFlori');
+}
+function editFloare(r){ editRow('fl',{id:r.id,emoji:r.emoji,titlu:r.titlu,desc:r.descriere||'',ordine:r.ordine}); }
+async function saveFloare(){
+  const id=document.getElementById('fl-id').value;
+  const obj={emoji:document.getElementById('fl-emoji').value.trim(),titlu:document.getElementById('fl-titlu').value.trim(),descriere:document.getElementById('fl-desc').value.trim(),ordine:parseInt(document.getElementById('fl-ordine').value)||0};
+  if(!obj.emoji||!obj.titlu){showToast('Completează emoji și titlu!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_flori',obj,loadFlori);
+  clearForm('fl');
+}
+
+// VIBES TABLE
+function renderVibesTable(data){
+  renderTable('vibes-list',[{key:'emoji',label:'Emoji'},{key:'titlu',label:'Titlu'},{key:'descriere',label:'Descriere'},{key:'ordine',label:'#'}],data,'editVibe','desprehope_vibes','loadVibes');
+}
+function editVibe(r){ editRow('vb',{id:r.id,emoji:r.emoji,titlu:r.titlu,desc:r.descriere||'',ordine:r.ordine}); }
+async function saveVibe(){
+  const id=document.getElementById('vb-id').value;
+  const obj={emoji:document.getElementById('vb-emoji').value.trim(),titlu:document.getElementById('vb-titlu').value.trim(),descriere:document.getElementById('vb-desc').value.trim(),ordine:parseInt(document.getElementById('vb-ordine').value)||0};
+  if(!obj.emoji||!obj.titlu){showToast('Completează emoji și titlu!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_vibes',obj,loadVibes);
+  clearForm('vb');
+}
+
+// EMOJI TABLE
+function renderEmojiTable(data){
+  renderTable('emoji-list',[{key:'emoji',label:'Emoji'},{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editEmoji','desprehope_emoji_strip','loadEmojiStrip');
+}
+function editEmoji(r){ editRow('es',{id:r.id,emoji:r.emoji,text:r.text,ordine:r.ordine}); }
+async function saveEmoji(){
+  const id=document.getElementById('es-id').value;
+  const obj={emoji:document.getElementById('es-emoji').value.trim(),text:document.getElementById('es-text').value.trim(),ordine:parseInt(document.getElementById('es-ordine').value)||0};
+  if(!obj.emoji||!obj.text){showToast('Completează emoji și text!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_emoji_strip',obj,loadEmojiStrip);
+  clearForm('es');
+}
+
+// TRĂSĂTURI TABLE
+function renderTrasaturiTable(data){
+  renderTable('trasaturi-list',[{key:'emoji',label:'Emoji'},{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editTrasatura','desprehope_trasaturi','loadTrasaturi');
+}
+function editTrasatura(r){ editRow('tr',{id:r.id,emoji:r.emoji,text:r.text,ordine:r.ordine}); }
+async function saveTrasatura(){
+  const id=document.getElementById('tr-id').value;
+  const obj={emoji:document.getElementById('tr-emoji').value.trim(),text:document.getElementById('tr-text').value.trim(),ordine:parseInt(document.getElementById('tr-ordine').value)||0};
+  if(!obj.emoji||!obj.text){showToast('Completează câmpurile!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_trasaturi',obj,loadTrasaturi);
+  clearForm('tr');
+}
+
+// NOAPTE TABLE
+function renderNoapteTable(data){
+  renderTable('noapte-list',[{key:'emoji',label:'Emoji'},{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editNoapte','desprehope_noapte','loadNoapte');
+}
+function editNoapte(r){ editRow('n',{id:r.id,emoji:r.emoji,text:r.text,ordine:r.ordine}); }
+async function saveNoapte(){
+  const id=document.getElementById('n-id').value;
+  const obj={emoji:document.getElementById('n-emoji').value.trim(),text:document.getElementById('n-text').value.trim(),ordine:parseInt(document.getElementById('n-ordine').value)||0};
+  if(!obj.emoji||!obj.text){showToast('Completează câmpurile!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_noapte',obj,loadNoapte);
+  clearForm('n');
+}
+
+// SCRATCH TABLE
+function renderScratchTable(data){
+  renderTable('scratch-list',[{key:'emoji',label:'Emoji'},{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editScratch','desprehope_scratch','loadScratch');
+}
+function editScratch(r){ editRow('sc',{id:r.id,emoji:r.emoji,text:r.text,ordine:r.ordine}); }
+async function saveScratch(){
+  const id=document.getElementById('sc-id').value;
+  const obj={emoji:document.getElementById('sc-emoji').value.trim(),text:document.getElementById('sc-text').value.trim(),ordine:parseInt(document.getElementById('sc-ordine').value)||0};
+  if(!obj.emoji||!obj.text){showToast('Completează câmpurile!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_scratch',obj,loadScratch);
+  clearForm('sc');
+}
+
+// COMPLIMENTE TABLE
+function renderComplimenteTable(data){
+  renderTable('complimente-list',[{key:'emoji',label:'Emoji'},{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editCompliment','desprehope_complimente','loadComplimente');
+}
+function editCompliment(r){ editRow('co',{id:r.id,emoji:r.emoji,text:r.text,ordine:r.ordine}); }
+async function saveCompliment(){
+  const id=document.getElementById('co-id').value;
+  const obj={emoji:document.getElementById('co-emoji').value.trim(),text:document.getElementById('co-text').value.trim(),ordine:parseInt(document.getElementById('co-ordine').value)||0};
+  if(!obj.emoji||!obj.text){showToast('Completează câmpurile!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_complimente',obj,loadComplimente);
+  clearForm('co');
+}
+
+// FILME TABLE
+function renderFilmeTable(data){
+  renderTable('filme-list',[{key:'titlu',label:'Titlu'},{key:'categorie',label:'Categorie',type:'cat'},{key:'highlight',label:'💕',type:'bool'},{key:'ordine',label:'#'}],data,'editFilm','desprehope_filme','loadFilme');
+}
+function editFilm(r){ editRow('fm',{id:r.id,titlu:r.titlu,cat:r.categorie,ordine:r.ordine}); document.getElementById('fm-hl').checked=!!r.highlight; }
+async function saveFilm(){
+  const id=document.getElementById('fm-id').value;
+  const obj={titlu:document.getElementById('fm-titlu').value.trim(),categorie:document.getElementById('fm-cat').value.trim(),highlight:document.getElementById('fm-hl').checked,ordine:parseInt(document.getElementById('fm-ordine').value)||0};
+  if(!obj.titlu||!obj.categorie){showToast('Completează titlu și categorie!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_filme',obj,loadFilme);
+  clearForm('fm');
+}
+
+// CITATE FILME TABLE
+function renderCitatFilmTable(data){
+  renderTable('citate-filme-list',[{key:'text',label:'Text'},{key:'culoare_bordura',label:'Culoare bordură'},{key:'ordine',label:'#'}],data,'editCitatFilm','desprehope_citate_filme','loadCitatFilme');
+}
+async function loadCitatFilme(){
+  const {data} = await db.from('desprehope_citate_filme').select('*').order('ordine');
+  renderCitatFilmTable(data||[]);
+  // refresh film citate on page too
+  const {data:cit}=await db.from('desprehope_citate_filme').select('*').order('ordine');
+  document.getElementById('citatFilmeSection').innerHTML=cit?cit.map(r=>`<div class="bq rev" style="border-left-color:${r.culoare_bordura||'var(--rose)'}">${r.text}</div>`).join(''):'';
+  setTimeout(observeAll,100);
+}
+function editCitatFilm(r){ editRow('cf',{id:r.id,culoare:r.culoare_bordura||'var(--rose)',text:r.text,ordine:r.ordine}); }
+async function saveCitatFilm(){
+  const id=document.getElementById('cf-id').value;
+  const obj={text:document.getElementById('cf-text').value.trim(),culoare_bordura:document.getElementById('cf-culoare').value.trim()||'var(--rose)',ordine:parseInt(document.getElementById('cf-ordine').value)||0};
+  if(!obj.text){showToast('Completează textul!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_citate_filme',obj,loadCitatFilme);
+  clearForm('cf');
+}
+
+// MUZICĂ TABLE
+function renderMuzicaTable(data){
+  renderTable('muzica-list',[{key:'text',label:'Text'},{key:'categorie',label:'Tip',type:'cat'},{key:'highlight',label:'★',type:'bool'},{key:'ordine',label:'#'}],data,'editMuzica','desprehope_muzica','loadMuzica');
+}
+function editMuzica(r){ editRow('mz',{id:r.id,text:r.text,ordine:r.ordine}); document.getElementById('mz-cat').value=r.categorie; document.getElementById('mz-hl').checked=!!r.highlight; }
+async function saveMuzica(){
+  const id=document.getElementById('mz-id').value;
+  const obj={text:document.getElementById('mz-text').value.trim(),categorie:document.getElementById('mz-cat').value,highlight:document.getElementById('mz-hl').checked,ordine:parseInt(document.getElementById('mz-ordine').value)||0};
+  if(!obj.text){showToast('Completează textul!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_muzica',obj,loadMuzica);
+  clearForm('mz');
+}
+
+// STATS TABLE
+function renderStatsTable(data){
+  renderTable('stats-list',[{key:'emoji',label:'Emoji'},{key:'eticheta',label:'Etichetă'},{key:'procent',label:'%'},{key:'ordine',label:'#'}],data,'editStat','desprehope_stats','loadStats');
+}
+function editStat(r){ editRow('st',{id:r.id,emoji:r.emoji||'',eticheta:r.eticheta,procent:r.procent,ordine:r.ordine}); }
+async function saveStat(){
+  const id=document.getElementById('st-id').value;
+  const obj={emoji:document.getElementById('st-emoji').value.trim(),eticheta:document.getElementById('st-eticheta').value.trim(),procent:parseInt(document.getElementById('st-procent').value)||0,ordine:parseInt(document.getElementById('st-ordine').value)||0};
+  if(!obj.eticheta){showToast('Completează eticheta!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_stats',obj,loadStats);
+  clearForm('st');
+}
+
+// LOVE TAGS TABLE
+function renderLoveTagsTable(data){
+  renderTable('love-list',[{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editLoveTag','desprehope_love_tags','loadLoveTags');
+}
+function editLoveTag(r){ editRow('lt',{id:r.id,text:r.text,ordine:r.ordine}); }
+async function saveLoveTag(){
+  const id=document.getElementById('lt-id').value;
+  const obj={text:document.getElementById('lt-text').value.trim(),ordine:parseInt(document.getElementById('lt-ordine').value)||0};
+  if(!obj.text){showToast('Completează textul!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_love_tags',obj,loadLoveTags);
+  clearForm('lt');
+}
+
+// CITATE GENERALE TABLE
+function renderCitateTable(data){
+  renderTable('citate-list',[{key:'sectiune',label:'Secțiune',type:'cat'},{key:'text',label:'Text'},{key:'culoare_bordura',label:'Bordură'},{key:'ordine',label:'#'}],data,'editCitat','desprehope_citate','loadCitate');
+}
+function editCitat(r){ editRow('cit',{id:r.id,text:r.text,ordine:r.ordine}); document.getElementById('cit-sectiune').value=r.sectiune||'altele'; document.getElementById('cit-culoare').value=r.culoare_bordura||'var(--rose)'; }
+async function saveCitat(){
+  const id=document.getElementById('cit-id').value;
+  const obj={text:document.getElementById('cit-text').value.trim(),sectiune:document.getElementById('cit-sectiune').value,culoare_bordura:document.getElementById('cit-culoare').value.trim()||'var(--rose)',ordine:parseInt(document.getElementById('cit-ordine').value)||0};
+  if(!obj.text){showToast('Completează textul!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_citate',obj,loadCitate);
+  // refresh relevant section on page
+  await loadCulori(); await loadFlori(); await loadNoapte(); await loadLoveTags();
+  clearForm('cit');
+}
+
+// EXTRA TABLE
+function renderExtraTable(data){
+  renderTable('extra-list',[{key:'categorie',label:'Categorie',type:'cat'},{key:'emoji',label:'Emoji'},{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editExtra','desprehope_extra','loadExtra');
+}
+function editExtra(r){ editRow('ex',{id:r.id,emoji:r.emoji||'',text:r.text,ordine:r.ordine}); document.getElementById('ex-cat').value=r.categorie; }
+async function saveExtra(){
+  const id=document.getElementById('ex-id').value;
+  const obj={categorie:document.getElementById('ex-cat').value,emoji:document.getElementById('ex-emoji').value.trim(),text:document.getElementById('ex-text').value.trim(),ordine:parseInt(document.getElementById('ex-ordine').value)||0};
+  if(!obj.text){showToast('Completează textul!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_extra',obj,loadExtra);
+  clearForm('ex');
+}
+
+// SCRISOARE TABLE
+function renderScrisoareTable(data){
+  renderTable('scrisoare-list',[{key:'tip',label:'Tip',type:'cat'},{key:'text',label:'Text'},{key:'ordine',label:'#'}],data,'editScrisoare','desprehope_scrisoare','loadScrisoare');
+}
+function editScrisoare(r){ editRow('sl',{id:r.id,text:r.text,ordine:r.ordine}); document.getElementById('sl-tip').value=r.tip||'paragraf'; }
+async function saveScrisoare(){
+  const id=document.getElementById('sl-id').value;
+  const obj={text:document.getElementById('sl-text').value.trim(),tip:document.getElementById('sl-tip').value,ordine:parseInt(document.getElementById('sl-ordine').value)||0};
+  if(!obj.text){showToast('Completează textul!','err');return;}
+  if(id) obj.id=parseInt(id);
+  await upsert('desprehope_scrisoare',obj,loadScrisoare);
+  clearForm('sl');
+}
+
+// ── INIT
+loadAll();
+</script>
+</body>
+</html>
