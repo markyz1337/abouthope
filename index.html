@@ -98,6 +98,11 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .palette-swatch.vis{animation:cardIn .5s ease forwards}
 .swatch-circle{width:80px;height:80px;border-radius:50%;box-shadow:0 8px 24px rgba(0,0,0,.12);transition:transform .3s,box-shadow .3s}
 .palette-swatch:hover .swatch-circle{transform:scale(1.1) translateY(-4px);box-shadow:0 14px 36px rgba(0,0,0,.2)}
+.edit-mode-active .palette-grid{flex-direction:column;align-items:stretch;gap:.6rem}
+.edit-mode-active .palette-swatch{flex-direction:row;justify-content:flex-start;align-items:center;gap:1rem;width:100%;padding:.7rem 8rem .7rem .8rem;border:1px solid rgba(232,85,122,.12);border-radius:16px;background:#fff}
+.edit-mode-active .swatch-circle{width:50px;height:50px;flex-shrink:0}
+.edit-mode-active .swatch-note{max-width:none}
+
 .swatch-label{font-family:'Cormorant Garamond',serif;font-size:.92rem;font-weight:600;color:var(--ink-soft);text-align:center}
 .swatch-note{font-size:.72rem;color:#9b6a7e;font-style:italic;text-align:center;max-width:90px}
 .swatch-fav{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--rose);font-weight:600;background:var(--rose-blush);border-radius:20px;padding:.18rem .6rem;border:1px solid rgba(232,85,122,.2)}
@@ -152,7 +157,8 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 
 /* PERSONALITY DARK */
 .pers-bg{background:linear-gradient(160deg,#160a0f 0%,#1e0d17 100%);padding:6rem 2rem;position:relative;overflow:hidden}
-.pers-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 15% 15%,rgba(232,85,122,.12) 0%,transparent 42%),radial-gradient(ellipse at 85% 85%,rgba(181,48,96,.08) 0%,transparent 38%)}
+.pers-bg::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 15% 15%,rgba(232,85,122,.12) 0%,transparent 42%),radial-gradient(ellipse at 85% 85%,rgba(181,48,96,.08) 0%,transparent 38%)}
+
 .pers-bg .s-title{color:#fdf0f4}
 .pers-bg .s-rule-line{background:linear-gradient(to right,transparent,rgba(232,85,122,.3))}
 .pers-bg .s-rule-line.right{background:linear-gradient(to left,transparent,rgba(232,85,122,.3))}
@@ -1071,12 +1077,15 @@ return `<div style="margin-top:1rem">${items}<button class="add-item-btn" onclic
 
 
 function openAddModalQuote(sectiune) {
+  const sibQ=allQuotes.filter(r=>r.sectiune===sectiune);
+  const nextOrdQ=sibQ.length?Math.max(...sibQ.map(r=>r.ordine||0))+1:0;
   buildEditModal('➕ Citat — ' + sectiune, [], {}, async () => {});
   const container = document.getElementById('eModalFields');
   container.innerHTML = `
     <div class="ef-row full"><div class="efield full"><label>Text citat</label><textarea id="em-q-text" rows="4"></textarea></div></div>
     <div class="ef-row"><div class="efield"><label>Culoare bordură CSS</label><input id="em-q-color" value="var(--rose)"></div>
-    <div class="efield"><label>Ordine</label><input type="number" id="em-q-ord" value="${allQuotes.filter(r=>r.sectiune===sectiune).length}"></div></div>`;
+    <div class="efield"><label>Ordine</label><input type="number" id="em-q-ord" value="${nextOrdQ}"></div></div>`;
+
   editModalSaveFn = async () => {
     const obj = {
       text: document.getElementById('em-q-text').value.trim(),
@@ -1394,20 +1403,18 @@ function itemCtrl(r){
 async function moveItem(id, dir){
   const item = allItems.find(r=>r.id===id);
   if(!item) return;
-  const siblings = allItems.filter(r=>r.tip===item.tip).sort((a,b)=>a.ordine-b.ordine);
+  const siblings = allItems.filter(r=>r.tip===item.tip).sort((a,b)=>(a.ordine-b.ordine)||(a.id-b.id));
   const idx = siblings.findIndex(r=>r.id===id);
   const swapIdx = idx + dir;
   if(swapIdx < 0 || swapIdx >= siblings.length) return;
-  const other = siblings[swapIdx];
-  const aOrd = item.ordine, bOrd = other.ordine;
-  item.ordine = bOrd; other.ordine = aOrd;
-  await Promise.all([
-    db.from('tribute_items').update({ordine:bOrd}).eq('id',id),
-    db.from('tribute_items').update({ordine:aOrd}).eq('id',other.id)
-  ]);
+  [siblings[idx], siblings[swapIdx]] = [siblings[swapIdx], siblings[idx]];
+  const updates = siblings.map((r,i)=>({id:r.id, ordine:i}));
+  await Promise.all(updates.map(u=>db.from('tribute_items').update({ordine:u.ordine}).eq('id',u.id)));
+  updates.forEach(u=>{const it=allItems.find(r=>r.id===u.id); if(it) it.ordine=u.ordine;});
   showToast('✓ Mutat!');
   await reloadItems();
 }
+
 
 
 // RANDOMIZER
@@ -1566,7 +1573,10 @@ function openEditModalItem(id){
 
 function openAddModal(tip){
   const fields=tipFields[tip]||['emoji','titlu','text'];
-  buildEditModal('➕ Adaugă — '+tip,fields,{ordine:allItems.filter(r=>r.tip===tip).length},async(vals)=>{
+  const sib=allItems.filter(r=>r.tip===tip);
+  const nextOrd=sib.length?Math.max(...sib.map(r=>r.ordine||0))+1:0;
+  buildEditModal('➕ Adaugă — '+tip,fields,{ordine:nextOrd},async(vals)=>{
+
     const obj={tip};
     fields.forEach(f=>{
       if(f==='pref')obj.bool1=vals.pref;
@@ -1734,12 +1744,14 @@ container.innerHTML=keys.map(k=>`<div class="ef-row full"><div class="efield ful
 }
 
 async function deleteItem(id){
-  if(!confirm('Ștergi acest element?'))return;
-  const {error}=await db.from('tribute_items').delete().eq('id',id);
-  if(error){showToast('Eroare: '+error.message,'err');return;}
-  showToast('✓ Șters!');
-  await reloadItems();
+  showConfirm('Ștergi acest element?',async()=>{
+    const {error}=await db.from('tribute_items').delete().eq('id',id);
+    if(error){showToast('Eroare: '+error.message,'err');return;}
+    showToast('✓ Șters!');
+    await reloadItems();
+  });
 }
+
 
 // ══════════════════════════════════════════════════════
 //  ADMIN PANEL
@@ -1759,6 +1771,24 @@ function showToast(msg,type='ok'){
   t.textContent=msg;t.className=`admin-toast ${type} show`;
   setTimeout(()=>t.classList.remove('show'),2800);
 }
+
+
+function showConfirm(msg,onYes){
+  const ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;z-index:99500;background:rgba(22,10,15,.85);display:flex;align-items:center;justify-content:center;padding:1rem';
+  ov.innerHTML=`<div style="background:linear-gradient(160deg,#1e0d17,#160a0f);border:1px solid rgba(232,85,122,.25);border-radius:20px;padding:1.6rem;max-width:340px;text-align:center;color:#fdf0f4;font-family:'Jost',sans-serif">
+    <p style="margin-bottom:1.2rem;font-size:.9rem">${msg}</p>
+    <div style="display:flex;gap:.6rem;justify-content:center">
+      <button id="cfYes" style="background:var(--rose);color:#fff;border:none;padding:.5rem 1.2rem;border-radius:20px;cursor:pointer;font-family:'Jost',sans-serif">Da, șterge</button>
+      <button id="cfNo" style="background:rgba(255,255,255,.08);color:#c490a8;border:1px solid rgba(232,85,122,.2);padding:.5rem 1.2rem;border-radius:20px;cursor:pointer;font-family:'Jost',sans-serif">Anulează</button>
+    </div>
+  </div>`;
+  document.body.appendChild(ov);
+  ov.querySelector('#cfYes').onclick=()=>{ov.remove();onYes();};
+  ov.querySelector('#cfNo').onclick=()=>ov.remove();
+  ov.addEventListener('click',e=>{if(e.target===ov)ov.remove();});
+}
+
 
 function renderSetariTable(){}
 function editSS(){}
@@ -1851,10 +1881,12 @@ function editQuoteRow(r){
   document.getElementById('q-ordine').value=r.ordine||0;
 }
 async function delQuote(id){
-  if(!confirm('Ștergi citatul?'))return;
-  await db.from('tribute_quotes').delete().eq('id',id);
-  showToast('✓ Șters!');await reloadQuotes();
+  showConfirm('Ștergi citatul?',async()=>{
+    await db.from('tribute_quotes').delete().eq('id',id);
+    showToast('✓ Șters!');await reloadQuotes();
+  });
 }
+
 function clearQForm(){
   document.getElementById('q-id').value='';document.getElementById('q-text').value='';
   document.getElementById('q-culoare').value='var(--rose)';document.getElementById('q-ordine').value=0;
