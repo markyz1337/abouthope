@@ -66,6 +66,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .scroll-dot{width:6px;height:6px;border-radius:50%;background:var(--rose);animation:blink 1.8s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
 .hero-right{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--rose-blush) 0%,var(--rose-mist) 60%,#f4cad8 100%)}
+.hero-right::before{content:'';position:absolute;top:0;left:0;right:0;height:80px;background:linear-gradient(to bottom,var(--cream),transparent);z-index:2;pointer-events:none}
+.hero-right::after{content:'';position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to top,var(--cream),transparent);z-index:2;pointer-events:none}
+
+
 @media(max-width:800px){.hero-right{height:55vw;min-height:260px}}
 .hero-bg-letter{position:absolute;font-family:'Cormorant Garamond',serif;font-size:55vw;font-weight:700;line-height:.8;color:rgba(232,85,122,.06);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;user-select:none}
 @media(max-width:800px){.hero-bg-letter{font-size:80vw}}
@@ -78,11 +82,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .bloom:nth-child(5){bottom:12%;left:35%;font-size:2rem;animation-delay:3.5s}
 .bloom:nth-child(6){top:35%;right:30%;font-size:1.2rem;animation-delay:1.8s}
 @keyframes bloomFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-22px) rotate(8deg)}}
-.hero-card{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(320px,80%);background:rgba(255,255,255,.72);backdrop-filter:blur(20px);border-radius:28px;border:1px solid rgba(255,255,255,.7);padding:2rem 1.8rem;box-shadow:0 20px 60px rgba(181,48,96,.15),inset 0 1px 0 rgba(255,255,255,.8);text-align:center;animation:cardEntrance 1.1s .6s cubic-bezier(.175,.885,.32,1.275) both}
+.hero-card{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(240px,65%);background:rgba(255,255,255,.72);backdrop-filter:blur(20px);border-radius:22px;border:1px solid rgba(255,255,255,.7);padding:1.2rem 1.3rem;box-shadow:0 20px 60px rgba(181,48,96,.15),inset 0 1px 0 rgba(255,255,255,.8);text-align:center;animation:cardEntrance 1.1s .6s cubic-bezier(.175,.885,.32,1.275) both}
+
 @keyframes cardEntrance{from{opacity:0;transform:translate(-50%,-40%) scale(.9)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
-.hc-emoji{font-size:3.2rem;display:block;margin-bottom:.8rem;animation:hcPulse 3s ease-in-out infinite}
+.hc-emoji{font-size:2rem;display:block;margin-bottom:.5rem;animation:hcPulse 3s ease-in-out infinite}
+
 @keyframes hcPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-.hc-name{font-family:'Great Vibes',cursive;font-size:2.5rem;background:linear-gradient(135deg,var(--rose-deep),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:.3rem}
+.hc-name{font-family:'Great Vibes',cursive;font-size:1.8rem;background:linear-gradient(135deg,var(--rose-deep),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:.2rem}
+
 .hc-sub{font-size:.78rem;font-weight:300;color:var(--ink-soft);letter-spacing:.05em;font-style:italic}
 .hc-divider{height:1px;background:linear-gradient(to right,transparent,var(--rose-mist),transparent);margin:1rem 0}
 .hc-facts{display:flex;flex-direction:column;gap:.4rem;font-size:.75rem;color:var(--text-body);font-weight:300;line-height:1.6;text-align:left}
@@ -288,8 +295,11 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 /* EDIT MODE */
 .edit-mode-active .editable-wrap{position:relative}
 .edit-mode-active .editable-wrap:hover{outline:2px dashed rgba(232,85,122,.5);border-radius:12px}
+
 .item-ctrl{display:none;position:absolute;top:4px;right:4px;z-index:100;flex-direction:row;gap:3px;background:rgba(22,10,15,.88);border-radius:10px;padding:3px 5px;box-shadow:0 4px 12px rgba(0,0,0,.3)}
 .edit-mode-active .item-ctrl{display:flex}
+
+
 .ic-btn{border:none;background:none;cursor:pointer;padding:3px 5px;border-radius:6px;font-size:.75rem;transition:background .18s;color:#f0c4d4;line-height:1}
 .ic-btn:hover{background:rgba(232,85,122,.3)}
 .ic-btn.drag-handle{cursor:grab;color:#9b6a7e}
@@ -297,7 +307,13 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 .add-item-btn{display:none;align-items:center;gap:.5rem;margin:1rem auto 0;background:rgba(232,85,122,.1);border:1.5px dashed rgba(232,85,122,.35);color:var(--rose-deep);border-radius:20px;padding:.5rem 1.2rem;font-size:.75rem;font-weight:500;cursor:pointer;transition:all .25s;font-family:'Jost',sans-serif}
 .add-item-btn:hover{background:rgba(232,85,122,.2);border-color:var(--rose)}
 .edit-mode-active .add-item-btn{display:flex}
+
+.add-item-btn:hover{background:rgba(232,85,122,.2);border-color:var(--rose)}
+
 .section-edit-icon{display:none;position:absolute;top:8px;right:8px;z-index:50;background:rgba(22,10,15,.8);border:1px solid rgba(232,85,122,.3);color:var(--rose);border-radius:8px;padding:4px 8px;font-size:.7rem;cursor:pointer;transition:all .2s}
+.edit-mode-active .section-edit-icon{display:block}
+
+
 .edit-mode-active .section-edit-icon{display:block}
 .section-edit-wrap{position:relative}
 .drag-over-top{border-top:2px solid var(--rose) !important}
@@ -564,10 +580,8 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
   <span class="pill"><span>⏳</span>Se încarcă...</span>
 </div>
 <button class="add-item-btn" style="margin-bottom:1rem" onclick="openAddModal('info_pill')">+ Adaugă pill</button>
-
-      <span class="pill"><span>⏳</span>Se încarcă...</span>
-    </div>
     <p class="hero-note" id="heroNote">Se încarcă...</p>
+
     <div class="scroll-cta">
       <span class="scroll-line"></span>
       <span>Derulează în jos</span>
@@ -1083,8 +1097,11 @@ function quotesEditHtml(arr, sectiune, darkStyle = false) {
       </div>
       ${r.text}
     </div>`).join('');
-  return items + `<button class="add-item-btn" onclick="openAddModalQuote('${sectiune}')">+ Adaugă citat</button>`;
+return `<div style="margin-top:1rem">${items}<button class="add-item-btn" onclick="openAddModalQuote('${sectiune}')">+ Adaugă citat</button></div>`;
+
 }
+
+
 
 
 function openAddModalQuote(sectiune) {
@@ -1181,7 +1198,8 @@ pillsEl.innerHTML = pills.map(r => `
 function renderCulori(){
   const items=getItems('culoare');
   const grid=document.getElementById('culoriGrid');
-  if(!items.length){grid.innerHTML='<div style="color:#9b6a7e;font-style:italic;width:100%;text-align:center">Nicio culoare adăugată.</div>';return;}
+if(!items.length){grid.innerHTML='<div style="color:#9b6a7e;font-style:italic;width:100%;text-align:center">Nicio culoare adăugată.</div>';document.getElementById('culoriCitate').innerHTML=quotesEditHtml(getQuotes('culori'),'culori');return;}
+
   grid.innerHTML=items.map(r=>{
     const bg=r.hex2?`background:linear-gradient(135deg,${r.hex},${r.hex2})`:`background:${r.hex||'#eee'}`;
     return `<div class="palette-swatch rev editable-wrap" data-id="${r.id}" data-tip="culoare" style="position:relative">
@@ -1200,7 +1218,8 @@ document.getElementById('culoriCitate').innerHTML=quotesEditHtml(getQuotes('culo
 function renderFlori(){
   const items=getItems('floare');
   const grid=document.getElementById('floriGrid');
-  if(!items.length){grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Nicio floare adăugată.</div>';return;}
+if(!items.length){grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Nicio floare adăugată.</div>';document.getElementById('floriCitate').innerHTML=quotesEditHtml(getQuotes('flori'),'flori');return;}
+
   grid.innerHTML=items.map(r=>`<div class="flower-card editable-wrap" data-id="${r.id}" data-tip="floare">
     ${itemCtrl(r)}
     <span class="fc-icon">${r.emoji||'🌸'}</span>
@@ -1247,7 +1266,8 @@ function renderTrasaturi(){
 function renderNoapte(){
   const items=getItems('noapte');
   const grid=document.getElementById('noapteGrid');
-  if(!items.length){grid.innerHTML='<div style="color:#c490a8;font-style:italic">Nimic adăugat.</div>';return;}
+if(!items.length){grid.innerHTML='<div style="color:#c490a8;font-style:italic">Nimic adăugat.</div>';document.getElementById('noapteCitat').innerHTML=quotesEditHtml(getQuotes('noapte'),'noapte',true);return;}
+
   grid.innerHTML=items.map(r=>`<div class="night-item editable-wrap" data-id="${r.id}" data-tip="noapte" style="position:relative">
     ${itemCtrl(r)}
     <span class="ni-icon">${r.emoji||'🌙'}</span><span>${r.text||''}</span>
@@ -1309,7 +1329,8 @@ function renderComplimente(){
 function renderFilme(){
   const items=getItems('film');
   const grid=document.getElementById('filmeGrid');
-  if(!items.length){grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun film adăugat.</div>';return;}
+if(!items.length){grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun film adăugat.</div>';document.getElementById('citatFilmeSection').innerHTML=quotesEditHtml(getQuotes('filme'),'filme');return;}
+
   const cats={};
   items.forEach(r=>{const c=r.cat1||'Diverse';if(!cats[c])cats[c]=[];cats[c].push(r);});
   const catEmojis={'Romantice clasice':'💕','Comedii':'😄','Animații & Seriale':'🎪','Animații':'🎠','Seriale':'📺'};
@@ -1350,7 +1371,8 @@ function renderStats(){
 function renderLoveTags(){
   const items=getItems('love_tag');
   const wrap=document.getElementById('loveTags');
-  if(!items.length){wrap.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun tag adăugat.</div>';return;}
+if(!items.length){wrap.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun tag adăugat.</div>';document.getElementById('iubireCitate').innerHTML=quotesEditHtml(getQuotes('iubire'),'iubire');return;}
+
   wrap.innerHTML=items.map(r=>`<span class="love-tag editable-wrap" data-id="${r.id}" data-tip="love_tag" style="position:relative">${itemCtrl(r)}${r.titlu||''}</span>`).join('');
 document.getElementById('iubireCitate').innerHTML=quotesEditHtml(getQuotes('iubire'),'iubire');
 
@@ -1659,6 +1681,13 @@ function editSetting(key,label){
 }
 
 const settingLabels={
+  hero_eyebrow:'Textul mic deasupra numelui',
+  hero_name:'Numele mare (hero)',
+  hero_tagline:'Tagline sub nume',
+  hero_note:'Nota italică de sub tagline',
+  hero_bg_letter:'Litera decorativă mare',
+  hero_card_name:'Numele din card',
+  hero_card_sub:'Subtitlul din card',
   birthday_date:'Data nașterii (MM-DD)',
   birthday_label:'Etichetă afișată (ex: 15 Martie 🎂)',
   birthday_msg:'Mesaj countdown normal',
@@ -1671,7 +1700,12 @@ const settingLabels={
   actress_badge:'Badge actriță preferată',
   actor_badge:'Badge actor preferat',
   pers_title:'Titlu secțiune Suflet',
+  nav_logo:'Logo navigație',
+  footer_line1:'Footer — linia 1',
+  footer_line2:'Footer — linia 2',
+  night_sub:'Subtitlu secțiune Noapte',
 };
+
 
 const settingDescriptions={
   hero_eyebrow:     'Textul mic deasupra numelui — ex: „O pagină pentru tine"',
@@ -1813,6 +1847,11 @@ function renderContentTable(data){
       </div></td>
     </tr>`).join('')}</tbody></table></div>`;
 }
+
+function editContent(r){
+  openEditModalItem(r.id);
+}
+
 
 function renderQuotesTable(data){
   const c=document.getElementById('quotes-list');
