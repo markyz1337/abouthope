@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>✨ Ksiușca ✨ — Xenia</title>
+<title>✨ Tribut ✨</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Jost:wght@200;300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -18,31 +18,35 @@
 html{scroll-behavior:smooth}
 body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-body);overflow-x:hidden;cursor:none}
 
-/* ── CURSOR */
+/* CURSOR */
 #cur{position:fixed;width:8px;height:8px;background:var(--rose);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:transform .08s;mix-blend-mode:multiply}
 #cur2{position:fixed;width:32px;height:32px;border:1px solid var(--rose);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);opacity:.45;transition:all .18s ease}
 
-/* ── NAV */
+/* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 3rem;height:56px;background:rgba(253,240,244,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(232,85,122,.12)}
-.nav-logo{font-family:'Great Vibes',cursive;font-size:1.6rem;color:var(--rose-deep);letter-spacing:.02em;white-space:nowrap}
+.nav-logo{font-family:'Great Vibes',cursive;font-size:1.6rem;color:var(--rose-deep);letter-spacing:.02em;white-space:nowrap;cursor:pointer}
 .nav-links{display:flex;gap:.2rem;align-items:center;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .nav-links::-webkit-scrollbar{display:none}
 .nav-links a{text-decoration:none;color:var(--ink-soft);font-size:.68rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:.35rem .75rem;border-radius:20px;transition:all .25s;white-space:nowrap}
 .nav-links a:hover{background:var(--rose);color:#fff}
+.nav-btns{display:flex;gap:.4rem;align-items:center;flex-shrink:0}
+.nav-edit-btn{background:transparent;color:var(--rose-deep);border:1.5px solid rgba(232,85,122,.35);padding:.35rem .9rem;border-radius:20px;font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .25s;font-family:'Jost',sans-serif}
+.nav-edit-btn.active{background:var(--rose);color:#fff;border-color:var(--rose)}
+.nav-edit-btn:hover{background:var(--rose);color:#fff;border-color:var(--rose)}
 .nav-admin-btn{background:var(--wine);color:#fdf0f4;border:none;padding:.35rem .9rem;border-radius:20px;font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .25s;font-family:'Jost',sans-serif}
 .nav-admin-btn:hover{background:var(--rose-deep);transform:translateY(-1px)}
-@media(max-width:900px){nav{padding:0 1.2rem}.nav-logo{font-size:1.3rem}.nav-links a{font-size:.6rem;padding:.3rem .55rem}}
+@media(max-width:900px){nav{padding:0 1rem}.nav-logo{font-size:1.2rem}.nav-links a{font-size:.58rem;padding:.28rem .45rem}.nav-edit-btn,.nav-admin-btn{font-size:.58rem;padding:.3rem .65rem}}
 
-/* ── STARS */
+/* STARS */
 .stars-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 .star{position:absolute;width:2px;height:2px;background:var(--rose);border-radius:50%;opacity:0;animation:twinkle 5s ease-in-out infinite}
 @keyframes twinkle{0%,100%{opacity:0}50%{opacity:.22}}
 
-/* ── PETALS */
+/* PETALS */
 .petal{position:fixed;pointer-events:none;z-index:9999;opacity:0;animation:petalDrift linear forwards}
 @keyframes petalDrift{0%{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}100%{opacity:0;transform:translateY(105vh) rotate(400deg) scale(.5)}}
 
-/* ── HERO */
+/* HERO */
 .hero{min-height:100vh;padding-top:56px;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
 @media(max-width:800px){.hero{grid-template-columns:1fr}}
 .hero-left{display:flex;flex-direction:column;justify-content:center;padding:5rem 4rem 4rem 5rem;position:relative;z-index:2}
@@ -86,7 +90,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .hc-fact .hf-icon{flex-shrink:0;font-size:.85rem}
 @keyframes fsu{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── SECTIONS */
+/* SECTIONS */
 section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative;z-index:1}
 .sect-wide{max-width:100%;padding:6rem 2rem;position:relative;z-index:1}
 .sect-inner{max-width:1140px;margin:0 auto}
@@ -97,7 +101,7 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .s-rule-line.right{background:linear-gradient(to left,transparent,var(--rose-mist))}
 .s-rule-icon{font-size:1.1rem;opacity:.6}
 
-/* ── PALETTE */
+/* PALETTE */
 .palette-sect{padding:4rem 2rem;max-width:1140px;margin:0 auto;position:relative;z-index:1}
 .palette-grid{display:flex;flex-wrap:wrap;gap:1.2rem;justify-content:center;margin-bottom:2rem}
 .palette-swatch{display:flex;flex-direction:column;align-items:center;gap:.7rem;cursor:default;opacity:0;transform:translateY(18px)}
@@ -108,7 +112,7 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .swatch-note{font-size:.72rem;color:#9b6a7e;font-style:italic;text-align:center;max-width:90px}
 .swatch-fav{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--rose);font-weight:600;background:var(--rose-blush);border-radius:20px;padding:.18rem .6rem;border:1px solid rgba(232,85,122,.2)}
 
-/* ── COUNTDOWN */
+/* COUNTDOWN */
 .cd-wrap{padding:3rem 2rem;max-width:100%}
 .cd-inner{max-width:900px;margin:0 auto;background:linear-gradient(135deg,#fff8fb,white,#fff0f5);border-radius:32px;border:1px solid rgba(232,85,122,.13);padding:3.5rem 3rem;box-shadow:0 12px 50px rgba(232,85,122,.09);text-align:center;position:relative;overflow:hidden}
 .cd-inner::before{content:'🎂';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:16rem;opacity:.03;pointer-events:none}
@@ -121,7 +125,7 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .cd-msg{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--ink-soft);line-height:1.8;max-width:500px;margin:0 auto;position:relative;z-index:1}
 .cd-bday{display:none;font-family:'Great Vibes',cursive;font-size:2.2rem;color:var(--rose);animation:hcPulse 1.5s ease-in-out infinite;position:relative;z-index:1}
 
-/* ── FLOWER CARDS */
+/* FLOWER CARDS */
 .flowers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.4rem}
 .flower-card{background:white;border-radius:22px;padding:2rem 1.8rem;border:1px solid rgba(232,85,122,.1);box-shadow:0 4px 18px rgba(232,85,122,.07);transition:all .4s cubic-bezier(.175,.885,.32,1.275);position:relative;overflow:hidden;opacity:0;transform:translateY(28px)}
 .flower-card.vis{animation:cardIn .6s cubic-bezier(.175,.885,.32,1.275) forwards}
@@ -132,12 +136,12 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .fc-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;color:var(--rose-deep);margin-bottom:.5rem}
 .fc-text{font-size:.85rem;line-height:1.75;color:#6d4a57;font-weight:300}
 
-/* ── BLOCKQUOTE */
+/* BLOCKQUOTE */
 .bq{background:linear-gradient(135deg,#fff8fb,#fdf2f6);border-left:3px solid var(--rose);border-radius:0 20px 20px 0;padding:2rem 2.5rem;margin:2rem 0;position:relative;font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:var(--ink-soft);line-height:1.85;opacity:0;transform:translateX(-28px);transition:all .7s ease}
 .bq.vis{opacity:1;transform:translateX(0)}
 .bq::before{content:'"';position:absolute;top:-16px;left:12px;font-size:6rem;font-family:'Cormorant Garamond',serif;color:var(--rose-mist);line-height:1;pointer-events:none}
 
-/* ── VIBES */
+/* VIBES */
 .vibes-bg{background:linear-gradient(160deg,#fff8fb 0%,white 50%,#fff4f8 100%);padding:6rem 2rem}
 .vibes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:1rem}
 .vibe-card{background:white;border-radius:18px;padding:1.4rem 1rem;text-align:center;border:1px solid rgba(232,85,122,.09);box-shadow:0 3px 12px rgba(232,85,122,.06);cursor:default;transition:all .32s;opacity:0;transform:translateY(18px)}
@@ -147,7 +151,7 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .vc-label{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--rose-deep);margin-bottom:.25rem}
 .vc-text{font-size:.73rem;color:#8b5a6e;line-height:1.45;font-weight:300}
 
-/* ── EMOJI STRIP */
+/* EMOJI STRIP */
 .strip-wrap{overflow:hidden;padding:2rem 2rem 4rem}
 .emoji-strip{display:flex;gap:.9rem;overflow-x:auto;padding:1rem 0;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .emoji-strip::-webkit-scrollbar{display:none}
@@ -156,7 +160,7 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .ef-i{font-size:2.2rem}
 .ef-t{font-size:.62rem;color:#9b6a7e;line-height:1.3;font-weight:400}
 
-/* ── PERSONALITY DARK */
+/* PERSONALITY DARK */
 .pers-bg{background:linear-gradient(160deg,#160a0f 0%,#1e0d17 100%);padding:6rem 2rem;position:relative;overflow:hidden}
 .pers-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 15% 15%,rgba(232,85,122,.12) 0%,transparent 42%),radial-gradient(ellipse at 85% 85%,rgba(181,48,96,.08) 0%,transparent 38%)}
 .pers-bg .s-title{color:#fdf0f4}
@@ -168,7 +172,7 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .trait-item:hover{background:rgba(232,85,122,.08);border-color:rgba(232,85,122,.28);transform:translateY(-2px)}
 .trait-item .ti-icon{font-size:1.2rem;flex-shrink:0;margin-top:.1rem}
 
-/* ── NIGHT */
+/* NIGHT */
 .night-bg{background:linear-gradient(180deg,#0d0614 0%,#160a10 60%,#0d0614 100%);padding:6rem 2rem;position:relative;overflow:hidden}
 #nightCanvas{position:absolute;inset:0;pointer-events:none;z-index:0}
 .night-inner{position:relative;z-index:1;max-width:1000px;margin:0 auto;text-align:center}
@@ -184,7 +188,7 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .night-item:hover{background:rgba(232,85,122,.07);border-color:rgba(232,85,122,.27);transform:translateY(-2px)}
 .ni-icon{font-size:1.2rem;flex-shrink:0}
 
-/* ── SCRATCH */
+/* SCRATCH */
 .scratch-sect{padding:5rem 2rem;text-align:center}
 .scratch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.4rem;margin-top:2rem;max-width:950px;margin-left:auto;margin-right:auto}
 .scratch-card{position:relative;border-radius:22px;overflow:hidden;box-shadow:0 8px 28px rgba(232,85,122,.14);height:160px;cursor:crosshair}
@@ -194,7 +198,7 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .scratch-card canvas{position:absolute;inset:0;z-index:2;border-radius:22px;touch-action:none}
 .scratch-hint{font-size:.8rem;color:var(--rose-deep);margin-top:1.2rem;opacity:.65;letter-spacing:.08em;font-style:italic}
 
-/* ── RANDOMIZER */
+/* RANDOMIZER */
 .rand-wrap{padding:0 2rem 4rem;max-width:100%}
 .rand-box{max-width:680px;margin:0 auto;background:linear-gradient(160deg,#160a0f,#1e0d17);border-radius:30px;padding:4rem 2.5rem;text-align:center;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)}
 .rand-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(232,85,122,.18) 0%,transparent 60%)}
@@ -207,7 +211,7 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .rand-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 32px rgba(232,85,122,.55)}
 .rand-btn:active{transform:scale(.97)}
 
-/* ── FILMS */
+/* FILMS */
 .films-bg{background:white;padding:6rem 2rem}
 .actress-badge{display:inline-flex;align-items:center;gap:.6rem;background:linear-gradient(135deg,#fff8fb,#fdf0f4);border:1.5px solid rgba(232,85,122,.2);border-radius:50px;padding:.55rem 1.4rem;font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;color:var(--rose-deep);box-shadow:0 3px 14px rgba(232,85,122,.1);margin-bottom:2.5rem}
 .films-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.4rem}
@@ -220,19 +224,19 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .flist li.hl{font-weight:500;color:var(--rose-deep)}
 .flist li.hl::before{content:'💕';font-size:.7rem}
 
-/* ── MUSIC */
+/* MUSIC */
 .music-bg{background:linear-gradient(160deg,#fff0f5,#fdf8fb,#fef5f0);padding:6rem 2rem}
 .music-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem}
 @media(max-width:680px){.music-grid{grid-template-columns:1fr}}
 
-/* ── PROGRESS */
+/* PROGRESS */
 .prog-item{margin-bottom:1.6rem}
 .prog-label{display:flex;justify-content:space-between;margin-bottom:.45rem;font-size:.82rem;color:var(--text-body);font-weight:400}
 .prog-label span:last-child{color:var(--rose);font-weight:600}
 .prog-bar{height:5px;background:#fce8ef;border-radius:10px;overflow:hidden}
 .prog-fill{height:100%;border-radius:10px;width:0;background:linear-gradient(to right,var(--rose-mist),var(--rose));transition:width 1.6s cubic-bezier(.4,0,.2,1)}
 
-/* ── LOVE */
+/* LOVE */
 .love-bg{background:white;padding:6rem 2rem}
 .love-intro{font-family:'Cormorant Garamond',serif;font-size:1.15rem;line-height:2;color:var(--ink-soft);max-width:680px;margin:0 auto 2.5rem;text-align:center;font-weight:300}
 .love-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;margin-top:1.5rem}
@@ -241,7 +245,7 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 @keyframes tagPop{to{opacity:1;transform:scale(1)}}
 .love-tag:hover{background:var(--rose);color:white;border-color:var(--rose);transform:scale(1.06)}
 
-/* ── EXTRA */
+/* EXTRA */
 .extra-bg{background:linear-gradient(160deg,#fdf8fb,#fff0f5);padding:6rem 2rem}
 .extra-box{background:white;border-radius:22px;padding:2.5rem 2rem;border:1px solid rgba(232,85,122,.1);box-shadow:0 6px 24px rgba(232,85,122,.07);margin-bottom:1.8rem}
 .extra-box h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--rose-deep);margin-bottom:1.4rem;display:flex;align-items:center;gap:.5rem}
@@ -250,7 +254,7 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .info-list li:hover{background:var(--rose-blush)}
 .info-list li .il-i{flex-shrink:0;font-size:.9rem}
 
-/* ── LETTER */
+/* LETTER */
 .letter-bg{background:linear-gradient(180deg,#fdf0f4,#fff8fb);padding:6rem 2rem}
 .letter-card{background:white;border-radius:30px;padding:4rem 3.5rem;max-width:800px;margin:0 auto;box-shadow:0 16px 60px rgba(232,85,122,.1);border:1px solid rgba(232,85,122,.12);position:relative;overflow:hidden;text-align:center}
 .letter-card::before{content:'💌';position:absolute;font-size:16rem;opacity:.03;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
@@ -258,13 +262,13 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .letter-sig{font-family:'Great Vibes',cursive;font-size:2.5rem;color:var(--rose);position:relative;z-index:1}
 .letter-note{font-size:.78rem;color:#999;margin-top:1.5rem;position:relative;z-index:1;font-weight:300;font-style:italic}
 
-/* ── FOOTER */
+/* FOOTER */
 footer{background:var(--ink);text-align:center;padding:5rem 2rem 2.5rem;position:relative;overflow:hidden}
 footer::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(232,85,122,.1) 0%,transparent 58%)}
 .footer-heart{font-size:3rem;display:block;margin-bottom:1rem;animation:hcPulse 2s ease-in-out infinite;position:relative;z-index:1}
 footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:1;font-weight:300}
 
-/* ── MISC */
+/* MISC */
 .divider{text-align:center;padding:.8rem 2rem;font-size:1.2rem;letter-spacing:.6rem;opacity:.35;user-select:none}
 .rev{opacity:0;transform:translateY(36px);transition:all .8s cubic-bezier(.4,0,.2,1)}
 .rev.vis{opacity:1;transform:translateY(0)}
@@ -276,9 +280,64 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 .confetti-p{position:fixed;pointer-events:none;z-index:99997;animation:cfall linear forwards}
 @keyframes cfall{0%{opacity:1;transform:translateY(0) rotateZ(0deg)}100%{opacity:0;transform:translateY(100vh) rotateZ(720deg)}}
 
-/* ══════════════════════════════════════════════
+/* ═══════════════════════════════════
+   EDIT MODE
+═══════════════════════════════════ */
+.edit-mode-active .editable-wrap{position:relative}
+.edit-mode-active .editable-wrap:hover{outline:2px dashed rgba(232,85,122,.5);border-radius:12px}
+
+/* Inline control bar per item */
+.item-ctrl{display:none;position:absolute;top:4px;right:4px;z-index:100;flex-direction:row;gap:3px;background:rgba(22,10,15,.88);border-radius:10px;padding:3px 5px;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.edit-mode-active .item-ctrl{display:flex}
+.ic-btn{border:none;background:none;cursor:pointer;padding:3px 5px;border-radius:6px;font-size:.75rem;transition:background .18s;color:#f0c4d4;line-height:1}
+.ic-btn:hover{background:rgba(232,85,122,.3)}
+.ic-btn.drag-handle{cursor:grab;color:#9b6a7e}
+.ic-btn.drag-handle:active{cursor:grabbing}
+
+/* Add-item buttons */
+.add-item-btn{display:none;align-items:center;gap:.5rem;margin:1rem auto 0;background:rgba(232,85,122,.1);border:1.5px dashed rgba(232,85,122,.35);color:var(--rose-deep);border-radius:20px;padding:.5rem 1.2rem;font-size:.75rem;font-weight:500;cursor:pointer;transition:all .25s;font-family:'Jost',sans-serif}
+.add-item-btn:hover{background:rgba(232,85,122,.2);border-color:var(--rose)}
+.edit-mode-active .add-item-btn{display:flex}
+
+/* Edit sections row bar for settings edits (hero texts, section texts) */
+.section-edit-icon{display:none;position:absolute;top:8px;right:8px;z-index:50;background:rgba(22,10,15,.8);border:1px solid rgba(232,85,122,.3);color:var(--rose);border-radius:8px;padding:4px 8px;font-size:.7rem;cursor:pointer;transition:all .2s}
+.edit-mode-active .section-edit-icon{display:block}
+.section-edit-wrap{position:relative}
+
+/* Drag placeholder */
+.drag-over-top{border-top:2px solid var(--rose) !important}
+.drag-over-bottom{border-bottom:2px solid var(--rose) !important}
+.dragging-item{opacity:.4;transform:scale(.97) !important}
+
+/* ═══════════════════════════════════
+   EDIT POPUP MODAL
+═══════════════════════════════════ */
+#editModal{display:none;position:fixed;inset:0;z-index:98000;background:rgba(22,10,15,.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1rem}
+#editModal.open{display:flex}
+.emodal-box{background:linear-gradient(160deg,#1e0d17,#160a0f);border:1px solid rgba(232,85,122,.25);border-radius:24px;padding:2rem 1.8rem;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.5);position:relative}
+.emodal-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:#fdf0f4;margin-bottom:1.4rem;display:flex;align-items:center;gap:.6rem}
+.emodal-close{position:absolute;top:1rem;right:1rem;background:rgba(232,85,122,.15);border:1px solid rgba(232,85,122,.3);color:var(--rose);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.emodal-close:hover{background:var(--rose);color:#fff}
+.emodal-fields{display:flex;flex-direction:column;gap:.9rem;margin-bottom:1.4rem}
+.ef-row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.ef-row.full{grid-template-columns:1fr}
+.efield{display:flex;flex-direction:column;gap:.3rem}
+.efield label{font-size:.7rem;color:#c490a8;letter-spacing:.1em;text-transform:uppercase;font-weight:500}
+.efield input,.efield textarea,.efield select{background:rgba(255,255,255,.07);border:1px solid rgba(232,85,122,.2);border-radius:8px;color:#fdf0f4;padding:.6rem .8rem;font-family:'Jost',sans-serif;font-size:.85rem;transition:border .2s;width:100%}
+.efield input:focus,.efield textarea:focus,.efield select:focus{outline:none;border-color:var(--rose)}
+.efield textarea{resize:vertical;min-height:90px}
+.efield input[type=checkbox]{width:auto;accent-color:var(--rose)}
+.efield select option{background:#1e0d17;color:#fdf0f4}
+.emodal-actions{display:flex;gap:.6rem;justify-content:flex-end}
+.em-btn{padding:.55rem 1.2rem;border-radius:20px;border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:.82rem;font-weight:500;transition:all .25s}
+.em-btn-save{background:var(--rose);color:#fff}
+.em-btn-save:hover{background:var(--rose-deep)}
+.em-btn-cancel{background:rgba(255,255,255,.08);color:#c490a8;border:1px solid rgba(232,85,122,.2)}
+.em-btn-cancel:hover{background:rgba(255,255,255,.13);color:#fdf0f4}
+
+/* ═══════════════════════════════════
    ADMIN PANEL
-══════════════════════════════════════════════ */
+═══════════════════════════════════ */
 #adminOverlay{display:none;position:fixed;inset:0;z-index:99000;background:rgba(22,10,15,.97);backdrop-filter:blur(8px);overflow-y:auto;cursor:default}
 #adminOverlay.open{display:block}
 .admin-wrap{max-width:1200px;margin:0 auto;padding:2rem 1.5rem 6rem}
@@ -316,7 +375,6 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 .atable td{padding:.65rem 1rem;border-bottom:1px solid rgba(255,255,255,.04);color:#f0c4d4;vertical-align:middle}
 .atable tr:hover td{background:rgba(255,255,255,.03)}
 .atable .tag-cat{background:rgba(232,85,122,.15);color:var(--rose);border-radius:12px;padding:.15rem .55rem;font-size:.7rem;white-space:nowrap}
-.atable .tag-hl{background:rgba(100,200,100,.12);color:#a0e4a0;border-radius:12px;padding:.15rem .5rem;font-size:.7rem}
 .atd-actions{display:flex;gap:.4rem}
 .atd-actions button{padding:.28rem .65rem;border-radius:10px;border:none;cursor:pointer;font-size:.72rem;font-family:'Jost',sans-serif;transition:all .2s}
 .btn-edit{background:rgba(232,85,122,.15);color:var(--rose)}
@@ -331,7 +389,6 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 .admin-empty{text-align:center;padding:2rem;color:#9b6a7e;font-style:italic;font-size:.9rem}
 .atable .txt-clamp{max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .color-dot{display:inline-block;width:16px;height:16px;border-radius:50%;vertical-align:middle;margin-right:.4rem;border:1px solid rgba(255,255,255,.15)}
-/* tip badge colors in admin table */
 .tip-badge{display:inline-block;border-radius:12px;padding:.15rem .55rem;font-size:.7rem;white-space:nowrap;background:rgba(232,85,122,.12);color:#f0c4d4}
 </style>
 </head>
@@ -342,95 +399,99 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 <div class="stars-bg" id="starsBg"></div>
 <div class="admin-toast" id="adminToast"></div>
 
-<!-- ══════════════════════════════════════════════
-     ADMIN OVERLAY  (3 tabs: Settings | Content | Quotes)
-══════════════════════════════════════════════ -->
+<!-- EDIT MODAL -->
+<div id="editModal">
+  <div class="emodal-box" id="eModalBox">
+    <button class="emodal-close" onclick="closeEditModal()">✕</button>
+    <div class="emodal-title" id="eModalTitle">✏️ Editează</div>
+    <div class="emodal-fields" id="eModalFields"></div>
+    <div class="emodal-actions">
+      <button class="em-btn em-btn-cancel" onclick="closeEditModal()">Anulează</button>
+      <button class="em-btn em-btn-save" id="eModalSaveBtn">💾 Salvează</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN OVERLAY -->
 <div id="adminOverlay">
   <div class="admin-wrap">
     <div class="admin-header">
-      <div class="admin-title">✨ Admin — Ksiușca</div>
+      <div class="admin-title">✨ Admin Panel</div>
       <button class="admin-close" onclick="closeAdmin()">✕</button>
     </div>
-
     <div class="admin-tabs">
       <button class="atab active"  onclick="switchTab('settings')">⚙️ Setări & Info</button>
       <button class="atab"         onclick="switchTab('content')">🌸 Conținut</button>
       <button class="atab"         onclick="switchTab('quotes')">💬 Citate</button>
     </div>
 
-    <!-- ─── TAB 1: SETTINGS ─── -->
+    <!-- TAB 1: SETTINGS -->
     <div class="admin-section active" data-tab="settings">
-      <div class="admin-section-title">⚙️ Setări globale & Info Pills</div>
-
-      <!-- Setare key/value -->
+      <div class="admin-section-title">⚙️ Setări globale</div>
       <div class="aform">
-        <div class="aform-title">Setare cheie → valoare (hero_name, hero_tagline, hero_note, footer_name, love_intro...)</div>
+        <div class="aform-title">Cheie → Valoare (hero_name, hero_tagline, hero_note, hero_card_name, hero_card_sub, hero_bg_letter, hero_eyebrow, footer_line1, footer_line2, love_intro, night_sub, sunset_quote, sunset_attr, actress_badge, birthday_date, birthday_msg)</div>
         <div class="aform-grid">
           <div class="afield"><label>Cheie</label><input id="s-cheie" placeholder="ex: hero_name"></div>
           <div class="afield"><label>Valoare</label><input id="s-valoare" placeholder="valoarea..."></div>
         </div>
         <div class="aform-actions">
           <button class="abtn abtn-primary" onclick="saveSetare()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('s')">✕</button>
+          <button class="abtn abtn-secondary" onclick="clearSForm()">✕</button>
         </div>
       </div>
-      <div id="setari-list" style="margin-bottom:2.5rem"><div class="admin-loading">Se încarcă...</div></div>
+      <div id="setari-list"><div class="admin-loading">Se încarcă...</div></div>
 
-      <!-- Info pills -->
-      <div class="admin-section-title" style="font-size:1.2rem;margin-top:1rem">📛 Info Pills (hero)</div>
+      <div class="admin-section-title" style="font-size:1.2rem;margin-top:1.5rem">📛 Info Pills</div>
       <div class="aform">
         <div class="aform-grid">
           <div class="afield"><label>Emoji</label><input id="inf-emoji" placeholder="🎂"></div>
-          <div class="afield"><label>Cheie</label><input id="inf-cheie" placeholder="zodie"></div>
-          <div class="afield"><label>Valoare</label><input id="inf-valoare" placeholder="Taur ♉"></div>
+          <div class="afield"><label>Text pill</label><input id="inf-valoare" placeholder="Taur ♉"></div>
           <div class="afield"><label>Ordine</label><input id="inf-ordine" type="number" value="0"></div>
         </div>
         <div class="aform-actions">
           <button class="abtn abtn-primary" onclick="saveInfo()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('inf')">✕</button>
+          <button class="abtn abtn-secondary" onclick="clearInfoForm()">✕</button>
         </div>
         <input type="hidden" id="inf-id">
       </div>
       <div id="info-list"><div class="admin-loading">Se încarcă...</div></div>
     </div>
 
-    <!-- ─── TAB 2: CONTENT ─── -->
+    <!-- TAB 2: CONTENT -->
     <div class="admin-section" data-tab="content">
       <div class="admin-section-title">🌸 Conținut</div>
-
       <div class="aform">
-        <div class="aform-title">Adaugă / editează item — alege tipul mai jos</div>
         <div class="aform-grid">
           <div class="afield">
             <label>Tip</label>
             <select id="ct-tip">
-              <optgroup label="──── Vizual ────">
+              <optgroup label="Vizual">
                 <option value="culoare">🎨 Culoare</option>
                 <option value="floare">🌷 Floare</option>
                 <option value="vibe">🎀 Vibe</option>
                 <option value="emoji_strip">🪄 Emoji Strip</option>
               </optgroup>
-              <optgroup label="──── Personalitate ────">
+              <optgroup label="Personalitate">
                 <option value="trasatura">🌙 Trăsătură suflet</option>
                 <option value="noapte">✨ Moment noapte</option>
               </optgroup>
-              <optgroup label="──── Interactiv ────">
+              <optgroup label="Interactiv">
                 <option value="scratch">🌸 Scratch Card</option>
                 <option value="compliment">💌 Compliment</option>
               </optgroup>
-              <optgroup label="──── Film / Muzică ────">
+              <optgroup label="Film / Muzică">
                 <option value="film">🎬 Film</option>
-                <option value="muzica_artist">🎶 Artist muzical</option>
-                <option value="muzica_piesa">🎵 Piesă preferată</option>
+                <option value="muzica_artist">🎶 Artist</option>
+                <option value="muzica_piesa">🎵 Piesă</option>
               </optgroup>
-              <optgroup label="──── Statistici & Tags ────">
+              <optgroup label="Statistici & Tags">
                 <option value="stat">📊 Statistică</option>
                 <option value="love_tag">💕 Love Tag</option>
               </optgroup>
-              <optgroup label="──── Extra & Scrisoare ────">
+              <optgroup label="Extra & Scrisoare">
                 <option value="extra_personal">🌍 Extra: Personal</option>
-                <option value="extra_culori">🎨 Extra: Culori perfecte</option>
-                <option value="extra_nu_place">❌ Extra: Nu-ți place</option>
+                <option value="extra_culori">🎨 Extra: Culori</option>
+                <option value="extra_nu_place">❌ Extra: Nu place</option>
                 <option value="extra_vise">🎯 Extra: Vise</option>
                 <option value="extra_obiceiuri">🎀 Extra: Obiceiuri</option>
                 <option value="scrisoare_paragraf">💌 Scrisoare: Paragraf</option>
@@ -440,35 +501,25 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
             </select>
           </div>
           <div class="afield"><label>Emoji</label><input id="ct-emoji" placeholder="🌸"></div>
-          <div class="afield"><label>Titlu / Cheie</label><input id="ct-titlu" placeholder="titlu sau cheie..."></div>
+          <div class="afield"><label>Titlu / Cheie</label><input id="ct-titlu" placeholder="titlu..."></div>
           <div class="afield"><label>Ordine</label><input id="ct-ordine" type="number" value="0"></div>
-
-          <!-- culoare -->
-          <div class="afield" id="f-hex"><label>Hex culoare 1</label><input id="ct-hex" placeholder="#f9c6d8"></div>
-          <div class="afield" id="f-hex2"><label>Hex culoare 2 (gradient)</label><input id="ct-hex2" placeholder="#f4a0c0"></div>
+          <div class="afield" id="f-hex"><label>Hex 1</label><input id="ct-hex" placeholder="#f9c6d8"></div>
+          <div class="afield" id="f-hex2"><label>Hex 2 (gradient)</label><input id="ct-hex2" placeholder="#f4a0c0"></div>
           <div class="afield" id="f-pref"><label>Preferată <input id="ct-pref" type="checkbox"></label></div>
-
-          <!-- film -->
           <div class="afield" id="f-cat-film"><label>Categorie film</label><input id="ct-cat-film" placeholder="Romantice clasice"></div>
-          <div class="afield" id="f-hl"><label>Highlight 💕★ <input id="ct-hl" type="checkbox"></label></div>
-
-          <!-- stat -->
+          <div class="afield" id="f-hl"><label>Highlight 💕 <input id="ct-hl" type="checkbox"></label></div>
           <div class="afield" id="f-procent"><label>Procent (0-100)</label><input id="ct-procent" type="number" min="0" max="100" value="0"></div>
-
-          <!-- text mare -->
-          <div class="afield" id="f-text" style="grid-column:1/-1"><label>Text / Descriere</label><textarea id="ct-text" placeholder="text..."></textarea></div>
+          <div class="afield" id="f-text" style="grid-column:1/-1"><label>Text / Descriere</label><textarea id="ct-text"></textarea></div>
         </div>
         <div class="aform-actions">
           <button class="abtn abtn-primary" onclick="saveContent()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearContent()">✕ Anulează</button>
+          <button class="abtn abtn-secondary" onclick="clearContentForm()">✕</button>
         </div>
         <input type="hidden" id="ct-id">
       </div>
-
-      <!-- Filter -->
       <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem">
         <span style="color:#c490a8;font-size:.75rem;align-self:center">Filtrează:</span>
-        <button class="atab active" onclick="filterContent('')" id="f-all">Toate</button>
+        <button class="atab active" id="f-all" onclick="filterContent('')">Toate</button>
         <button class="atab" onclick="filterContent('culoare')">Culori</button>
         <button class="atab" onclick="filterContent('floare')">Flori</button>
         <button class="atab" onclick="filterContent('vibe')">Vibes</button>
@@ -487,7 +538,7 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
       <div id="content-list"><div class="admin-loading">Se încarcă...</div></div>
     </div>
 
-    <!-- ─── TAB 3: QUOTES ─── -->
+    <!-- TAB 3: QUOTES -->
     <div class="admin-section" data-tab="quotes">
       <div class="admin-section-title">💬 Citate & Blockquotes</div>
       <div class="aform">
@@ -503,27 +554,24 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
               <option value="altele">Altele</option>
             </select>
           </div>
-          <div class="afield"><label>Culoare bordură CSS</label><input id="q-culoare" placeholder="var(--rose)" value="var(--rose)"></div>
+          <div class="afield"><label>Culoare bordură CSS</label><input id="q-culoare" value="var(--rose)"></div>
           <div class="afield"><label>Ordine</label><input id="q-ordine" type="number" value="0"></div>
-          <div class="afield" style="grid-column:1/-1"><label>Text citat</label><textarea id="q-text" placeholder="Textul citatului..."></textarea></div>
+          <div class="afield" style="grid-column:1/-1"><label>Text citat</label><textarea id="q-text"></textarea></div>
         </div>
         <div class="aform-actions">
           <button class="abtn abtn-primary" onclick="saveQuote()">💾 Salvează</button>
-          <button class="abtn abtn-secondary" onclick="clearForm('q')">✕</button>
+          <button class="abtn abtn-secondary" onclick="clearQForm()">✕</button>
         </div>
         <input type="hidden" id="q-id">
       </div>
       <div id="quotes-list"><div class="admin-loading">Se încarcă...</div></div>
     </div>
+  </div>
+</div>
 
-  </div><!-- /admin-wrap -->
-</div><!-- /adminOverlay -->
-
-<!-- ═══════════════════════════════════════════════════
-     PAGE CONTENT
-═══════════════════════════════════════════════════ -->
+<!-- PAGE CONTENT -->
 <nav>
-  <span class="nav-logo">Ksiușca</span>
+  <span class="nav-logo" id="navLogo">✨ Tribut</span>
   <div class="nav-links">
     <a href="#intro">Intro</a>
     <a href="#culori">Culori</a>
@@ -536,15 +584,18 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
     <a href="#extra">Extra</a>
     <a href="#litera">Scrisoare</a>
   </div>
-  <button class="nav-admin-btn" onclick="openAdmin()">⚙ Admin</button>
+  <div class="nav-btns">
+    <button class="nav-edit-btn" id="editToggleBtn" onclick="toggleEditMode()">✏️ Editează</button>
+    <button class="nav-admin-btn" onclick="openAdmin()">⚙ Admin</button>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="intro" style="max-width:100%;padding:0;padding-top:56px">
   <div class="hero-left">
-    <div class="hero-eyebrow">✦ O pagină pentru tine</div>
-    <h1 class="hero-name"><em id="heroName">Kseny</em></h1>
-    <p class="hero-tagline" id="heroTagline">sau Ksiunea, o pisicuță în suflet 🐾</p>
+    <div class="hero-eyebrow" id="heroEyebrow">✦ O pagină pentru tine</div>
+    <h1 class="hero-name"><em id="heroName">Numele</em></h1>
+    <p class="hero-tagline" id="heroTagline">o descriere frumoasă 🌸</p>
     <div class="info-pills" id="infoPills">
       <span class="pill"><span>⏳</span>Se încarcă...</span>
     </div>
@@ -556,15 +607,15 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
     </div>
   </div>
   <div class="hero-right">
-    <div class="hero-bg-letter">X</div>
+    <div class="hero-bg-letter" id="heroBgLetter">✨</div>
     <div class="floating-blooms">
       <span class="bloom">🌸</span><span class="bloom">🌷</span><span class="bloom">🌺</span>
       <span class="bloom">✨</span><span class="bloom">💕</span><span class="bloom">🪷</span>
     </div>
     <div class="hero-card">
       <span class="hc-emoji">🌸</span>
-      <div class="hc-name">Ksiușca</div>
-      <div class="hc-sub">o pisicuță în suflet</div>
+      <div class="hc-name" id="heroCardName">Tribut</div>
+      <div class="hc-sub" id="heroCardSub">o pagină specială</div>
       <div class="hc-divider"></div>
       <div class="hc-facts" id="heroCardFacts">
         <div class="hc-fact"><span class="hf-icon">⏳</span><span>Se încarcă...</span></div>
@@ -575,17 +626,18 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 
 <!-- COUNTDOWN -->
 <div class="cd-wrap">
-  <div class="cd-inner rev">
-    <h2 class="s-title" style="margin-bottom:.6rem">Până la ziua ta <em>🎂</em></h2>
-    <p class="cd-sub">4 mai — când Taurul a venit pe lume ♉</p>
+  <div class="cd-inner rev section-edit-wrap">
+    <button class="section-edit-icon" onclick="editSettingGroup(['birthday_date','birthday_label','birthday_msg','birthday_msg_day','birthday_msg_week','birthday_bday_text'])">✏️ Editează</button>
+    <h2 class="s-title" style="margin-bottom:.6rem">Până la ziua specială <em>🎂</em></h2>
+    <p class="cd-sub" id="birthdayLabel">configurează data în setări</p>
     <div class="cd-boxes">
       <div class="cd-box"><span class="cd-num" id="cd-days">--</span><span class="cd-lbl">Zile</span></div>
       <div class="cd-box"><span class="cd-num" id="cd-hours">--</span><span class="cd-lbl">Ore</span></div>
       <div class="cd-box"><span class="cd-num" id="cd-minutes">--</span><span class="cd-lbl">Minute</span></div>
       <div class="cd-box"><span class="cd-num" id="cd-seconds">--</span><span class="cd-lbl">Secunde</span></div>
     </div>
-    <p class="cd-msg" id="cd-msg">Fiecare secundă te aduce mai aproape de ziua ta specială 🌸</p>
-    <p class="cd-bday" id="cd-bday">🎉 La mulți ani, Xiuș! 🎂 Azi e ziua ta! 🎉</p>
+    <p class="cd-msg" id="cd-msg">Fiecare secundă contează 🌸</p>
+    <p class="cd-bday" id="cd-bday">🎉 La mulți ani! 🎂</p>
   </div>
 </div>
 
@@ -595,10 +647,8 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
     <h2 class="s-title rev">Culorile tale <em>🎨</em></h2>
     <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">🌸</span><span class="s-rule-line right"></span></div>
   </div>
-  <p class="rev" style="text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--ink-soft);font-size:1.05rem;margin-bottom:2.5rem;max-width:560px;margin-left:auto;margin-right:auto;">
-    Preferatele tale sunt instabile — ba albastru, ba roz, ba negru. Și asta e perfect. Ești o femeie cu mai multe fațete. 🌈
-  </p>
   <div class="palette-grid" id="culoriGrid"><div style="color:#9b6a7e;font-style:italic;width:100%;text-align:center">Se încarcă...</div></div>
+  <button class="add-item-btn" onclick="openAddModal('culoare')">+ Adaugă culoare</button>
   <div id="culoriCitate"></div>
 </div>
 
@@ -611,6 +661,7 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
     <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">🌸</span><span class="s-rule-line right"></span></div>
   </div>
   <div class="flowers-grid" id="floriGrid"><div style="color:#9b6a7e;font-style:italic">Se încarcă...</div></div>
+  <button class="add-item-btn" onclick="openAddModal('floare')">+ Adaugă floare</button>
   <div id="floriCitate" style="margin-top:3rem"></div>
 </section>
 
@@ -624,15 +675,17 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
       <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">✨</span><span class="s-rule-line right"></span></div>
     </div>
     <div class="vibes-grid" id="vibesGrid"><div style="color:#9b6a7e;font-style:italic">Se încarcă...</div></div>
+    <button class="add-item-btn" onclick="openAddModal('vibe')">+ Adaugă vibe</button>
   </div>
 </div>
 
 <!-- SUNSET QUOTE -->
-<div class="sunset-quote">
+<div class="sunset-quote section-edit-wrap">
+  <button class="section-edit-icon" onclick="editSettingGroup(['sunset_quote','sunset_attr'])">✏️ Editează</button>
   <div class="sq-inner rev">
     <div style="font-size:3rem;margin-bottom:1rem">🌅</div>
-    <p class="sq-text">„Apusurile demonstrează că și sfârșitul poate fi frumos."</p>
-    <span class="sq-attr">— filozofia Xeniei</span>
+    <p class="sq-text" id="sunsetQuote">„Apusurile demonstrează că și sfârșitul poate fi frumos."</p>
+    <span class="sq-attr" id="sunsetAttr">— un gând special</span>
   </div>
 </div>
 
@@ -643,16 +696,19 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
   <h2 class="s-title rev" style="text-align:center;margin-bottom:.6rem">Lucruri care te fac <em>tu</em> 🪄</h2>
   <div class="s-rule rev" style="margin-bottom:1.5rem"><span class="s-rule-line"></span><span class="s-rule-icon">🐾</span><span class="s-rule-line right"></span></div>
   <div class="emoji-strip" id="emojiStrip"><div style="color:#9b6a7e;font-style:italic;padding:1rem">Se încarcă...</div></div>
+  <button class="add-item-btn" style="margin-top:.5rem" onclick="openAddModal('emoji_strip')">+ Adaugă</button>
 </div>
 
 <!-- PERSONALITATE -->
 <div class="pers-bg" id="personalitate">
   <div class="sect-inner">
-    <div style="text-align:center;margin-bottom:.2rem">
-      <h2 class="s-title rev">Sufletul tău, Xiuș <em style="color:#ffd6e7">🌙</em></h2>
+    <div style="text-align:center;margin-bottom:.2rem;position:relative" class="section-edit-wrap">
+      <button class="section-edit-icon" onclick="editSetting('pers_title','Titlu secțiune Suflet')">✏️ Titlu</button>
+      <h2 class="s-title rev" id="persTitle">Sufletul tău <em style="color:#ffd6e7">🌙</em></h2>
       <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon" style="color:rgba(232,85,122,.5)">✦</span><span class="s-rule-line right"></span></div>
     </div>
     <div class="traits-grid" id="trasaturiGrid"><div style="color:#c490a8;font-style:italic">Se încarcă...</div></div>
+    <button class="add-item-btn" onclick="openAddModal('trasatura')">+ Adaugă trăsătură</button>
   </div>
 </div>
 
@@ -665,8 +721,9 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
     <span class="night-moon">🌙</span>
     <h2 class="s-title" style="color:#fdf0f4">Noaptea, ești tu cu adevărat <em style="color:#ff80ab">✨</em></h2>
     <div class="s-rule" style="margin-bottom:1.5rem"><span class="s-rule-line" style="background:linear-gradient(to right,transparent,rgba(232,85,122,.3))"></span><span class="s-rule-icon" style="color:rgba(232,85,122,.4)">✦</span><span class="s-rule-line right" style="background:linear-gradient(to left,transparent,rgba(232,85,122,.3))"></span></div>
-    <p class="night-sub">Liniștea ploii, plimbările nocturne, gândurile care nu se opresc — asta ești tu când lumea doarme.</p>
+    <p class="night-sub" id="nightSub">Liniștea nopții, gândurile care nu se opresc — asta ești tu când lumea doarme.</p>
     <div class="night-grid" id="noapteGrid"><div style="color:#c490a8;font-style:italic">Se încarcă...</div></div>
+    <button class="add-item-btn" onclick="openAddModal('noapte')">+ Adaugă moment</button>
     <div id="noapteCitat" style="margin-top:2.5rem"></div>
   </div>
 </div>
@@ -679,6 +736,7 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
     <p style="color:var(--rose-deep);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1rem">Fiecare card ascunde un gând pentru tine</p>
     <p class="scratch-hint">✨ Desenează cu mouseul sau degetul pentru a răzui ✨</p>
     <div class="scratch-grid" id="scratchGrid"></div>
+    <button class="add-item-btn" style="margin-top:1rem" onclick="openAddModal('scratch')">+ Adaugă card</button>
   </div>
 </div>
 
@@ -686,12 +744,13 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 <div class="rand-wrap">
   <div class="rand-box rev">
     <p class="rand-title">✨ Un gând pentru tine ✨</p>
-    <p class="rand-sub">Apasă butonul — primești un compliment sau un adevăr despre tine</p>
+    <p class="rand-sub">Apasă butonul — primești un compliment</p>
     <div class="rand-display">
       <span class="rd-emoji" id="randEmoji">🌸</span>
       <p class="rd-text" id="randText">Apasă butonul de mai jos 💕</p>
     </div>
     <button class="rand-btn" onclick="spinRand()">✨ Surprinde-mă</button>
+    <button class="add-item-btn" style="margin:1rem auto 0;position:relative;z-index:1" onclick="openAddModal('compliment')">+ Adaugă compliment</button>
   </div>
 </div>
 
@@ -700,14 +759,16 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 <!-- FILME -->
 <div class="films-bg" id="filme">
   <div class="sect-inner">
-    <div style="text-align:center">
+    <div style="text-align:center;position:relative" class="section-edit-wrap">
+      <button class="section-edit-icon" onclick="editSetting('actress_badge','Text actriță preferată')">✏️ Actriță</button>
       <h2 class="s-title rev">Filmele & Serialele tale <em>🎬</em></h2>
       <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">🎬</span><span class="s-rule-line right"></span></div>
       <div class="rev" style="margin-bottom:2rem">
-        <span class="actress-badge">🌟 Actriță preferată: <strong>Angelina Jolie</strong> — putere, eleganță, profunzime</span>
+        <span class="actress-badge" id="actressBadge">🌟 Actriță preferată</span>
       </div>
     </div>
     <div class="films-grid rev" id="filmeGrid"><div style="color:#9b6a7e;font-style:italic">Se încarcă...</div></div>
+    <button class="add-item-btn" onclick="openAddModal('film')">+ Adaugă film</button>
     <div id="citatFilmeSection" style="margin-top:2.5rem"></div>
   </div>
 </div>
@@ -724,10 +785,12 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
         <div>
           <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--rose);margin-bottom:1.2rem">🎶 Artiștii tăi</h3>
           <ul class="flist" id="muzicaArtisti"></ul>
+          <button class="add-item-btn" onclick="openAddModal('muzica_artist')">+ Artist</button>
         </div>
         <div>
           <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--rose);margin-bottom:1.2rem">✨ Piesele tale</h3>
           <ul class="flist" id="muzicaPiese"></ul>
+          <button class="add-item-btn" onclick="openAddModal('muzica_piesa')">+ Piesă</button>
         </div>
       </div>
     </div>
@@ -740,9 +803,8 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
     <h2 class="s-title rev">Cât de mult... <em>💗</em></h2>
     <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">📊</span><span class="s-rule-line right"></span></div>
   </div>
-  <div class="extra-box rev" id="progressSection">
-    <div class="admin-loading">Se încarcă...</div>
-  </div>
+  <div class="extra-box rev" id="progressSection"><div class="admin-loading">Se încarcă...</div></div>
+  <button class="add-item-btn" onclick="openAddModal('stat')">+ Adaugă statistică</button>
 </section>
 
 <!-- IUBIRE -->
@@ -752,9 +814,13 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
       <h2 class="s-title rev">Iubirea ta <em>💌</em></h2>
       <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">💕</span><span class="s-rule-line right"></span></div>
     </div>
-    <p class="love-intro rev" id="loveIntro">Știi să iubești. Toate filmele tale au tematică de iubire — nu pentru că ești naivă, ci pentru că <em>crezi în ea</em>.</p>
+    <p class="love-intro rev section-edit-wrap" id="loveIntro" style="position:relative">
+      <button class="section-edit-icon" style="top:0;right:0" onclick="editSetting('love_intro','Textul introductiv despre iubire')">✏️</button>
+      Știi să iubești. Crezi în ea.
+    </p>
     <h3 style="font-family:'Great Vibes',cursive;font-size:1.8rem;color:var(--rose);text-align:center;margin-bottom:.8rem">Love language-ul tău 💕</h3>
     <div class="love-tags" id="loveTags"><div style="color:#9b6a7e;font-style:italic">Se încarcă...</div></div>
+    <button class="add-item-btn" onclick="openAddModal('love_tag')">+ Adaugă tag</button>
     <div id="iubireCitate" style="margin-top:3rem"></div>
   </div>
 </div>
@@ -767,6 +833,13 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
       <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">🌸</span><span class="s-rule-line right"></span></div>
     </div>
     <div id="extraSections"></div>
+    <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem">
+      <button class="add-item-btn" onclick="openAddModal('extra_personal')">+ Personal</button>
+      <button class="add-item-btn" onclick="openAddModal('extra_culori')">+ Culori</button>
+      <button class="add-item-btn" onclick="openAddModal('extra_nu_place')">+ Nu place</button>
+      <button class="add-item-btn" onclick="openAddModal('extra_vise')">+ Vise</button>
+      <button class="add-item-btn" onclick="openAddModal('extra_obiceiuri')">+ Obiceiuri</button>
+    </div>
   </div>
 </div>
 
@@ -777,8 +850,11 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
       <h2 class="s-title rev">O scrisoare pentru tine <em>💌</em></h2>
       <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">💌</span><span class="s-rule-line right"></span></div>
     </div>
-    <div class="letter-card rev" id="letterCard">
-      <div class="admin-loading">Se încarcă...</div>
+    <div class="letter-card rev" id="letterCard"><div class="admin-loading">Se încarcă...</div></div>
+    <div style="display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:1rem">
+      <button class="add-item-btn" onclick="openAddModal('scrisoare_paragraf')">+ Paragraf</button>
+      <button class="add-item-btn" onclick="openAddModal('scrisoare_semnatura')">+ Semnătură</button>
+      <button class="add-item-btn" onclick="openAddModal('scrisoare_nota')">+ Notă</button>
     </div>
   </div>
 </div>
@@ -786,16 +862,10 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 <!-- FOOTER -->
 <footer>
   <span class="footer-heart">💗</span>
-  <p id="footerName">Xenia · aka Xiușa 🐾 pisicuță în altă viață</p>
-  <p style="margin-top:.4rem;font-size:.73rem;opacity:.6">
-    Universitatea de Medicină Nicolae Testemițanu, Republica Moldova 🇲🇩<br>
-    Familia Cozmic · 4 mai · Taur ♉<br>🌸 baby pink · wine red · navy blue 🌸
-  </p>
+  <p id="footerLine1">O pagină specială 🌸</p>
+  <p id="footerLine2" style="margin-top:.4rem;font-size:.73rem;opacity:.6"></p>
 </footer>
 
-<!-- ══════════════════════════════════════════════
-     SCRIPTS
-══════════════════════════════════════════════ -->
 <script>
 // ── SUPABASE
 const SB_URL = 'https://fndjrfieitieqzafhyzz.supabase.co';
@@ -816,7 +886,7 @@ for(let i=0;i<28;i++){const s=document.createElement('div');s.className='star';s
 // ── PETALS
 const pemos=['🌸','🌷','💕','✨','🌺','🪷','💗'];
 document.addEventListener('click',e=>{
-  if(e.target.closest('#adminOverlay'))return;
+  if(e.target.closest('#adminOverlay')||e.target.closest('#editModal'))return;
   for(let i=0;i<5;i++){
     const p=document.createElement('div');p.className='petal';
     p.textContent=pemos[Math.floor(Math.random()*pemos.length)];
@@ -841,14 +911,25 @@ function observeAll(){
 observeAll();
 
 // ── COUNTDOWN
+let bdaySettings={};
 function updateCD(){
-  const now=new Date(),y=now.getFullYear();
-  let next=new Date(y,4,4,0,0,0);
-  if(now>=next)next=new Date(y+1,4,4,0,0,0);
-  const isToday=now.getMonth()===4&&now.getDate()===4;
+  const dateStr=bdaySettings.birthday_date||'';
+  if(!dateStr){
+    document.getElementById('cd-msg').textContent='Configurează data în Admin → Setări (birthday_date: MM-DD)';
+    return;
+  }
+  const parts=dateStr.split('-');
+  const month=parseInt(parts[0])-1;
+  const day=parseInt(parts[1]);
+  const now=new Date();
+  let next=new Date(now.getFullYear(),month,day,0,0,0);
+  if(now>=next)next=new Date(now.getFullYear()+1,month,day,0,0,0);
+  const isToday=now.getMonth()===month&&now.getDate()===day;
+  document.getElementById('birthdayLabel').textContent=bdaySettings.birthday_label||dateStr;
   if(isToday){
     document.getElementById('cd-msg').style.display='none';
     document.getElementById('cd-bday').style.display='block';
+    document.getElementById('cd-bday').textContent=bdaySettings.birthday_bday_text||'🎉 La mulți ani! 🎂';
     document.querySelectorAll('.cd-box').forEach(b=>b.style.display='none');
     launchConfetti();return;
   }
@@ -859,9 +940,9 @@ function updateCD(){
   document.getElementById('cd-minutes').textContent=String(m).padStart(2,'0');
   document.getElementById('cd-seconds').textContent=String(s).padStart(2,'0');
   const msg=document.getElementById('cd-msg');
-  if(d===0)msg.textContent='Mâine e ziua ta, Xiuș! 🎂✨';
-  else if(d<=7)msg.textContent=`Doar ${d} zile rămase — pregătește-te să strălucești! 🌸`;
-  else if(d<=30)msg.textContent=`Luna aceasta e luna ta, Xiuș! 🌷`;
+  if(d===0) msg.textContent=bdaySettings.birthday_msg_day||'Mâine e ziua specială! 🎂✨';
+  else if(d<=7) msg.textContent=bdaySettings.birthday_msg_week||(d+' zile rămase — pregătește-te! 🌸');
+  else msg.textContent=bdaySettings.birthday_msg||'Fiecare secundă contează 🌸';
 }
 function launchConfetti(){
   const cols=['#e8557a','#ff80ab','#fce8ef','#b53060','#fdf0f4'];
@@ -873,7 +954,7 @@ function launchConfetti(){
     },i*30);
   }
 }
-updateCD();setInterval(updateCD,1000);
+setInterval(updateCD,1000);
 
 // ── NIGHT CANVAS
 const nc=document.getElementById('nightCanvas');
@@ -927,57 +1008,62 @@ const progObs=new IntersectionObserver(entries=>{
 },{threshold:.25});
 
 // ══════════════════════════════════════════════════════
-//  DATA — 3 tabele: xenia_settings | xenia_items | xenia_quotes
+//  DATA — tabele: xenia_settings | xenia_items | xenia_quotes
 // ══════════════════════════════════════════════════════
-
-// cache global
-let allItems = [];
-let allQuotes = [];
+let allItems=[];
+let allQuotes=[];
+let settingsCache={};
 
 async function loadAll(){
-  await Promise.all([loadSettings(), loadItems(), loadQuotes()]);
+  await Promise.all([loadSettings(),loadItems(),loadQuotes()]);
   renderPage();
 }
 
-// ── SETTINGS (xenia_settings: id, cheie, valoare)
-let settingsCache = {};
 async function loadSettings(){
-  const {data} = await db.from('xenia_settings').select('*').order('cheie');
-  if(!data) return;
-  settingsCache = {};
-  data.forEach(r => settingsCache[r.cheie] = r.valoare);
-  if(settingsCache.hero_name)    document.getElementById('heroName').textContent    = settingsCache.hero_name;
-  if(settingsCache.hero_tagline) document.getElementById('heroTagline').textContent = settingsCache.hero_tagline;
-  if(settingsCache.hero_note)    document.getElementById('heroNote').textContent    = settingsCache.hero_note;
-  if(settingsCache.footer_name)  document.getElementById('footerName').textContent  = settingsCache.footer_name;
-  if(settingsCache.love_intro)   document.getElementById('loveIntro').innerHTML     = settingsCache.love_intro;
+  const {data}=await db.from('xenia_settings').select('*').order('cheie');
+  if(!data)return;
+  settingsCache={};
+  data.forEach(r=>settingsCache[r.cheie]=r.valoare);
+  applySettings();
   renderSetariTable(data);
 }
 
-// ── INFO PILLS (xenia_settings cu cheie prefix "info_")
-// Sunt stocate ca tip separat: xenia_settings rămâne pentru key/value generic
-// Info pills vin din xenia_items cu tip='info_pill'
-// (Simplu, fără tabel separat)
+function applySettings(){
+  const s=settingsCache;
+  if(s.hero_name)       document.getElementById('heroName').textContent=s.hero_name;
+  if(s.hero_tagline)    document.getElementById('heroTagline').textContent=s.hero_tagline;
+  if(s.hero_note)       document.getElementById('heroNote').textContent=s.hero_note;
+  if(s.hero_eyebrow)    document.getElementById('heroEyebrow').innerHTML='✦ '+s.hero_eyebrow;
+  if(s.hero_card_name)  document.getElementById('heroCardName').textContent=s.hero_card_name;
+  if(s.hero_card_sub)   document.getElementById('heroCardSub').textContent=s.hero_card_sub;
+  if(s.hero_bg_letter)  document.getElementById('heroBgLetter').textContent=s.hero_bg_letter;
+  if(s.nav_logo)        document.getElementById('navLogo').textContent=s.nav_logo;
+  if(s.footer_line1)    document.getElementById('footerLine1').textContent=s.footer_line1;
+  if(s.footer_line2)    document.getElementById('footerLine2').textContent=s.footer_line2;
+  if(s.love_intro)      document.getElementById('loveIntro').innerHTML=s.love_intro+'<button class="section-edit-icon" style="top:0;right:0" onclick="editSetting(\'love_intro\',\'Textul introductiv despre iubire\')">✏️</button>';
+  if(s.night_sub)       document.getElementById('nightSub').textContent=s.night_sub;
+  if(s.sunset_quote)    document.getElementById('sunsetQuote').textContent=s.sunset_quote;
+  if(s.sunset_attr)     document.getElementById('sunsetAttr').textContent=s.sunset_attr;
+  if(s.actress_badge)   document.getElementById('actressBadge').textContent=s.actress_badge;
+  if(s.pers_title)      document.getElementById('persTitle').innerHTML=s.pers_title+'<em style="color:#ffd6e7"> 🌙</em>';
+  bdaySettings=s;
+  updateCD();
+}
 
-// ── ITEMS (xenia_items: id, tip, emoji, titlu, text, hex, hex2, bool1, num1, cat1, ordine)
 async function loadItems(){
-  const {data} = await db.from('xenia_items').select('*').order('ordine');
-  allItems = data || [];
+  const {data}=await db.from('xenia_items').select('*').order('ordine');
+  allItems=data||[];
 }
-
-// ── QUOTES (xenia_quotes: id, sectiune, text, culoare_bordura, ordine)
 async function loadQuotes(){
-  const {data} = await db.from('xenia_quotes').select('*').order('ordine');
-  allQuotes = data || [];
+  const {data}=await db.from('xenia_quotes').select('*').order('ordine');
+  allQuotes=data||[];
 }
+function getItems(tip){return allItems.filter(r=>r.tip===tip)}
+function getQuotes(sectiune){return allQuotes.filter(r=>r.sectiune===sectiune)}
 
-function getItems(tip){ return allItems.filter(r=>r.tip===tip); }
-function getItemsPrefix(prefix){ return allItems.filter(r=>r.tip.startsWith(prefix)); }
-function getQuotes(sectiune){ return allQuotes.filter(r=>r.sectiune===sectiune); }
-
-function quotesHtml(arr, darkStyle=false){
+function quotesHtml(arr,darkStyle=false){
   return arr.map(r=>{
-    const bg = darkStyle ? 'background:rgba(255,255,255,.04);color:#ffd6e7;' : '';
+    const bg=darkStyle?'background:rgba(255,255,255,.04);color:#ffd6e7;':'';
     return `<div class="bq rev" style="${bg}border-left-color:${r.culoare_bordura||'var(--rose)'}">${r.text}</div>`;
   }).join('');
 }
@@ -1000,95 +1086,110 @@ function renderPage(){
   renderScrisoare();
   renderContentTable(allItems);
   renderQuotesTable(allQuotes);
-  setTimeout(observeAll, 120);
+  renderInfoTable(allItems);
+  setTimeout(observeAll,120);
+  // Re-apply edit controls if in edit mode
+  if(editModeOn) applyEditControls();
 }
 
 function renderInfoPills(){
-  const pills = getItems('info_pill');
-  const pillsEl = document.getElementById('infoPills');
-  const cardEl  = document.getElementById('heroCardFacts');
-  if(!pills.length){ pillsEl.innerHTML=''; cardEl.innerHTML=''; return; }
-  pillsEl.innerHTML = pills.map(r=>`<span class="pill"><span>${r.emoji||''}</span>${r.titlu}</span>`).join('');
-  cardEl.innerHTML  = pills.slice(0,4).map(r=>`<div class="hc-fact"><span class="hf-icon">${r.emoji||'📌'}</span><span>${r.titlu}</span></div>`).join('');
+  const pills=getItems('info_pill');
+  const pillsEl=document.getElementById('infoPills');
+  const cardEl=document.getElementById('heroCardFacts');
+  if(!pills.length){pillsEl.innerHTML='';cardEl.innerHTML='';return;}
+  pillsEl.innerHTML=pills.map(r=>`<span class="pill">${r.emoji||''} ${r.titlu}</span>`).join('');
+  cardEl.innerHTML=pills.slice(0,4).map(r=>`<div class="hc-fact"><span class="hf-icon">${r.emoji||'📌'}</span><span>${r.titlu}</span></div>`).join('');
 }
 
 function renderCulori(){
-  const items = getItems('culoare');
-  const grid  = document.getElementById('culoriGrid');
-  if(!items.length){ grid.innerHTML='<div style="color:#9b6a7e;font-style:italic;width:100%;text-align:center">Nicio culoare adăugată.</div>'; }
-  else grid.innerHTML = items.map(r=>{
-    const bg = r.hex2 ? `background:linear-gradient(135deg,${r.hex},${r.hex2})` : `background:${r.hex}`;
-    return `<div class="palette-swatch rev">
+  const items=getItems('culoare');
+  const grid=document.getElementById('culoriGrid');
+  if(!items.length){grid.innerHTML='<div style="color:#9b6a7e;font-style:italic;width:100%;text-align:center">Nicio culoare adăugată.</div>';return;}
+  grid.innerHTML=items.map(r=>{
+    const bg=r.hex2?`background:linear-gradient(135deg,${r.hex},${r.hex2})`:`background:${r.hex||'#eee'}`;
+    return `<div class="palette-swatch rev editable-wrap" data-id="${r.id}" data-tip="culoare" style="position:relative">
+      ${itemCtrl(r)}
       <div class="swatch-circle" style="${bg}"></div>
-      <div class="swatch-label">${r.titlu}</div>
+      <div class="swatch-label">${r.titlu||''}</div>
       ${r.text?`<div class="swatch-note">${r.text}</div>`:''}
       ${r.bool1?'<span class="swatch-fav">♡ Preferată</span>':''}
     </div>`;
   }).join('');
-  document.getElementById('culoriCitate').innerHTML = quotesHtml(getQuotes('culori'));
+  document.getElementById('culoriCitate').innerHTML=quotesHtml(getQuotes('culori'));
 }
 
 function renderFlori(){
-  const items = getItems('floare');
-  const grid  = document.getElementById('floriGrid');
-  if(!items.length){ grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Nicio floare adăugată.</div>'; return; }
-  grid.innerHTML = items.map(r=>`<div class="flower-card">
+  const items=getItems('floare');
+  const grid=document.getElementById('floriGrid');
+  if(!items.length){grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Nicio floare adăugată.</div>';return;}
+  grid.innerHTML=items.map(r=>`<div class="flower-card editable-wrap" data-id="${r.id}" data-tip="floare">
+    ${itemCtrl(r)}
     <span class="fc-icon">${r.emoji||'🌸'}</span>
-    <div class="fc-title">${r.titlu}</div>
+    <div class="fc-title">${r.titlu||''}</div>
     <div class="fc-text">${r.text||''}</div>
   </div>`).join('');
-  document.getElementById('floriCitate').innerHTML = quotesHtml(getQuotes('flori'));
+  document.getElementById('floriCitate').innerHTML=quotesHtml(getQuotes('flori'));
 }
 
 function renderVibes(){
-  const items = getItems('vibe');
-  const grid  = document.getElementById('vibesGrid');
-  if(!items.length){ grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun vibe adăugat.</div>'; return; }
-  grid.innerHTML = items.map(r=>`<div class="vibe-card">
+  const items=getItems('vibe');
+  const grid=document.getElementById('vibesGrid');
+  if(!items.length){grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun vibe adăugat.</div>';return;}
+  grid.innerHTML=items.map(r=>`<div class="vibe-card editable-wrap" data-id="${r.id}" data-tip="vibe">
+    ${itemCtrl(r)}
     <span class="vc-icon">${r.emoji||'✨'}</span>
-    <div class="vc-label">${r.titlu}</div>
+    <div class="vc-label">${r.titlu||''}</div>
     <div class="vc-text">${r.text||''}</div>
   </div>`).join('');
 }
 
 function renderEmojiStrip(){
-  const items = getItems('emoji_strip');
-  const strip = document.getElementById('emojiStrip');
-  if(!items.length){ strip.innerHTML='<div style="color:#9b6a7e;font-style:italic;padding:1rem">Nimic adăugat.</div>'; return; }
-  strip.innerHTML = items.map(r=>`<div class="ef"><span class="ef-i">${r.emoji||'🌸'}</span><span class="ef-t">${r.titlu}</span></div>`).join('');
+  const items=getItems('emoji_strip');
+  const strip=document.getElementById('emojiStrip');
+  if(!items.length){strip.innerHTML='<div style="color:#9b6a7e;font-style:italic;padding:1rem">Nimic adăugat.</div>';return;}
+  strip.innerHTML=items.map(r=>`<div class="ef editable-wrap" data-id="${r.id}" data-tip="emoji_strip" style="position:relative">
+    ${itemCtrl(r)}
+    <span class="ef-i">${r.emoji||'🌸'}</span>
+    <span class="ef-t">${r.titlu||''}</span>
+  </div>`).join('');
 }
 
 function renderTrasaturi(){
-  const items = getItems('trasatura');
-  const grid  = document.getElementById('trasaturiGrid');
-  if(!items.length){ grid.innerHTML='<div style="color:#c490a8;font-style:italic">Nicio trăsătură adăugată.</div>'; return; }
-  grid.innerHTML = items.map(r=>`<div class="trait-item"><span class="ti-icon">${r.emoji||'🌟'}</span><span>${r.text}</span></div>`).join('');
+  const items=getItems('trasatura');
+  const grid=document.getElementById('trasaturiGrid');
+  if(!items.length){grid.innerHTML='<div style="color:#c490a8;font-style:italic">Nicio trăsătură adăugată.</div>';return;}
+  grid.innerHTML=items.map(r=>`<div class="trait-item editable-wrap" data-id="${r.id}" data-tip="trasatura" style="position:relative">
+    ${itemCtrl(r)}
+    <span class="ti-icon">${r.emoji||'🌟'}</span><span>${r.text||''}</span>
+  </div>`).join('');
 }
 
 function renderNoapte(){
-  const items = getItems('noapte');
-  const grid  = document.getElementById('noapteGrid');
-  if(!items.length){ grid.innerHTML='<div style="color:#c490a8;font-style:italic">Nimic adăugat.</div>'; return; }
-  grid.innerHTML = items.map(r=>`<div class="night-item"><span class="ni-icon">${r.emoji||'🌙'}</span><span>${r.text}</span></div>`).join('');
-  document.getElementById('noapteCitat').innerHTML = quotesHtml(getQuotes('noapte'), true);
+  const items=getItems('noapte');
+  const grid=document.getElementById('noapteGrid');
+  if(!items.length){grid.innerHTML='<div style="color:#c490a8;font-style:italic">Nimic adăugat.</div>';return;}
+  grid.innerHTML=items.map(r=>`<div class="night-item editable-wrap" data-id="${r.id}" data-tip="noapte" style="position:relative">
+    ${itemCtrl(r)}
+    <span class="ni-icon">${r.emoji||'🌙'}</span><span>${r.text||''}</span>
+  </div>`).join('');
+  document.getElementById('noapteCitat').innerHTML=quotesHtml(getQuotes('noapte'),true);
 }
 
-let scratchData = [];
 function renderScratch(){
-  scratchData = getItems('scratch');
-  buildScratchCards();
-}
-function buildScratchCards(){
-  const grid = document.getElementById('scratchGrid');
-  if(!scratchData.length){ grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun card adăugat.</div>'; return; }
+  const scratchData=getItems('scratch');
+  const grid=document.getElementById('scratchGrid');
+  if(!scratchData.length){grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun card adăugat.</div>';return;}
   grid.innerHTML='';
   scratchData.forEach(msg=>{
+    const outer=document.createElement('div');outer.className='editable-wrap';outer.dataset.id=msg.id;outer.dataset.tip='scratch';outer.style.position='relative';
+    outer.innerHTML=itemCtrl(msg);
     const wrap=document.createElement('div');wrap.className='scratch-card';
     const back=document.createElement('div');back.className='scratch-back';
-    back.innerHTML=`<div class="sb-emoji">${msg.emoji||'🌸'}</div><div class="sb-text">${msg.text}</div>`;
+    back.innerHTML=`<div class="sb-emoji">${msg.emoji||'🌸'}</div><div class="sb-text">${msg.text||''}</div>`;
     wrap.appendChild(back);
     const cv=document.createElement('canvas');cv.width=260;cv.height=160;wrap.appendChild(cv);
-    grid.appendChild(wrap);
+    outer.appendChild(wrap);
+    grid.appendChild(outer);
     const cxt=cv.getContext('2d');
     const g=cxt.createLinearGradient(0,0,260,160);
     g.addColorStop(0,'#e8557a');g.addColorStop(.5,'#f06292');g.addColorStop(1,'#b53060');
@@ -1110,96 +1211,106 @@ function buildScratchCards(){
   });
 }
 
-let complimenteDb = [];
-function renderComplimente(){
-  complimenteDb = getItems('compliment');
-}
-
 function renderFilme(){
-  const items = getItems('film');
-  const grid  = document.getElementById('filmeGrid');
-  if(!items.length){ grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun film adăugat.</div>'; return; }
-  const cats = {};
-  items.forEach(r=>{ const c=r.cat1||'Diverse'; if(!cats[c])cats[c]=[]; cats[c].push(r); });
-  const catEmojis = {'Romantice clasice':'💕','Comedii':'😄','Animații & Seriale':'🎪','Animații':'🎠','Seriale':'📺'};
-  grid.innerHTML = Object.entries(cats).map(([cat,films])=>`
+  const items=getItems('film');
+  const grid=document.getElementById('filmeGrid');
+  if(!items.length){grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun film adăugat.</div>';return;}
+  const cats={};
+  items.forEach(r=>{const c=r.cat1||'Diverse';if(!cats[c])cats[c]=[];cats[c].push(r);});
+  const catEmojis={'Romantice clasice':'💕','Comedii':'😄','Animații & Seriale':'🎪','Animații':'🎠','Seriale':'📺'};
+  grid.innerHTML=Object.entries(cats).map(([cat,films])=>`
     <div class="film-col">
       <h3>${catEmojis[cat]||'🎬'} ${cat}</h3>
-      <ul class="flist">${films.map(f=>`<li class="${f.bool1?'hl':''}">${f.titlu}</li>`).join('')}</ul>
+      <ul class="flist">${films.map(f=>`<li class="${f.bool1?'hl':''} editable-wrap" data-id="${f.id}" data-tip="film" style="position:relative">
+        ${itemCtrl(f)}<span>${f.titlu||''}</span></li>`).join('')}</ul>
     </div>`).join('');
-  document.getElementById('citatFilmeSection').innerHTML = quotesHtml(getQuotes('filme'));
+  document.getElementById('citatFilmeSection').innerHTML=quotesHtml(getQuotes('filme'));
 }
 
 function renderMuzica(){
-  const artisti = getItems('muzica_artist');
-  const piese   = getItems('muzica_piesa');
-  document.getElementById('muzicaArtisti').innerHTML = artisti.length
-    ? artisti.map(r=>`<li class="${r.bool1?'hl':''}">${r.titlu}</li>`).join('')
-    : '<li style="color:#9b6a7e">-</li>';
-  document.getElementById('muzicaPiese').innerHTML = piese.length
-    ? piese.map(r=>`<li class="${r.bool1?'hl':''}">${r.titlu}</li>`).join('')
-    : '<li style="color:#9b6a7e">-</li>';
+  const artisti=getItems('muzica_artist');
+  const piese=getItems('muzica_piesa');
+  document.getElementById('muzicaArtisti').innerHTML=artisti.length
+    ?artisti.map(r=>`<li class="${r.bool1?'hl':''} editable-wrap" data-id="${r.id}" data-tip="muzica_artist" style="position:relative">${itemCtrl(r)}<span>${r.titlu||''}</span></li>`).join('')
+    :'<li style="color:#9b6a7e">-</li>';
+  document.getElementById('muzicaPiese').innerHTML=piese.length
+    ?piese.map(r=>`<li class="${r.bool1?'hl':''} editable-wrap" data-id="${r.id}" data-tip="muzica_piesa" style="position:relative">${itemCtrl(r)}<span>${r.titlu||''}</span></li>`).join('')
+    :'<li style="color:#9b6a7e">-</li>';
 }
 
 function renderStats(){
-  const items   = getItems('stat');
-  const section = document.getElementById('progressSection');
-  if(!items.length){ section.innerHTML='<div style="color:#9b6a7e;font-style:italic">Nicio statistică adăugată.</div>'; return; }
-  section.innerHTML = items.map(r=>`
-    <div class="prog-item">
-      <div class="prog-label"><span>${r.emoji||''} ${r.titlu}</span><span>${r.num1||0}%</span></div>
+  const items=getItems('stat');
+  const section=document.getElementById('progressSection');
+  if(!items.length){section.innerHTML='<div style="color:#9b6a7e;font-style:italic">Nicio statistică adăugată.</div>';return;}
+  section.innerHTML=items.map(r=>`
+    <div class="prog-item editable-wrap" data-id="${r.id}" data-tip="stat" style="position:relative">
+      ${itemCtrl(r)}
+      <div class="prog-label"><span>${r.emoji||''} ${r.titlu||''}</span><span>${r.num1||0}%</span></div>
       <div class="prog-bar"><div class="prog-fill" data-w="${r.num1||0}"></div></div>
     </div>`).join('');
   progObs.observe(section);
 }
 
 function renderLoveTags(){
-  const items = getItems('love_tag');
-  const wrap  = document.getElementById('loveTags');
-  if(!items.length){ wrap.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun tag adăugat.</div>'; return; }
-  wrap.innerHTML = items.map(r=>`<span class="love-tag">${r.titlu}</span>`).join('');
-  document.getElementById('iubireCitate').innerHTML = quotesHtml(getQuotes('iubire'));
+  const items=getItems('love_tag');
+  const wrap=document.getElementById('loveTags');
+  if(!items.length){wrap.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun tag adăugat.</div>';return;}
+  wrap.innerHTML=items.map(r=>`<span class="love-tag editable-wrap" data-id="${r.id}" data-tip="love_tag" style="position:relative">${itemCtrl(r)}${r.titlu||''}</span>`).join('');
+  document.getElementById('iubireCitate').innerHTML=quotesHtml(getQuotes('iubire'));
 }
 
 function renderExtra(){
-  const catMap = {
+  const catMap={
     extra_personal:'🌍 Informații personale',
     extra_culori:'🎨 Culorile perfecte',
-    extra_nu_place:'❌ NU-ți place',
+    extra_nu_place:'❌ Nu îți place',
     extra_vise:'🎯 Vise & aspirații',
     extra_obiceiuri:'🎀 Mici obiceiuri & quirks'
   };
-  const extraTypes = Object.keys(catMap);
-  const wrap = document.getElementById('extraSections');
-  const allExtra = allItems.filter(r=>extraTypes.includes(r.tip));
-  if(!allExtra.length){ wrap.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun detaliu adăugat.</div>'; return; }
-  const cats = {};
-  allExtra.forEach(r=>{ if(!cats[r.tip])cats[r.tip]=[]; cats[r.tip].push(r); });
-  wrap.innerHTML = extraTypes.filter(t=>cats[t]).map(t=>`
+  const extraTypes=Object.keys(catMap);
+  const wrap=document.getElementById('extraSections');
+  const allExtra=allItems.filter(r=>extraTypes.includes(r.tip));
+  if(!allExtra.length){wrap.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun detaliu adăugat.</div>';return;}
+  const cats={};
+  allExtra.forEach(r=>{if(!cats[r.tip])cats[r.tip]=[];cats[r.tip].push(r);});
+  wrap.innerHTML=extraTypes.filter(t=>cats[t]).map(t=>`
     <div class="extra-box rev">
       <h3>${catMap[t]}</h3>
-      <ul class="info-list">${cats[t].map(r=>`<li><span class="il-i">${r.emoji||'📌'}</span>${r.text}</li>`).join('')}</ul>
+      <ul class="info-list">${cats[t].map(r=>`<li class="editable-wrap" data-id="${r.id}" data-tip="${r.tip}" style="position:relative">
+        ${itemCtrl(r)}<span class="il-i">${r.emoji||'📌'}</span>${r.text||''}
+      </li>`).join('')}</ul>
     </div>`).join('');
 }
 
 function renderScrisoare(){
-  const paragraf  = getItems('scrisoare_paragraf');
-  const semnatura = getItems('scrisoare_semnatura');
-  const nota      = getItems('scrisoare_nota');
-  const all       = [...paragraf, ...semnatura, ...nota].sort((a,b)=>a.ordine-b.ordine);
-  const card = document.getElementById('letterCard');
-  if(!all.length){ card.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun text adăugat.</div>'; return; }
-  card.innerHTML = all.map(r=>{
-    if(r.tip==='scrisoare_semnatura') return `<div class="letter-sig">${r.text}</div>`;
-    if(r.tip==='scrisoare_nota')      return `<p class="letter-note">${r.text}</p>`;
-    return `<p>${r.text}</p>`;
+  const paragraf=getItems('scrisoare_paragraf');
+  const semnatura=getItems('scrisoare_semnatura');
+  const nota=getItems('scrisoare_nota');
+  const all=[...paragraf,...semnatura,...nota].sort((a,b)=>a.ordine-b.ordine);
+  const card=document.getElementById('letterCard');
+  if(!all.length){card.innerHTML='<div style="color:#9b6a7e;font-style:italic">Niciun text adăugat.</div>';return;}
+  card.innerHTML=all.map(r=>{
+    const cls='editable-wrap';
+    const ctrl=itemCtrl(r);
+    if(r.tip==='scrisoare_semnatura')return`<div class="${cls}" data-id="${r.id}" data-tip="${r.tip}" style="position:relative">${ctrl}<div class="letter-sig">${r.text||''}</div></div>`;
+    if(r.tip==='scrisoare_nota')return`<div class="${cls}" data-id="${r.id}" data-tip="${r.tip}" style="position:relative">${ctrl}<p class="letter-note">${r.text||''}</p></div>`;
+    return`<div class="${cls}" data-id="${r.id}" data-tip="${r.tip}" style="position:relative">${ctrl}<p>${r.text||''}</p></div>`;
   }).join('');
+}
+
+// item control buttons HTML
+function itemCtrl(r){
+  return `<div class="item-ctrl">
+    <button class="ic-btn drag-handle" title="Reordonează" draggable="true" onmousedown="startDrag(event,${r.id})">⠿</button>
+    <button class="ic-btn" title="Editează" onclick="openEditModalItem(${r.id})">✏️</button>
+    <button class="ic-btn" title="Șterge" onclick="deleteItem(${r.id})">🗑️</button>
+  </div>`;
 }
 
 // RANDOMIZER
 let lastRand=-1;
 function spinRand(){
-  complimenteDb = getItems('compliment');
+  const complimenteDb=getItems('compliment');
   if(!complimenteDb.length){showToast('Niciun compliment adăugat!','err');return;}
   const btn=document.querySelector('.rand-btn');
   const em=document.getElementById('randEmoji');
@@ -1217,105 +1328,94 @@ function spinRand(){
 }
 
 // ══════════════════════════════════════════════════════
-//  ADMIN PANEL
+//  EDIT MODE
 // ══════════════════════════════════════════════════════
+let editModeOn=false;
 
-function switchTab(id){
-  document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));
-  document.querySelector(`.atab[onclick="switchTab('${id}')"]`).classList.add('active');
-  document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
-  document.querySelector(`.admin-section[data-tab="${id}"]`).classList.add('active');
+function toggleEditMode(){
+  editModeOn=!editModeOn;
+  document.body.classList.toggle('edit-mode-active',editModeOn);
+  const btn=document.getElementById('editToggleBtn');
+  btn.textContent=editModeOn?'✅ Ieși din editare':'✏️ Editează';
+  btn.classList.toggle('active',editModeOn);
+  showToast(editModeOn?'Mod editare activ — apasă ✏️ sau ⠿ pe orice element':'Mod editare dezactivat');
 }
 
-function openAdmin(){
-  document.getElementById('adminOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
-  updateContentFieldVisibility();
-}
-function closeAdmin(){ document.getElementById('adminOverlay').classList.remove('open'); document.body.style.overflow=''; }
-
-function showToast(msg,type='ok'){
-  const t=document.getElementById('adminToast');
-  t.textContent=msg;t.className=`admin-toast ${type} show`;
-  setTimeout(()=>t.classList.remove('show'),2800);
+function applyEditControls(){
+  // controls are already rendered inline via itemCtrl(), nothing extra needed
 }
 
-async function upsertAndReload(table, obj, reloadFn){
-  const {error}=await db.from(table).upsert(obj).select();
-  if(error){showToast('Eroare: '+error.message,'err');}else{showToast('✓ Salvat!');await reloadFn();}
-}
-async function delAndReload(table, id, reloadFn){
-  const {error}=await db.from(table).delete().eq('id',id);
-  if(error){showToast('Eroare ștergere: '+error.message,'err');}else{showToast('✓ Șters!');await reloadFn();}
+// ── DRAG & DROP reorder
+let dragId=null;
+let dragOverId=null;
+
+function startDrag(e, id){
+  dragId=id;
+  // use HTML5 drag on the parent editable-wrap
+  const wrap=e.target.closest('.editable-wrap');
+  if(!wrap)return;
+  wrap.setAttribute('draggable','true');
+  wrap.addEventListener('dragstart',onDragStart,{once:true});
 }
 
-function clearForm(p){
-  document.querySelectorAll(`[id^="${p}-"]`).forEach(el=>{
-    if(el.type==='checkbox') el.checked=false;
-    else if(el.type==='number') el.value=0;
-    else if(el.tagName==='SELECT') el.selectedIndex=0;
-    else el.value=el.id.endsWith('culoare')||el.id==='q-culoare'?'var(--rose)':'';
+function onDragStart(e){
+  e.dataTransfer.effectAllowed='move';
+  e.currentTarget.classList.add('dragging-item');
+  document.querySelectorAll('.editable-wrap').forEach(el=>{
+    if(el!==e.currentTarget){
+      el.addEventListener('dragover',onDragOver);
+      el.addEventListener('dragleave',onDragLeave);
+      el.addEventListener('drop',onDrop);
+    }
   });
+  document.addEventListener('dragend',onDragEnd,{once:true});
 }
 
-// ── SETTINGS CRUD
-function renderSetariTable(data){
-  const c=document.getElementById('setari-list');
-  if(!data||!data.length){c.innerHTML='<div class="admin-empty">Nicio setare.</div>';return;}
-  c.innerHTML=`<div class="atable-wrap"><table class="atable">
-    <thead><tr><th>Cheie</th><th>Valoare</th><th>Acțiuni</th></tr></thead>
-    <tbody>${data.map(r=>`<tr>
-      <td>${r.cheie}</td><td class="txt-clamp">${r.valoare}</td>
-      <td><div class="atd-actions">
-        <button class="btn-edit" onclick="editSetare(${JSON.stringify(r).replace(/'/g,'&#39;')})">✏</button>
-        <button class="btn-del" onclick="delAndReload('xenia_settings',${r.id},loadSettings)">✕</button>
-      </div></td>
-    </tr>`).join('')}</tbody></table></div>`;
+function onDragOver(e){
+  e.preventDefault();
+  const el=e.currentTarget;
+  const rect=el.getBoundingClientRect();
+  const mid=rect.top+rect.height/2;
+  el.classList.remove('drag-over-top','drag-over-bottom');
+  if(e.clientY<mid) el.classList.add('drag-over-top');
+  else el.classList.add('drag-over-bottom');
+  dragOverId=parseInt(el.dataset.id);
 }
-function editSetare(r){ document.getElementById('s-cheie').value=r.cheie; document.getElementById('s-valoare').value=r.valoare; }
-async function saveSetare(){
-  const cheie=document.getElementById('s-cheie').value.trim();
-  const valoare=document.getElementById('s-valoare').value.trim();
-  if(!cheie||!valoare){showToast('Completează cheie și valoare!','err');return;}
-  await upsertAndReload('xenia_settings',{cheie,valoare},loadSettings);
-  clearForm('s');
+function onDragLeave(e){
+  e.currentTarget.classList.remove('drag-over-top','drag-over-bottom');
 }
-
-// ── INFO PILLS (items tip info_pill)
-function renderInfoTable(data){
-  const items=data.filter(r=>r.tip==='info_pill');
-  const c=document.getElementById('info-list');
-  if(!items.length){c.innerHTML='<div class="admin-empty">Niciun pill.</div>';return;}
-  c.innerHTML=`<div class="atable-wrap"><table class="atable">
-    <thead><tr><th>Emoji</th><th>Valoare</th><th>Ordine</th><th>Acțiuni</th></tr></thead>
-    <tbody>${items.map(r=>`<tr>
-      <td>${r.emoji||''}</td><td>${r.titlu}</td><td>${r.ordine}</td>
-      <td><div class="atd-actions">
-        <button class="btn-edit" onclick='editInfo(${JSON.stringify(r)})'>✏</button>
-        <button class="btn-del" onclick="delAndReload('xenia_items',${r.id},reloadItems)">✕</button>
-      </div></td>
-    </tr>`).join('')}</tbody></table></div>`;
+async function onDrop(e){
+  e.preventDefault();
+  const target=e.currentTarget;
+  const targetId=parseInt(target.dataset.id);
+  target.classList.remove('drag-over-top','drag-over-bottom');
+  if(!dragId||dragId===targetId)return;
+  // find the two items and swap ordine
+  const a=allItems.find(r=>r.id===dragId);
+  const b=allItems.find(r=>r.id===targetId);
+  if(!a||!b)return;
+  const aOrd=a.ordine,bOrd=b.ordine;
+  a.ordine=bOrd;b.ordine=aOrd;
+  await Promise.all([
+    db.from('xenia_items').update({ordine:bOrd}).eq('id',dragId),
+    db.from('xenia_items').update({ordine:aOrd}).eq('id',targetId)
+  ]);
+  showToast('✓ Ordine salvată');
+  await reloadItems();
 }
-function editInfo(r){
-  document.getElementById('inf-id').value=r.id;
-  document.getElementById('inf-emoji').value=r.emoji||'';
-  document.getElementById('inf-cheie').value=r.cat1||'';
-  document.getElementById('inf-valoare').value=r.titlu;
-  document.getElementById('inf-ordine').value=r.ordine;
-}
-async function saveInfo(){
-  const id=document.getElementById('inf-id').value;
-  const obj={tip:'info_pill',emoji:document.getElementById('inf-emoji').value.trim(),titlu:document.getElementById('inf-valoare').value.trim(),cat1:document.getElementById('inf-cheie').value.trim(),ordine:parseInt(document.getElementById('inf-ordine').value)||0};
-  if(!obj.titlu){showToast('Completează valoarea!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsertAndReload('xenia_items',obj,reloadItems);
-  document.getElementById('inf-id').value='';
-  clearForm('inf');
+function onDragEnd(e){
+  document.querySelectorAll('.editable-wrap').forEach(el=>{
+    el.classList.remove('dragging-item','drag-over-top','drag-over-bottom');
+    el.removeAttribute('draggable');
+    el.removeEventListener('dragover',onDragOver);
+    el.removeEventListener('dragleave',onDragLeave);
+    el.removeEventListener('drop',onDrop);
+  });
+  dragId=null;
 }
 
-// ── CONTENT CRUD
-// Câmpuri dinamice per tip
-const tipFields = {
+// ── EDIT MODAL FOR ITEMS
+const tipFields={
   culoare:   ['emoji','titlu','hex','hex2','text','pref'],
   floare:    ['emoji','titlu','text'],
   vibe:      ['emoji','titlu','text'],
@@ -1324,91 +1424,300 @@ const tipFields = {
   noapte:    ['emoji','text'],
   scratch:   ['emoji','text'],
   compliment:['emoji','text'],
-  film:      ['titlu','cat-film','hl'],
-  muzica_artist:['titlu','hl'],
-  muzica_piesa: ['titlu','hl'],
-  stat:      ['emoji','titlu','procent'],
+  film:      ['titlu','cat1','bool1'],
+  muzica_artist:['titlu','bool1'],
+  muzica_piesa: ['titlu','bool1'],
+  stat:      ['emoji','titlu','num1'],
   love_tag:  ['titlu'],
   extra_personal:['emoji','text'],
   extra_culori:  ['emoji','text'],
   extra_nu_place:['emoji','text'],
   extra_vise:    ['emoji','text'],
   extra_obiceiuri:['emoji','text'],
-  scrisoare_paragraf: ['text'],
-  scrisoare_semnatura:['text'],
-  scrisoare_nota:     ['text'],
-  info_pill: ['emoji','titlu'],
+  scrisoare_paragraf: ['text','ordine'],
+  scrisoare_semnatura:['text','ordine'],
+  scrisoare_nota:     ['text','ordine'],
+  info_pill: ['emoji','titlu','ordine'],
 };
 
-function updateContentFieldVisibility(){
-  const tip = document.getElementById('ct-tip').value;
-  const fields = tipFields[tip] || [];
-  const show = (id,show)=>{ const el=document.getElementById(id); if(el) el.style.display=show?'flex':'none'; };
-  show('f-hex',    fields.includes('hex'));
-  show('f-hex2',   fields.includes('hex2'));
-  show('f-pref',   fields.includes('pref'));
-  show('f-cat-film',fields.includes('cat-film'));
-  show('f-hl',     fields.includes('hl'));
-  show('f-procent',fields.includes('procent'));
-  show('f-text',   fields.includes('text'));
-  // titlu/emoji always show if relevant
-  const emojiField = document.getElementById('ct-emoji').parentElement;
-  const titluField = document.getElementById('ct-titlu').parentElement;
-  emojiField.style.display = fields.includes('emoji') ? 'flex' : 'none';
-  titluField.style.display = fields.includes('titlu') ? 'flex' : 'none';
+const fieldLabels={emoji:'Emoji',titlu:'Titlu',text:'Text/Descriere',hex:'Culoare hex 1',hex2:'Culoare hex 2',pref:'Preferată',bool1:'Highlight ★',cat1:'Categorie',num1:'Procent %',ordine:'Ordine'};
+const fieldTypes={emoji:'text',titlu:'text',text:'textarea',hex:'text',hex2:'text',pref:'checkbox',bool1:'checkbox',cat1:'text',num1:'number',ordine:'number'};
+
+let editModalSaveFn=null;
+
+function openEditModalItem(id){
+  const r=allItems.find(x=>x.id===id);
+  if(!r)return;
+  const fields=tipFields[r.tip]||['emoji','titlu','text'];
+  buildEditModal('✏️ Editează — '+r.tip, fields, r, async(vals)=>{
+    const obj={id:r.id,tip:r.tip};
+    fields.forEach(f=>{
+      if(f==='pref') obj.bool1=vals.pref;
+      else if(f==='bool1') obj.bool1=vals.bool1;
+      else if(f==='num1') obj.num1=parseInt(vals.num1)||0;
+      else if(f==='ordine') obj.ordine=parseInt(vals.ordine)||0;
+      else obj[f]=vals[f]||null;
+    });
+    const {error}=await db.from('xenia_items').upsert(obj).select();
+    if(error){showToast('Eroare: '+error.message,'err');return;}
+    showToast('✓ Salvat!');
+    closeEditModal();
+    await reloadItems();
+  });
 }
-document.getElementById('ct-tip').addEventListener('change', updateContentFieldVisibility);
-updateContentFieldVisibility();
+
+function openAddModal(tip){
+  const fields=tipFields[tip]||['emoji','titlu','text'];
+  buildEditModal('➕ Adaugă — '+tip, fields, {ordine: allItems.filter(r=>r.tip===tip).length}, async(vals)=>{
+    const obj={tip};
+    fields.forEach(f=>{
+      if(f==='pref') obj.bool1=vals.pref;
+      else if(f==='bool1') obj.bool1=vals.bool1;
+      else if(f==='num1') obj.num1=parseInt(vals.num1)||0;
+      else if(f==='ordine') obj.ordine=parseInt(vals.ordine)||0;
+      else obj[f]=vals[f]||null;
+    });
+    const {error}=await db.from('xenia_items').insert(obj).select();
+    if(error){showToast('Eroare: '+error.message,'err');return;}
+    showToast('✓ Adăugat!');
+    closeEditModal();
+    await reloadItems();
+  });
+}
+
+function buildEditModal(title, fields, data, saveFn){
+  document.getElementById('eModalTitle').textContent=title;
+  const container=document.getElementById('eModalFields');
+  container.innerHTML='';
+  fields.forEach(f=>{
+    const label=fieldLabels[f]||f;
+    const type=fieldTypes[f]||'text';
+    const val=data[f]==='undefined'?'':(data[f]??'');
+    const div=document.createElement('div');
+    div.className=`ef-row ${type==='textarea'?'full':''}`;
+    if(type==='checkbox'){
+      div.className='ef-row';
+      div.innerHTML=`<div class="efield"><label style="display:flex;align-items:center;gap:.5rem;color:#c490a8;font-size:.8rem">
+        <input type="checkbox" id="em-${f}" ${val?'checked':''} style="accent-color:var(--rose);width:16px;height:16px"> ${label}
+      </label></div>`;
+    } else if(type==='textarea'){
+      div.innerHTML=`<div class="efield full"><label>${label}</label><textarea id="em-${f}" rows="4">${val}</textarea></div>`;
+    } else {
+      div.innerHTML=`<div class="efield"><label>${label}</label><input type="${type}" id="em-${f}" value="${String(val).replace(/"/g,'&quot;')}"></div>`;
+    }
+    container.appendChild(div);
+  });
+  editModalSaveFn=async()=>{
+    const vals={};
+    fields.forEach(f=>{
+      const el=document.getElementById('em-'+f);
+      if(!el)return;
+      vals[f]=el.type==='checkbox'?el.checked:el.value;
+    });
+    await saveFn(vals);
+  };
+  document.getElementById('eModalSaveBtn').onclick=editModalSaveFn;
+  document.getElementById('editModal').classList.add('open');
+}
+
+function closeEditModal(){
+  document.getElementById('editModal').classList.remove('open');
+  editModalSaveFn=null;
+}
+
+// Close modal on backdrop click
+document.getElementById('editModal').addEventListener('click',e=>{
+  if(e.target===document.getElementById('editModal'))closeEditModal();
+});
+
+// ── SETTING EDIT from page
+function editSetting(key, label){
+  const current=settingsCache[key]||'';
+  buildEditModal('✏️ '+label, [], {}, async()=>{});
+  // override with single field
+  const container=document.getElementById('eModalFields');
+  container.innerHTML=`<div class="ef-row full"><div class="efield full"><label>${label}</label><textarea id="em-setting" rows="4">${current}</textarea></div></div>`;
+  editModalSaveFn=async()=>{
+    const val=document.getElementById('em-setting').value;
+    const {error}=await db.from('xenia_settings').upsert({cheie:key,valoare:val}).select();
+    if(error){showToast('Eroare: '+error.message,'err');return;}
+    settingsCache[key]=val;
+    showToast('✓ Salvat!');
+    closeEditModal();
+    applySettings();
+    await loadSettings();
+  };
+  document.getElementById('eModalSaveBtn').onclick=editModalSaveFn;
+  document.getElementById('editModal').classList.add('open');
+}
+
+function editSettingGroup(keys){
+  const container=document.getElementById('eModalFields');
+  document.getElementById('eModalTitle').textContent='✏️ Editează setări';
+  container.innerHTML=keys.map(k=>`<div class="ef-row full"><div class="efield full">
+    <label>${k}</label><input id="em-sg-${k}" value="${(settingsCache[k]||'').replace(/"/g,'&quot;')}">
+  </div></div>`).join('');
+  editModalSaveFn=async()=>{
+    const updates=keys.map(k=>({cheie:k,valoare:document.getElementById('em-sg-'+k).value}));
+    await Promise.all(updates.map(u=>db.from('xenia_settings').upsert(u).select()));
+    updates.forEach(u=>settingsCache[u.cheie]=u.valoare);
+    showToast('✓ Salvat!');
+    closeEditModal();
+    applySettings();
+    await loadSettings();
+  };
+  document.getElementById('eModalSaveBtn').onclick=editModalSaveFn;
+  document.getElementById('editModal').classList.add('open');
+}
+
+// ── DELETE ITEM
+async function deleteItem(id){
+  if(!confirm('Ștergi acest element?'))return;
+  const {error}=await db.from('xenia_items').delete().eq('id',id);
+  if(error){showToast('Eroare: '+error.message,'err');return;}
+  showToast('✓ Șters!');
+  await reloadItems();
+}
+
+// ══════════════════════════════════════════════════════
+//  ADMIN PANEL
+// ══════════════════════════════════════════════════════
+function switchTab(id){
+  document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
+  document.querySelector(`.admin-section[data-tab="${id}"]`).classList.add('active');
+  document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+}
+function openAdmin(){document.getElementById('adminOverlay').classList.add('open');document.body.style.overflow='hidden';updateAdminFieldVis();}
+function closeAdmin(){document.getElementById('adminOverlay').classList.remove('open');document.body.style.overflow='';}
+
+function showToast(msg,type='ok'){
+  const t=document.getElementById('adminToast');
+  t.textContent=msg;t.className=`admin-toast ${type} show`;
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// SETTINGS
+function renderSetariTable(data){
+  const c=document.getElementById('setari-list');
+  if(!data||!data.length){c.innerHTML='<div class="admin-empty">Nicio setare.</div>';return;}
+  c.innerHTML=`<div class="atable-wrap"><table class="atable">
+    <thead><tr><th>Cheie</th><th>Valoare</th><th>Acțiuni</th></tr></thead>
+    <tbody>${data.map(r=>`<tr>
+      <td><code style="color:var(--rose);font-size:.78rem">${r.cheie}</code></td>
+      <td class="txt-clamp">${r.valoare}</td>
+      <td><div class="atd-actions">
+        <button class="btn-edit" onclick='editSS(${JSON.stringify({cheie:r.cheie,valoare:r.valoare})})'>✏</button>
+        <button class="btn-del" onclick="delSetting(${r.id})">✕</button>
+      </div></td>
+    </tr>`).join('')}</tbody></table></div>`;
+}
+function editSS(r){document.getElementById('s-cheie').value=r.cheie;document.getElementById('s-valoare').value=r.valoare;}
+async function delSetting(id){
+  if(!confirm('Ștergi setarea?'))return;
+  await db.from('xenia_settings').delete().eq('id',id);
+  showToast('✓ Șters!');await loadSettings();
+}
+async function saveSetare(){
+  const cheie=document.getElementById('s-cheie').value.trim();
+  const valoare=document.getElementById('s-valoare').value.trim();
+  if(!cheie||!valoare){showToast('Completează ambele câmpuri!','err');return;}
+  const {error}=await db.from('xenia_settings').upsert({cheie,valoare}).select();
+  if(error){showToast('Eroare: '+error.message,'err');return;}
+  showToast('✓ Salvat!');clearSForm();await loadSettings();
+}
+function clearSForm(){document.getElementById('s-cheie').value='';document.getElementById('s-valoare').value='';}
+
+// INFO PILLS
+function renderInfoTable(data){
+  const items=data.filter(r=>r.tip==='info_pill');
+  const c=document.getElementById('info-list');
+  if(!items.length){c.innerHTML='<div class="admin-empty">Niciun pill.</div>';return;}
+  c.innerHTML=`<div class="atable-wrap"><table class="atable">
+    <thead><tr><th>Emoji</th><th>Text</th><th>Ord</th><th>Acțiuni</th></tr></thead>
+    <tbody>${items.map(r=>`<tr>
+      <td>${r.emoji||''}</td><td>${r.titlu||''}</td><td>${r.ordine}</td>
+      <td><div class="atd-actions">
+        <button class="btn-edit" onclick='editInfoRow(${JSON.stringify(r)})'>✏</button>
+        <button class="btn-del" onclick="deleteItem(${r.id})">✕</button>
+      </div></td>
+    </tr>`).join('')}</tbody></table></div>`;
+}
+function editInfoRow(r){
+  document.getElementById('inf-id').value=r.id;
+  document.getElementById('inf-emoji').value=r.emoji||'';
+  document.getElementById('inf-valoare').value=r.titlu||'';
+  document.getElementById('inf-ordine').value=r.ordine||0;
+}
+function clearInfoForm(){
+  document.getElementById('inf-id').value='';
+  document.getElementById('inf-emoji').value='';
+  document.getElementById('inf-valoare').value='';
+  document.getElementById('inf-ordine').value=0;
+}
+async function saveInfo(){
+  const id=document.getElementById('inf-id').value;
+  const obj={tip:'info_pill',emoji:document.getElementById('inf-emoji').value.trim(),titlu:document.getElementById('inf-valoare').value.trim(),ordine:parseInt(document.getElementById('inf-ordine').value)||0};
+  if(!obj.titlu){showToast('Completează textul!','err');return;}
+  if(id)obj.id=parseInt(id);
+  const {error}=await db.from('xenia_items').upsert(obj).select();
+  if(error){showToast('Eroare: '+error.message,'err');return;}
+  showToast('✓ Salvat!');clearInfoForm();await reloadItems();
+}
+
+// CONTENT
+function updateAdminFieldVis(){
+  const tip=document.getElementById('ct-tip').value;
+  const f=tipFields[tip]||[];
+  const show=(id,v)=>{const el=document.getElementById(id);if(el)el.style.display=v?'flex':'none';};
+  show('f-hex',f.includes('hex'));show('f-hex2',f.includes('hex2'));show('f-pref',f.includes('pref'));
+  show('f-cat-film',f.includes('cat1'));show('f-hl',f.includes('bool1'));show('f-procent',f.includes('num1'));show('f-text',f.includes('text'));
+  const emojiF=document.getElementById('ct-emoji').parentElement;
+  const titluF=document.getElementById('ct-titlu').parentElement;
+  if(emojiF)emojiF.style.display=f.includes('emoji')?'flex':'none';
+  if(titluF)titluF.style.display=f.includes('titlu')?'flex':'none';
+}
+document.getElementById('ct-tip').addEventListener('change',updateAdminFieldVis);
 
 async function saveContent(){
-  const id  = document.getElementById('ct-id').value;
-  const tip = document.getElementById('ct-tip').value;
-  const obj = {
-    tip,
-    emoji:  document.getElementById('ct-emoji').value.trim()||null,
-    titlu:  document.getElementById('ct-titlu').value.trim()||null,
-    text:   document.getElementById('ct-text').value.trim()||null,
-    hex:    document.getElementById('ct-hex').value.trim()||null,
-    hex2:   document.getElementById('ct-hex2').value.trim()||null,
-    bool1:  document.getElementById('ct-hl').checked || document.getElementById('ct-pref').checked,
-    num1:   parseInt(document.getElementById('ct-procent').value)||null,
-    cat1:   document.getElementById('ct-cat-film').value.trim()||null,
-    ordine: parseInt(document.getElementById('ct-ordine').value)||0,
-  };
-  if(id) obj.id=parseInt(id);
-  await upsertAndReload('xenia_items', obj, reloadItems);
-  clearContent();
+  const id=document.getElementById('ct-id').value;
+  const tip=document.getElementById('ct-tip').value;
+  const obj={tip,
+    emoji:document.getElementById('ct-emoji').value.trim()||null,
+    titlu:document.getElementById('ct-titlu').value.trim()||null,
+    text:document.getElementById('ct-text').value.trim()||null,
+    hex:document.getElementById('ct-hex').value.trim()||null,
+    hex2:document.getElementById('ct-hex2').value.trim()||null,
+    bool1:document.getElementById('ct-hl').checked||document.getElementById('ct-pref').checked,
+    num1:parseInt(document.getElementById('ct-procent').value)||null,
+    cat1:document.getElementById('ct-cat-film').value.trim()||null,
+    ordine:parseInt(document.getElementById('ct-ordine').value)||0};
+  if(id)obj.id=parseInt(id);
+  const {error}=await db.from('xenia_items').upsert(obj).select();
+  if(error){showToast('Eroare: '+error.message,'err');return;}
+  showToast('✓ Salvat!');clearContentForm();await reloadItems();
 }
-function clearContent(){
+function clearContentForm(){
   document.getElementById('ct-id').value='';
   ['ct-emoji','ct-titlu','ct-text','ct-hex','ct-hex2','ct-cat-film'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('ct-hl').checked=false;
-  document.getElementById('ct-pref').checked=false;
-  document.getElementById('ct-procent').value=0;
-  document.getElementById('ct-ordine').value=0;
+  document.getElementById('ct-hl').checked=false;document.getElementById('ct-pref').checked=false;
+  document.getElementById('ct-procent').value=0;document.getElementById('ct-ordine').value=0;
 }
 function editContent(r){
-  document.getElementById('ct-id').value=r.id;
-  document.getElementById('ct-tip').value=r.tip;
-  document.getElementById('ct-emoji').value=r.emoji||'';
-  document.getElementById('ct-titlu').value=r.titlu||'';
-  document.getElementById('ct-text').value=r.text||'';
-  document.getElementById('ct-hex').value=r.hex||'';
-  document.getElementById('ct-hex2').value=r.hex2||'';
-  document.getElementById('ct-hl').checked=!!r.bool1;
-  document.getElementById('ct-pref').checked=!!r.bool1;
-  document.getElementById('ct-procent').value=r.num1||0;
-  document.getElementById('ct-cat-film').value=r.cat1||'';
-  document.getElementById('ct-ordine').value=r.ordine||0;
-  updateContentFieldVisibility();
+  document.getElementById('ct-id').value=r.id;document.getElementById('ct-tip').value=r.tip;
+  document.getElementById('ct-emoji').value=r.emoji||'';document.getElementById('ct-titlu').value=r.titlu||'';
+  document.getElementById('ct-text').value=r.text||'';document.getElementById('ct-hex').value=r.hex||'';
+  document.getElementById('ct-hex2').value=r.hex2||'';document.getElementById('ct-hl').checked=!!r.bool1;
+  document.getElementById('ct-pref').checked=!!r.bool1;document.getElementById('ct-procent').value=r.num1||0;
+  document.getElementById('ct-cat-film').value=r.cat1||'';document.getElementById('ct-ordine').value=r.ordine||0;
+  updateAdminFieldVis();
 }
-
-let contentFilterTip = '';
+let contentFilterTip='';
 function filterContent(prefix){
   contentFilterTip=prefix;
   document.querySelectorAll('.admin-section[data-tab="content"] .atab').forEach(b=>b.classList.remove('active'));
-  event.target.classList.add('active');
-  const filtered = prefix ? allItems.filter(r=>r.tip.startsWith(prefix)) : allItems;
+  if(event&&event.target)event.target.classList.add('active');
+  const filtered=prefix?allItems.filter(r=>r.tip.startsWith(prefix)):allItems;
   renderContentTable(filtered);
 }
 function renderContentTable(data){
@@ -1425,12 +1734,12 @@ function renderContentTable(data){
       <td>${r.ordine}</td>
       <td><div class="atd-actions">
         <button class="btn-edit" onclick='editContent(${JSON.stringify(r)})'>✏</button>
-        <button class="btn-del" onclick="delAndReload('xenia_items',${r.id},reloadItems)">✕</button>
+        <button class="btn-del" onclick="deleteItem(${r.id})">✕</button>
       </div></td>
     </tr>`).join('')}</tbody></table></div>`;
 }
 
-// ── QUOTES CRUD
+// QUOTES
 function renderQuotesTable(data){
   const c=document.getElementById('quotes-list');
   if(!data||!data.length){c.innerHTML='<div class="admin-empty">Niciun citat.</div>';return;}
@@ -1438,55 +1747,58 @@ function renderQuotesTable(data){
     <thead><tr><th>Secțiune</th><th>Text</th><th>Bordură</th><th>#</th><th>Acțiuni</th></tr></thead>
     <tbody>${data.map(r=>`<tr>
       <td><span class="tag-cat">${r.sectiune}</span></td>
-      <td class="txt-clamp">${r.text}</td>
+      <td class="txt-clamp">${r.text||''}</td>
       <td><span class="color-dot" style="background:${r.culoare_bordura||'var(--rose)'}"></span></td>
       <td>${r.ordine}</td>
       <td><div class="atd-actions">
-        <button class="btn-edit" onclick='editQuote(${JSON.stringify(r)})'>✏</button>
-        <button class="btn-del" onclick="delAndReload('xenia_quotes',${r.id},reloadQuotes)">✕</button>
+        <button class="btn-edit" onclick='editQuoteRow(${JSON.stringify(r)})'>✏</button>
+        <button class="btn-del" onclick="delQuote(${r.id})">✕</button>
       </div></td>
     </tr>`).join('')}</tbody></table></div>`;
 }
-function editQuote(r){
-  document.getElementById('q-id').value=r.id;
-  document.getElementById('q-text').value=r.text;
+function editQuoteRow(r){
+  document.getElementById('q-id').value=r.id;document.getElementById('q-text').value=r.text||'';
   document.getElementById('q-sectiune').value=r.sectiune||'altele';
   document.getElementById('q-culoare').value=r.culoare_bordura||'var(--rose)';
   document.getElementById('q-ordine').value=r.ordine||0;
+}
+async function delQuote(id){
+  if(!confirm('Ștergi citatul?'))return;
+  await db.from('xenia_quotes').delete().eq('id',id);
+  showToast('✓ Șters!');await reloadQuotes();
+}
+function clearQForm(){
+  document.getElementById('q-id').value='';document.getElementById('q-text').value='';
+  document.getElementById('q-culoare').value='var(--rose)';document.getElementById('q-ordine').value=0;
 }
 async function saveQuote(){
   const id=document.getElementById('q-id').value;
   const obj={text:document.getElementById('q-text').value.trim(),sectiune:document.getElementById('q-sectiune').value,culoare_bordura:document.getElementById('q-culoare').value.trim()||'var(--rose)',ordine:parseInt(document.getElementById('q-ordine').value)||0};
   if(!obj.text){showToast('Completează textul!','err');return;}
-  if(id) obj.id=parseInt(id);
-  await upsertAndReload('xenia_quotes',obj,reloadQuotes);
-  clearForm('q');
+  if(id)obj.id=parseInt(id);
+  const {error}=await db.from('xenia_quotes').upsert(obj).select();
+  if(error){showToast('Eroare: '+error.message,'err');return;}
+  showToast('✓ Salvat!');clearQForm();await reloadQuotes();
 }
 
-// ── RELOAD HELPERS
+// RELOAD HELPERS
 async function reloadItems(){
   await loadItems();
   renderPage();
-  // re-render info table (from allItems)
-  renderInfoTable(allItems);
-  const filtered = contentFilterTip ? allItems.filter(r=>r.tip.startsWith(contentFilterTip)) : allItems;
-  renderContentTable(filtered);
 }
 async function reloadQuotes(){
   await loadQuotes();
-  // refresh quote sections on page
-  document.getElementById('culoriCitate').innerHTML   = quotesHtml(getQuotes('culori'));
-  document.getElementById('floriCitate').innerHTML    = quotesHtml(getQuotes('flori'));
-  document.getElementById('noapteCitat').innerHTML    = quotesHtml(getQuotes('noapte'), true);
-  document.getElementById('iubireCitate').innerHTML   = quotesHtml(getQuotes('iubire'));
-  document.getElementById('citatFilmeSection').innerHTML = quotesHtml(getQuotes('filme'));
+  document.getElementById('culoriCitate').innerHTML=quotesHtml(getQuotes('culori'));
+  document.getElementById('floriCitate').innerHTML=quotesHtml(getQuotes('flori'));
+  document.getElementById('noapteCitat').innerHTML=quotesHtml(getQuotes('noapte'),true);
+  document.getElementById('iubireCitate').innerHTML=quotesHtml(getQuotes('iubire'));
+  document.getElementById('citatFilmeSection').innerHTML=quotesHtml(getQuotes('filme'));
   setTimeout(observeAll,100);
   renderQuotesTable(allQuotes);
 }
 
-// ── INIT
+// INIT
 loadAll();
 </script>
 </body>
 </html>
-
