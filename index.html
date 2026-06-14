@@ -1362,11 +1362,31 @@ function renderScrisoare(){
 
 function itemCtrl(r){
   return `<div class="item-ctrl">
-    <button class="ic-btn drag-handle" title="Reordonează" draggable="true" onmousedown="startDrag(event,${r.id})">⠿</button>
+    <button class="ic-btn" title="Sus" onclick="moveItem(${r.id},-1)">▲</button>
+    <button class="ic-btn" title="Jos" onclick="moveItem(${r.id},+1)">▼</button>
     <button class="ic-btn" title="Editează" onclick="openEditModalItem(${r.id})">✏️</button>
     <button class="ic-btn" title="Șterge" onclick="deleteItem(${r.id})">🗑️</button>
   </div>`;
 }
+
+async function moveItem(id, dir){
+  const item = allItems.find(r=>r.id===id);
+  if(!item) return;
+  const siblings = allItems.filter(r=>r.tip===item.tip).sort((a,b)=>a.ordine-b.ordine);
+  const idx = siblings.findIndex(r=>r.id===id);
+  const swapIdx = idx + dir;
+  if(swapIdx < 0 || swapIdx >= siblings.length) return;
+  const other = siblings[swapIdx];
+  const aOrd = item.ordine, bOrd = other.ordine;
+  item.ordine = bOrd; other.ordine = aOrd;
+  await Promise.all([
+    db.from('tribute_items').update({ordine:bOrd}).eq('id',id),
+    db.from('tribute_items').update({ordine:aOrd}).eq('id',other.id)
+  ]);
+  showToast('✓ Mutat!');
+  await reloadItems();
+}
+
 
 // RANDOMIZER
 let lastRand=-1;
