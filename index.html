@@ -206,7 +206,9 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 .rand-btn{background:linear-gradient(135deg,var(--rose),var(--rose-deep));color:white;border:none;padding:.9rem 2.4rem;border-radius:50px;font-family:'Jost',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;position:relative;z-index:1;box-shadow:0 8px 24px rgba(232,85,122,.4);transition:all .3s;letter-spacing:.05em}
 .rand-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 32px rgba(232,85,122,.55)}
 .rand-btn:active{transform:scale(.97)}
-.compliment-list{display:flex;flex-direction:column;gap:.6rem;margin-top:1.5rem;position:relative;z-index:1;text-align:left}
+.compliment-list{display:none;flex-direction:column;gap:.6rem;margin-top:1.5rem;position:relative;z-index:1;text-align:left}
+.edit-mode-active .compliment-list{display:flex}
+
 .compliment-item{background:rgba(255,255,255,.04);border:1px solid rgba(232,85,122,.15);border-radius:14px;padding:.8rem 1rem;display:flex;align-items:flex-start;gap:.7rem;color:#f0c4d4;font-size:.85rem;line-height:1.6;font-weight:300;transition:all .3s}
 .compliment-item:hover{background:rgba(232,85,122,.07);border-color:rgba(232,85,122,.27)}
 .ci-icon{font-size:1.1rem;flex-shrink:0}
