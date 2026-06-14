@@ -1543,7 +1543,7 @@ function openEditModalItem(id){
   if(!r)return;
   const fields=tipFields[r.tip]||['emoji','titlu','text'];
   buildEditModal('✏️ Editează — '+r.tip,fields,r,async(vals)=>{
-    const obj={id:r.id,tip:r.tip};
+    const obj={};
     fields.forEach(f=>{
       if(f==='pref')obj.bool1=vals.pref;
       else if(f==='bool1')obj.bool1=vals.bool1;
@@ -1551,13 +1551,15 @@ function openEditModalItem(id){
       else if(f==='ordine')obj.ordine=parseInt(vals.ordine)||0;
       else obj[f]=vals[f]||null;
     });
-    const {error}=await db.from('tribute_items').upsert(obj).select();
+    const {error}=await db.from('tribute_items').update(obj).eq('id',r.id).select();
     if(error){showToast('Eroare: '+error.message,'err');return;}
     showToast('✓ Salvat!');
     closeEditModal();
     await reloadItems();
   });
 }
+
+
 
 function openAddModal(tip){
   const fields=tipFields[tip]||['emoji','titlu','text'];
