@@ -909,7 +909,24 @@ document.addEventListener('touchstart',e=>{if(e.touches.length>1)e.preventDefaul
 
 const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
 let mx=0,my=0,cx=0,cy=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+let cursorHideTimer=null;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+  cur.style.opacity='1';cur2.style.opacity='.45';
+  clearTimeout(cursorHideTimer);
+  cursorHideTimer=setTimeout(()=>{cur.style.opacity='0';cur2.style.opacity='0';},2000);
+});
+document.addEventListener('touchstart',e=>{
+  const t=e.touches[0];
+  mx=t.clientX;my=t.clientY;cx=mx;cy=my;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+  cur2.style.left=mx+'px';cur2.style.top=my+'px';
+  cur.style.opacity='1';cur2.style.opacity='.45';
+  clearTimeout(cursorHideTimer);
+  cursorHideTimer=setTimeout(()=>{cur.style.opacity='0';cur2.style.opacity='0';},2000);
+},{passive:true});
+
 (function loop(){cx+=(mx-cx)*.14;cy+=(my-cy)*.14;cur2.style.left=cx+'px';cur2.style.top=cy+'px';requestAnimationFrame(loop)})();
 
 // ── STARS
