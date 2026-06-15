@@ -2,7 +2,8 @@
 <html lang="ro">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>✨ Tribut ✨</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Jost:wght@200;300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -31,12 +32,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .nav-links a{text-decoration:none;color:var(--ink-soft);font-size:.68rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:.35rem .75rem;border-radius:20px;transition:all .25s;white-space:nowrap}
 .nav-links a:hover{background:var(--rose);color:#fff}
 .nav-btns{display:flex;gap:.4rem;align-items:center;flex-shrink:0}
-.nav-edit-btn{background:transparent;color:var(--rose-deep);border:1.5px solid rgba(232,85,122,.35);padding:.35rem .9rem;border-radius:20px;font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .25s;font-family:'Jost',sans-serif}
-.nav-edit-btn.active{background:var(--rose);color:#fff;border-color:var(--rose)}
-.nav-edit-btn:hover{background:var(--rose);color:#fff;border-color:var(--rose)}
-.nav-admin-btn{background:var(--wine);color:#fdf0f4;border:none;padding:.35rem .9rem;border-radius:20px;font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .25s;font-family:'Jost',sans-serif}
-.nav-admin-btn:hover{background:var(--rose-deep);transform:translateY(-1px)}
-@media(max-width:900px){nav{padding:0 1rem}.nav-logo{font-size:1.2rem}.nav-links a{font-size:.58rem;padding:.28rem .45rem}.nav-edit-btn,.nav-admin-btn{font-size:.58rem;padding:.3rem .65rem}}
+
+
+@media(max-width:900px){nav{padding:0 1rem}.nav-logo{font-size:1.2rem}.nav-links a{font-size:.58rem;padding:.28rem .45rem}}
+
 
 /* STARS */
 .stars-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
@@ -304,7 +303,7 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 .add-item-btn:hover{background:rgba(232,85,122,.2);border-color:var(--rose)}
 .edit-mode-active .add-item-btn{display:flex}
 
-.add-item-btn:hover{background:rgba(232,85,122,.2);border-color:var(--rose)}
+
 
 .section-edit-icon{display:none;position:absolute;top:8px;right:8px;z-index:50;background:rgba(22,10,15,.8);border:1px solid rgba(232,85,122,.3);color:var(--rose);border-radius:8px;padding:4px 8px;font-size:.7rem;cursor:pointer;transition:all .2s}
 .edit-mode-active .section-edit-icon{display:block}
@@ -509,7 +508,7 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
     </div>
 
 
-      <div id="content-list"><div class="admin-loading">Se încarcă...</div></div>
+
     </div>
 
     <!-- TAB 3: QUOTES -->
@@ -1272,21 +1271,28 @@ function renderScratch(){
     const back=document.createElement('div');back.className='scratch-back';
     back.innerHTML=`<div class="sb-emoji">${msg.emoji||'🌸'}</div><div class="sb-text">${msg.text||''}</div>`;
     wrap.appendChild(back);
-    const cv=document.createElement('canvas');cv.width=260;cv.height=160;wrap.appendChild(cv);
-    outer.appendChild(wrap);
-    grid.appendChild(outer);
-    const cxt=cv.getContext('2d');
-    const g=cxt.createLinearGradient(0,0,260,160);
-    g.addColorStop(0,'#e8557a');g.addColorStop(.5,'#f06292');g.addColorStop(1,'#b53060');
-    cxt.fillStyle=g;cxt.beginPath();
-    if(cxt.roundRect)cxt.roundRect(0,0,260,160,20);else cxt.rect(0,0,260,160);
-    cxt.fill();
-    cxt.fillStyle='rgba(255,255,255,.75)';cxt.font='bold 14px Jost,sans-serif';cxt.textAlign='center';
-    cxt.fillText('✨ Răzuiește ✨',130,72);
-    cxt.font='11px Jost,sans-serif';cxt.fillText('cu mouseul sau degetul',130,92);
+const cv=document.createElement('canvas');
+const dpr=window.devicePixelRatio||1;
+const W=260,H=160;
+cv.width=W*dpr;cv.height=H*dpr;
+cv.style.width='100%';cv.style.height='100%';
+wrap.appendChild(cv);
+outer.appendChild(wrap);
+grid.appendChild(outer);
+const cxt=cv.getContext('2d');
+const g=cxt.createLinearGradient(0,0,W*dpr,H*dpr);
+g.addColorStop(0,'#e8557a');g.addColorStop(.5,'#f06292');g.addColorStop(1,'#b53060');
+cxt.fillStyle=g;cxt.beginPath();
+if(cxt.roundRect)cxt.roundRect(0,0,W*dpr,H*dpr,20*dpr);else cxt.rect(0,0,W*dpr,H*dpr);
+cxt.fill();
+cxt.fillStyle='rgba(255,255,255,.75)';cxt.font=`bold ${14*dpr}px Jost,sans-serif`;cxt.textAlign='center';
+cxt.fillText('✨ Răzuiește ✨',W*dpr/2,72*dpr);
+cxt.font=`${11*dpr}px Jost,sans-serif`;cxt.fillText('cu mouseul sau degetul',W*dpr/2,92*dpr);
+
     let scraping=false,revealed=false;
-    function scratch(x,y){cxt.globalCompositeOperation='destination-out';cxt.beginPath();cxt.arc(x,y,24,0,Math.PI*2);cxt.fill();if(!revealed){const id=cxt.getImageData(0,0,260,160);let cl=0;for(let i=3;i<id.data.length;i+=4)if(id.data[i]<128)cl++;if(cl/(260*160)>.45){revealed=true;cxt.clearRect(0,0,260,160)}}}
-    function gp(e,c){const r=c.getBoundingClientRect(),sx=c.width/r.width,sy=c.height/r.height;if(e.touches)return{x:(e.touches[0].clientX-r.left)*sx,y:(e.touches[0].clientY-r.top)*sy};return{x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy}}
+function scratch(x,y){cxt.globalCompositeOperation='destination-out';cxt.beginPath();cxt.arc(x,y,24*dpr,0,Math.PI*2);cxt.fill();if(!revealed){const id=cxt.getImageData(0,0,cv.width,cv.height);let cl=0;for(let i=3;i<id.data.length;i+=4)if(id.data[i]<128)cl++;if(cl/(cv.width*cv.height)>.45){revealed=true;cxt.clearRect(0,0,cv.width,cv.height)}}}
+function gp(e,c){const r=c.getBoundingClientRect(),sx=cv.width/r.width,sy=cv.height/r.height;if(e.touches)return{x:(e.touches[0].clientX-r.left)*sx,y:(e.touches[0].clientY-r.top)*sy};return{x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy}}
+
     cv.addEventListener('mousedown',e=>{scraping=true;const p=gp(e,cv);scratch(p.x,p.y)});
     cv.addEventListener('mousemove',e=>{if(scraping){const p=gp(e,cv);scratch(p.x,p.y)}});
     cv.addEventListener('mouseup',()=>scraping=false);cv.addEventListener('mouseleave',()=>scraping=false);
@@ -1457,11 +1463,9 @@ function toggleEditMode(){
 }
 
 
-function applyEditControls(){}
 
 // ── DRAG & DROP
 let dragId=null;
-let dragOverId=null;
 
 function startDrag(e,id){
   dragId=id;
@@ -1492,7 +1496,6 @@ function onDragOver(e){
   el.classList.remove('drag-over-top','drag-over-bottom');
   if(e.clientY<mid)el.classList.add('drag-over-top');
   else el.classList.add('drag-over-bottom');
-  dragOverId=parseInt(el.dataset.id);
 }
 function onDragLeave(e){e.currentTarget.classList.remove('drag-over-top','drag-over-bottom');}
 async function onDrop(e){
@@ -1808,11 +1811,7 @@ function showConfirm(msg,onYes){
 }
 
 
-function renderSetariTable(){}
-function editSS(){}
-async function delSetting(){}
-async function saveSetare(){}
-function clearSForm(){}
+
 
 
 function renderInfoTable(data){
@@ -1852,28 +1851,8 @@ async function saveInfo(){
 }
 
 
-function renderContentTable(data){
-  const c=document.getElementById('content-list');
-  if(!data||!data.length){c.innerHTML='<div class="admin-empty">Niciun item.</div>';return;}
-  c.innerHTML=`<div class="atable-wrap"><table class="atable">
-    <thead><tr><th>Tip</th><th>Emoji</th><th>Titlu</th><th>Text</th><th>Info</th><th>#</th><th>Acțiuni</th></tr></thead>
-    <tbody>${data.map(r=>`<tr>
-      <td><span class="tip-badge">${r.tip}</span></td>
-      <td>${r.emoji||''}</td>
-      <td class="txt-clamp">${r.titlu||''}</td>
-      <td class="txt-clamp">${(r.text||'').substring(0,50)}${(r.text||'').length>50?'…':''}</td>
-      <td style="font-size:.72rem;color:#9b6a7e">${r.hex?r.hex+' ':''} ${r.bool1?'★':''} ${r.num1!=null?r.num1+'%':''} ${r.cat1||''}</td>
-      <td>${r.ordine}</td>
-      <td><div class="atd-actions">
-        <button class="btn-edit" onclick='editContent(${JSON.stringify(r)})'>✏</button>
-        <button class="btn-del" onclick="deleteItem(${r.id})">✕</button>
-      </div></td>
-    </tr>`).join('')}</tbody></table></div>`;
-}
 
-function editContent(r){
-  openEditModalItem(r.id);
-}
+
 
 
 function renderQuotesTable(data){
