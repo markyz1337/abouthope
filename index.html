@@ -1947,6 +1947,7 @@ function toggleRadio(){
     fab.classList.remove('playing');
     fab.innerHTML=iconPlay;
   } else {
+    audio.currentTime=0;
     audio.play().catch(()=>showToast('Nu s-a putut porni radioul','err'));
     radioPlaying=true;
     fab.classList.add('playing');
