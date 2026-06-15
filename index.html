@@ -392,9 +392,23 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 .atable .txt-clamp{max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .color-dot{display:inline-block;width:16px;height:16px;border-radius:50%;vertical-align:middle;margin-right:.4rem;border:1px solid rgba(255,255,255,.15)}
 .tip-badge{display:inline-block;border-radius:12px;padding:.15rem .55rem;font-size:.7rem;white-space:nowrap;background:rgba(232,85,122,.12);color:#f0c4d4}
+
+#radioFab{position:fixed;bottom:2rem;right:2rem;width:56px;height:56px;border-radius:50%;background:rgba(232,85,122,.35);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1.5px solid rgba(232,85,122,.5);box-shadow:0 8px 32px rgba(232,85,122,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9000;font-size:1.4rem;transition:all .3s;user-select:none}
+#radioFab:hover{background:rgba(232,85,122,.5);transform:scale(1.08);box-shadow:0 12px 40px rgba(232,85,122,.45)}
+#radioFab.playing{background:rgba(232,85,122,.55);animation:radioPulse 2s ease-in-out infinite}
+@keyframes radioPulse{0%,100%{box-shadow:0 8px 32px rgba(232,85,122,.3)}50%{box-shadow:0 8px 48px rgba(232,85,122,.6)}}
+
+
 </style>
 </head>
 <body>
+
+<!-- RADIO FAB -->
+<div id="radioFab" onclick="toggleRadio()" title="Radio">
+  <span id="radioIcon">🎵</span>
+</div>
+<audio id="radioAudio" src="https://placeholder-stream.example.com/radio.mp3"></audio>
+
 
 <div id="cur"></div>
 <div id="cur2"></div>
@@ -1913,6 +1927,24 @@ async function reloadQuotes(){
 }
 
 
+// ── RADIO
+let radioPlaying=false;
+function toggleRadio(){
+  const audio=document.getElementById('radioAudio');
+  const fab=document.getElementById('radioFab');
+  const icon=document.getElementById('radioIcon');
+  if(radioPlaying){
+    audio.pause();
+    radioPlaying=false;
+    fab.classList.remove('playing');
+    icon.textContent='🎵';
+  } else {
+    audio.play().catch(()=>showToast('Nu s-a putut porni radioul','err'));
+    radioPlaying=true;
+    fab.classList.add('playing');
+    icon.textContent='🔊';
+  }
+}
 
 
 // INIT
