@@ -850,7 +850,7 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 <div class="motive-bg" id="motive">
   <div class="sect-inner">
     <div style="text-align:center;margin-bottom:.2rem">
-      <h2 class="s-title rev">Motive "de ce"<em>💛</em></h2>
+      <h2 class="s-title rev">Motive <em>💛</em></h2>
       <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">💕</span><span class="s-rule-line right"></span></div>
     </div>
     <span class="motive-counter rev" id="motiveCount">0</span>
@@ -1430,7 +1430,7 @@ if(!items.length){grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">N
     <div class="film-col">
       <h3>${catEmojis[cat]||'🎬'} ${cat}</h3>
       <ul class="flist">${films.map(f=>`<li class="${f.bool1?'hl':''} editable-wrap" data-id="${f.id}" data-tip="film" style="position:relative">
-        ${itemCtrl(f)}<span>${f.titlu||''}</span></li>`).join('')}</ul>
+        ${itemCtrl(f)}<span style="cursor:pointer" onclick="window.open(${f.link?`'${f.link}'`:`'https://www.google.com/search?q=${encodeURIComponent(f.titlu||'')}'`},'_blank')">${f.titlu||''}</span></li>`).join('')}</ul>
     </div>`).join('');
 document.getElementById('citatFilmeSection').innerHTML=quotesEditHtml(getQuotes('filme'),'filme');
 
@@ -1664,7 +1664,8 @@ const tipFields={
   noapte:    ['emoji','text'],
   scratch:   ['emoji','text'],
   compliment:['emoji','text'],
-  film:      ['titlu','cat1','bool1'],
+film:      ['titlu','cat1','bool1','link'],
+
   muzica_artist:['titlu','bool1'],
   muzica_piesa: ['titlu','bool1'],
   stat:      ['emoji','titlu','num1'],
@@ -1682,7 +1683,8 @@ const tipFields={
   info_pill: ['emoji','titlu','ordine'],
 };
 
-const fieldLabels={emoji:'Emoji',titlu:'Titlu',text:'Text/Descriere',hex:'Culoare hex 1',hex2:'Culoare hex 2',pref:'Preferată',bool1:'Highlight ★',cat1:'Categorie',num1:'Procent %',ordine:'Ordine'};
+const fieldLabels={emoji:'Emoji',titlu:'Titlu',text:'Text/Descriere',hex:'Culoare hex 1',hex2:'Culoare hex 2',pref:'Preferată',bool1:'Highlight ★',cat1:'Categorie',num1:'Procent %',ordine:'Ordine',link:'Link (opțional)'};
+
 const fieldTypes={emoji:'text',titlu:'text',text:'textarea',hex:'text',hex2:'text',pref:'checkbox',bool1:'checkbox',cat1:'text',num1:'number',ordine:'number'};
 
 let editModalSaveFn=null;
@@ -1716,14 +1718,15 @@ function openAddModal(tip){
   const nextOrd=sib.length?Math.max(...sib.map(r=>r.ordine||0))+1:0;
   buildEditModal('➕ Adaugă — '+tip,fields,{ordine:nextOrd},async(vals)=>{
 
-    const obj={tip};
-    fields.forEach(f=>{
-      if(f==='pref')obj.bool1=vals.pref;
-      else if(f==='bool1')obj.bool1=vals.bool1;
-      else if(f==='num1')obj.num1=parseInt(vals.num1)||0;
-      else if(f==='ordine')obj.ordine=parseInt(vals.ordine)||0;
-      else obj[f]=vals[f]||null;
-    });
+const obj={tip};
+fields.forEach(f=>{
+  if(f==='pref')obj.bool1=vals.pref;
+  else if(f==='bool1')obj.bool1=vals.bool1;
+  else if(f==='num1')obj.num1=parseInt(vals.num1)||0;
+  else if(f==='ordine')obj.ordine=parseInt(vals.ordine)||0;
+  else if(vals[f]) obj[f]=vals[f];  // ← doar dacă are valoare
+});
+
     const {error}=await db.from('tribute_items').insert(obj).select();
     if(error){showToast('Eroare: '+error.message,'err');return;}
     showToast('✓ Adăugat!');
