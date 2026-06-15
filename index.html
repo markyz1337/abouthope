@@ -254,6 +254,21 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 @keyframes tagPop{to{opacity:1;transform:scale(1)}}
 .love-tag:hover{background:var(--rose);color:white;border-color:var(--rose);transform:scale(1.06)}
 
+/* MOTIVE */
+.motive-bg{background:linear-gradient(160deg,#fff0f5,#fdf8fb);padding:6rem 2rem}
+.motive-counter{font-family:'Great Vibes',cursive;font-size:clamp(3rem,8vw,6rem);color:var(--rose);text-align:center;line-height:1;margin-bottom:.4rem;display:block}
+.motive-counter-label{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--rose-deep);text-align:center;margin-bottom:3rem;opacity:.8}
+.motive-counter-sub{font-family:'Cormorant Garamond',serif;font-size:.9rem;font-style:italic;color:#c490a8;text-align:center;margin-bottom:3rem;opacity:.6;letter-spacing:.04em}
+
+.motive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
+.motive-card{background:white;border-radius:22px;padding:1.6rem 1.8rem;border:1px solid rgba(232,85,122,.12);box-shadow:0 4px 18px rgba(232,85,122,.07);display:flex;align-items:flex-start;gap:1rem;transition:all .35s cubic-bezier(.175,.885,.32,1.275);opacity:0;transform:translateY(20px)}
+.motive-card.vis{animation:cardIn .5s ease forwards}
+.motive-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 16px 40px rgba(232,85,122,.16);border-color:rgba(232,85,122,.28)}
+.motive-nr{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;background:linear-gradient(135deg,var(--rose-deep),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;flex-shrink:0;min-width:2.2rem}
+.motive-body{}
+.motive-emoji{font-size:1.2rem;margin-bottom:.3rem;display:block}
+.motive-text{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--ink-soft);line-height:1.7;font-weight:300}
+
 /* EXTRA */
 .extra-bg{background:linear-gradient(160deg,#fdf8fb,#fff0f5);padding:6rem 2rem}
 .extra-box{background:white;border-radius:22px;padding:2.5rem 2rem;border:1px solid rgba(232,85,122,.1);box-shadow:0 6px 24px rgba(232,85,122,.07);margin-bottom:1.8rem}
@@ -575,7 +590,9 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
     <a href="#filme">Filme</a>
     <a href="#muzica">Muzică</a>
     <a href="#iubire">Iubire</a>
+    <a href="#motive">Motive</a>
     <a href="#extra">Extra</a>
+
     <a href="#litera">Scrisoare</a>
   </div>
 
@@ -812,7 +829,27 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
   </div>
 </div>
 
+
+
+
+<!-- MOTIVE -->
+<div class="motive-bg" id="motive">
+  <div class="sect-inner">
+    <div style="text-align:center;margin-bottom:.2rem">
+      <h2 class="s-title rev">De ce te iubesc <em>💗</em></h2>
+      <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">💕</span><span class="s-rule-line right"></span></div>
+    </div>
+    <span class="motive-counter rev" id="motiveCount">0</span>
+    <p class="motive-counter-label rev" id="motiveLabel">motive din infinit</p>
+    <p class="motive-counter-sub rev">dintre cele pe care le simt pentru tine ✨</p>
+
+    <div class="motive-grid" id="motiveGrid"><div style="color:#9b6a7e;font-style:italic">Se încarcă...</div></div>
+    <button class="add-item-btn" onclick="openAddModal('motiv')">+ Adaugă motiv</button>
+  </div>
+</div>
+
 <!-- EXTRA -->
+
 <div class="extra-bg" id="extra">
   <div class="sect-inner">
     <div style="text-align:center;margin-bottom:.2rem">
@@ -895,8 +932,9 @@ const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('vis'),80)});
 },{threshold:.08});
 function observeAll(){
-  document.querySelectorAll('.rev,.flower-card,.vibe-card,.love-tag,.trait-item,.bq,.night-item,.palette-swatch').forEach(el=>{if(!el.classList.contains('vis'))obs.observe(el)});
+  document.querySelectorAll('.rev,.flower-card,.vibe-card,.love-tag,.trait-item,.bq,.night-item,.palette-swatch,.motive-card').forEach(el=>{if(!el.classList.contains('vis'))obs.observe(el)});
 }
+
 observeAll();
 
 // ── COUNTDOWN
@@ -1186,7 +1224,9 @@ function renderPage(){
   renderMuzica();
   renderStats();
   renderLoveTags();
+  renderMotive();
   renderExtra();
+
   renderScrisoare();
   renderQuotesTable(allQuotes);
   renderInfoTable(allItems);
@@ -1394,6 +1434,28 @@ document.getElementById('iubireCitate').innerHTML=quotesEditHtml(getQuotes('iubi
 
 }
 
+function renderMotive(){
+  const items=getItems('motiv');
+  const grid=document.getElementById('motiveGrid');
+  const count=document.getElementById('motiveCount');
+  const label=document.getElementById('motiveLabel');
+  if(count) count.textContent=items.length;
+  if(label) label.textContent=items.length===1?'motiv din infinit':'motive din infinit';
+
+  if(!items.length){grid.innerHTML='<div style="color:#9b6a7e;font-style:italic;text-align:center">Niciun motiv adăugat încă.</div>';return;}
+  grid.innerHTML=items.map((r,i)=>`
+    <div class="motive-card editable-wrap" data-id="${r.id}" data-tip="motiv" style="position:relative">
+      ${itemCtrl(r)}
+      <div class="motive-nr">${i+1}</div>
+      <div class="motive-body">
+        ${r.emoji?`<span class="motive-emoji">${r.emoji}</span>`:''}
+        <div class="motive-text">${r.titlu||''}</div>
+
+
+      </div>
+    </div>`).join('');
+}
+
 function renderExtra(){
   const catMap={
     extra_personal:'🌍 Informații personale',
@@ -1571,6 +1633,8 @@ const tipFields={
   muzica_piesa: ['titlu','bool1'],
   stat:      ['emoji','titlu','num1'],
   love_tag:  ['titlu'],
+  motiv: ['emoji','titlu'],
+
   extra_personal:['emoji','text'],
   extra_culori:  ['emoji','text'],
   extra_nu_place:['emoji','text'],
