@@ -16,6 +16,8 @@
   --wine:#7b1c3c; --navy:#1a2a4a;
 }
 *{margin:0;padding:0;box-sizing:border-box}
+html,body{touch-action:pan-x pan-y;-ms-touch-action:pan-x pan-y}
+
 html{scroll-behavior:smooth}
 body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-body);overflow-x:hidden;cursor:none}
 
@@ -899,7 +901,12 @@ const SB_KEY = 'sb_publishable_bHDKjiKAVHqW199ICw7i2g_O3olYMAr';
 const { createClient } = supabase;
 const db = createClient(SB_URL, SB_KEY);
 
+document.addEventListener('gesturestart',e=>e.preventDefault(),{passive:false});
+document.addEventListener('gesturechange',e=>e.preventDefault(),{passive:false});
+document.addEventListener('touchstart',e=>{if(e.touches.length>1)e.preventDefault();},{passive:false});
+
 // ── CURSOR
+
 const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
 let mx=0,my=0,cx=0,cy=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
