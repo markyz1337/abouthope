@@ -113,7 +113,9 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 
 /* COUNTDOWN */
 .cd-wrap{padding:3rem 2rem;max-width:100%}
-.cd-inner{max-width:900px;margin:0 auto;background:linear-gradient(135deg,#fff8fb,white,#fff0f5);border-radius:32px;border:1px solid rgba(232,85,122,.13);padding:3.5rem 3rem;box-shadow:0 12px 50px rgba(232,85,122,.09);text-align:center;position:relative;overflow:hidden}
+.cd-inner{max-width:900px;margin:0 auto;background:linear-gradient(135deg,#fff8fb,white,#fff0f5);border-radius:32px;border:none;padding:3.5rem 3rem;box-shadow:0 12px 50px rgba(232,85,122,.09);text-align:center;position:relative;overflow:hidden}
+.cd-inner::after{content:'';position:absolute;inset:0;border-radius:32px;padding:2px;background:conic-gradient(from var(--cd-angle,0deg),var(--rose) 0deg,var(--rose-mist) var(--cd-sweep,0deg),rgba(232,85,122,.1) var(--cd-sweep,0deg),rgba(232,85,122,.1) 360deg);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;transition:none}
+
 .cd-inner::before{content:'🎂';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:16rem;opacity:.03;pointer-events:none}
 .cd-sub{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--rose-deep);opacity:.7;margin-bottom:2.5rem;letter-spacing:.05em}
 .cd-boxes{display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap;margin-bottom:2rem;position:relative;z-index:1}
@@ -918,6 +920,7 @@ function updateCD(){
     document.getElementById('cd-bday').style.display='block';
     document.getElementById('cd-bday').textContent=bdaySettings.birthday_bday_text||'🎉 La mulți ani! 🎂';
     document.querySelectorAll('.cd-box').forEach(b=>b.style.display='none');
+    document.querySelector('.cd-inner').style.setProperty('--cd-sweep','360deg');
     launchConfetti();return;
   }
   const diff=next-now;
@@ -930,7 +933,16 @@ function updateCD(){
   if(d===0) msg.textContent=bdaySettings.birthday_msg_day||'Mâine e ziua specială! 🎂✨';
   else if(d<=7) msg.textContent=bdaySettings.birthday_msg_week||(d+' zile rămase — pregătește-te! 🌸');
   else msg.textContent=bdaySettings.birthday_msg||'Fiecare secundă contează 🌸';
+
+  // progress arc
+  const totalMs=365.25*24*3600*1000;
+  const elapsed=totalMs-diff;
+  const pct=Math.max(0,Math.min(1,elapsed/totalMs));
+  const sweep=pct*360;
+  document.querySelector('.cd-inner').style.setProperty('--cd-sweep',sweep+'deg');
 }
+
+
 function launchConfetti(){
   const cols=['#e8557a','#ff80ab','#fce8ef','#b53060','#fdf0f4'];
   for(let i=0;i<120;i++){
