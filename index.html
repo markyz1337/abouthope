@@ -298,11 +298,19 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 .divider{text-align:center;padding:.8rem 2rem;font-size:1.2rem;letter-spacing:.6rem;opacity:.35;user-select:none}
 .rev{opacity:0;transform:translateY(36px);transition:all .8s cubic-bezier(.4,0,.2,1)}
 .rev.vis{opacity:1;transform:translateY(0)}
-.sunset-quote{background:linear-gradient(135deg,#1a0a0f,#2d0d1c,#1a0a0f);padding:5rem 2rem;position:relative;overflow:hidden;text-align:center}
-.sunset-quote::before{content:'🌅';position:absolute;font-size:14rem;opacity:.05;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
-.sq-inner{max-width:700px;margin:0 auto;position:relative;z-index:1}
-.sq-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,4vw,2rem);font-style:italic;color:#fdf0f4;line-height:1.9;margin-bottom:1.2rem}
-.sq-attr{font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(232,85,122,.6);font-weight:500}
+.sunset-quote{background:linear-gradient(160deg,#170a12 0%,#4a1530 38%,#b53060 72%,#e8a26a 100%);padding:11rem 2rem;position:relative;overflow:hidden;text-align:center;-webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.15) 6%,rgba(0,0,0,.5) 13%,#000 26%,#000 74%,rgba(0,0,0,.5) 87%,rgba(0,0,0,.15) 94%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.15) 6%,rgba(0,0,0,.5) 13%,#000 26%,#000 74%,rgba(0,0,0,.5) 87%,rgba(0,0,0,.15) 94%,transparent 100%)}
+
+
+
+.sq-sun{position:absolute;bottom:-60px;left:50%;transform:translateX(-50%);width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(255,224,178,.9) 0%,rgba(240,168,104,.45) 45%,rgba(232,85,122,0) 75%);filter:blur(4px);animation:sunGlow 6s ease-in-out infinite;pointer-events:none}
+@keyframes sunGlow{0%,100%{opacity:.5;transform:translateX(-50%) scale(1)}50%{opacity:.8;transform:translateX(-50%) scale(1.1)}}
+.sq-horizon{position:absolute;left:0;right:0;bottom:0;height:40%;background:linear-gradient(180deg,rgba(23,10,18,0) 0%,rgba(23,10,18,.65) 100%);pointer-events:none}
+.sq-inner{max-width:680px;margin:0 auto;position:relative;z-index:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:28px;padding:3rem 2.4rem;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.sq-mark{font-family:'Cormorant Garamond',serif;font-size:4.2rem;line-height:1;color:rgba(255,255,255,.45);display:block;margin-bottom:.4rem}
+.sq-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,4vw,2rem);font-style:italic;color:#fff8f3;line-height:1.9;margin-bottom:1.4rem;text-shadow:0 2px 14px rgba(0,0,0,.2)}
+.sq-divider{width:54px;height:1px;background:rgba(255,255,255,.4);margin:0 auto 1.1rem}
+.sq-attr{font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.8);font-weight:500}
+
 .confetti-p{position:fixed;pointer-events:none;z-index:99997;animation:cfall linear forwards}
 @keyframes cfall{0%{opacity:1;transform:translateY(0) rotateZ(0deg)}100%{opacity:0;transform:translateY(100vh) rotateZ(720deg)}}
 
@@ -682,12 +690,16 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 <!-- SUNSET QUOTE -->
 <div class="sunset-quote section-edit-wrap">
   <button class="section-edit-icon" onclick="editSettingGroup(['sunset_quote','sunset_attr'])">✏️ Editează</button>
+  <div class="sq-sun"></div>
+  <div class="sq-horizon"></div>
   <div class="sq-inner rev">
-    <div style="font-size:3rem;margin-bottom:1rem">🌅</div>
+    <span class="sq-mark">"</span>
     <p class="sq-text" id="sunsetQuote">„Apusurile demonstrează că și sfârșitul poate fi frumos."</p>
+    <div class="sq-divider"></div>
     <span class="sq-attr" id="sunsetAttr">— un gând special</span>
   </div>
 </div>
+
 
 <div class="divider">🌹 ✨ 🌹 ✨ 🌹</div>
 
@@ -838,12 +850,12 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 <div class="motive-bg" id="motive">
   <div class="sect-inner">
     <div style="text-align:center;margin-bottom:.2rem">
-      <h2 class="s-title rev">De ce te iubesc <em>💗</em></h2>
+      <h2 class="s-title rev">Motive "de ce"<em>💛</em></h2>
       <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">💕</span><span class="s-rule-line right"></span></div>
     </div>
     <span class="motive-counter rev" id="motiveCount">0</span>
     <p class="motive-counter-label rev" id="motiveLabel">motive din infinit</p>
-    <p class="motive-counter-sub rev">dintre cele pe care le simt pentru tine ✨</p>
+    <p class="motive-counter-sub rev">știi că într-o zi nu o să existe nici spațiu suficient doar pentru un motiv în plus? ✨</p>
 
     <div class="motive-grid" id="motiveGrid"><div style="color:#9b6a7e;font-style:italic">Se încarcă...</div></div>
     <button class="add-item-btn" onclick="openAddModal('motiv')">+ Adaugă motiv</button>
