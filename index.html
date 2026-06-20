@@ -2199,7 +2199,17 @@ function autoStartRadio(){
       radioPlaying=true;
       document.getElementById('radioFab').classList.add('playing');
       document.getElementById('radioFab').innerHTML=iconStop;
+      if('mediaSession' in navigator){
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: 'Despre tine 💛',
+          artist: '✨',
+          artwork: [
+            { src: 'https://github.com/markyz1337/abouthope/raw/refs/heads/main/icon.png', sizes: '512x512', type: 'image/png' }
+          ]
+        });
+      }
     }).catch(()=>{});
+
   }
   document.removeEventListener('click',autoStartRadio);
   document.removeEventListener('touchstart',autoStartRadio);
