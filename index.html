@@ -672,7 +672,7 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 <div class="cd-wrap">
   <div class="cd-inner rev section-edit-wrap">
     <button class="section-edit-icon" onclick="editSettingGroup(['birthday_date','birthday_label','birthday_msg','birthday_msg_day','birthday_msg_week','birthday_bday_text'])">✏️ Editează</button>
-    <h2 class="s-title" style="margin-bottom:.6rem">Countdown pentru noi <em>💗</em></h2>
+    <h2 class="s-title" style="margin-bottom:.6rem">Countdown pentru tine <em>💗</em></h2>
     <p class="cd-sub" id="birthdayLabel">configurează data în setări</p>
     <div class="cd-boxes">
       <div class="cd-box"><span class="cd-num" id="cd-days">--</span><span class="cd-lbl">Zile</span></div>
@@ -1627,24 +1627,38 @@ async function moveItem(id, dir){
 
 
 // RANDOMIZER
-let lastRand=-1;
+let randQueue=[];
 function spinRand(){
   const complimenteDb=getItems('compliment');
   if(!complimenteDb.length){showToast('Niciun compliment adăugat!','err');return;}
+  
+  // Dacă coada e goală, reumple și amestecă
+  if(randQueue.length===0){
+    randQueue=[...complimenteDb].sort(()=>Math.random()-.5);
+  }
+  
   const btn=document.querySelector('.rand-btn');
   const em=document.getElementById('randEmoji');
   const tx=document.getElementById('randText');
-  btn.disabled=true;let ticks=0;
+  btn.disabled=true;
+  let ticks=0;
   const iv=setInterval(()=>{
     const i=Math.floor(Math.random()*complimenteDb.length);
-    em.textContent=complimenteDb[i].emoji||'🌸';tx.textContent=complimenteDb[i].text;tx.style.opacity='.5';ticks++;
+    em.textContent=complimenteDb[i].emoji||'🌸';
+    tx.textContent=complimenteDb[i].text;
+    tx.style.opacity='.5';
+    ticks++;
     if(ticks>=14){
-      clearInterval(iv);let fi;
-      do{fi=Math.floor(Math.random()*complimenteDb.length)}while(fi===lastRand&&complimenteDb.length>1);
-      lastRand=fi;em.textContent=complimenteDb[fi].emoji||'🌸';tx.textContent=complimenteDb[fi].text;tx.style.opacity='1';btn.disabled=false;
+      clearInterval(iv);
+      const pick=randQueue.shift();
+      em.textContent=pick.emoji||'🌸';
+      tx.textContent=pick.text;
+      tx.style.opacity='1';
+      btn.disabled=false;
     }
   },80);
 }
+
 
 // ══════════════════════════════════════════════════════
 //  EDIT MODE
