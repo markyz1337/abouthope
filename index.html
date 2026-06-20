@@ -476,7 +476,14 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
   <div style="background:linear-gradient(160deg,#1e0d17,#160a0f);border:1px solid rgba(232,85,122,.25);border-radius:24px;padding:2.2rem 1.8rem;width:100%;max-width:360px;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.5)">
     <div style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:#fdf0f4;margin-bottom:1.4rem">✨ Acces</div>
     <button onclick="closeAccessPopup();toggleEditMode()" style="display:block;width:100%;margin-bottom:.8rem;background:var(--rose);color:#140a10;border:none;padding:.8rem;border-radius:16px;cursor:pointer;font-family:'Jost',sans-serif;font-size:.88rem;font-weight:600">✏️ Modifică conținutul</button>
-    <button onclick="exportAllCSV()" style="display:block;width:100%;margin-bottom:.8rem;background:rgba(255,255,255,.08);color:#f0c4d4;border:1px solid rgba(232,85,122,.25);padding:.8rem;border-radius:16px;cursor:pointer;font-family:'Jost',sans-serif;font-size:.88rem;font-weight:600">⬇️ Descarcă toate datele (.csv)</button>
+    <div style="text-align:left;margin-bottom:.8rem">
+      <div style="font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#9b6a7e;margin-bottom:.5rem">⬇️ Descarcă date (.csv)</div>
+      <button onclick="exportOneCSV('tribute_settings')" style="display:block;width:100%;margin-bottom:.5rem;background:rgba(255,255,255,.08);color:#f0c4d4;border:1px solid rgba(232,85,122,.25);padding:.65rem;border-radius:14px;cursor:pointer;font-family:'Jost',sans-serif;font-size:.82rem">Setări (tribute_settings)</button>
+      <button onclick="exportOneCSV('tribute_items')" style="display:block;width:100%;margin-bottom:.5rem;background:rgba(255,255,255,.08);color:#f0c4d4;border:1px solid rgba(232,85,122,.25);padding:.65rem;border-radius:14px;cursor:pointer;font-family:'Jost',sans-serif;font-size:.82rem">Conținut (tribute_items)</button>
+      <button onclick="exportOneCSV('tribute_quotes')" style="display:block;width:100%;margin-bottom:.5rem;background:rgba(255,255,255,.08);color:#f0c4d4;border:1px solid rgba(232,85,122,.25);padding:.65rem;border-radius:14px;cursor:pointer;font-family:'Jost',sans-serif;font-size:.82rem">Citate (tribute_quotes)</button>
+      <button onclick="exportAllCSV()" style="display:block;width:100%;background:rgba(232,85,122,.12);color:var(--rose-deep);border:1px solid rgba(232,85,122,.3);padding:.65rem;border-radius:14px;cursor:pointer;font-family:'Jost',sans-serif;font-size:.82rem;font-weight:600">Toate cele 3 deodată</button>
+    </div>
+
     <button onclick="closeAccessPopup()" style="margin-top:.4rem;background:none;color:#9b6a7e;border:none;padding:.4rem;cursor:pointer;font-family:'Jost',sans-serif;font-size:.78rem">Închide</button>
   </div>
 </div>
@@ -2164,6 +2171,15 @@ function downloadCSV(filename, csvContent){
   a.href = url; a.download = filename;
   document.body.appendChild(a); a.click(); a.remove();
   URL.revokeObjectURL(url);
+}
+
+async function exportOneCSV(table){
+  showToast('Se pregătește fișierul...');
+  const today = new Date().toISOString().slice(0,10);
+  const {data, error} = await db.from(table).select('*');
+  if(error){ showToast('Eroare: '+error.message,'err'); return; }
+  downloadCSV(`${table}_${today}.csv`, toCSV(data));
+  showToast('✓ Descărcat!');
 }
 
 async function exportAllCSV(){
