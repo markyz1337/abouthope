@@ -2128,8 +2128,14 @@ function openPinModal(){
   document.getElementById('pinError').textContent = '';
   const inp = document.getElementById('pinInput');
   inp.value = '';
-  setTimeout(()=>inp.focus(), 50);
+  inp.focus();
+  requestAnimationFrame(()=>{
+    inp.focus();
+    setTimeout(()=>inp.focus(), 100);
+    setTimeout(()=>inp.focus(), 300);
+  });
 }
+
 function closePinModal(){
   document.getElementById('pinModal').style.display = 'none';
 }
