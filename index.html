@@ -1080,7 +1080,7 @@ if(isToday){
 
 function launchConfetti(){
   const cols=['#e8557a','#ff80ab','#fce8ef','#b53060','#fdf0f4'];
-  for(let i=0;i<40;i++){
+  for(let i=0;i<70;i++){
     setTimeout(()=>{
       const c=document.createElement('div');c.className='confetti-p';
       c.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${cols[Math.floor(Math.random()*cols.length)]};width:${6+Math.random()*7}px;height:${6+Math.random()*7}px;border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${3+Math.random()*4}s;animation-delay:${Math.random()}s`;
@@ -2176,6 +2176,15 @@ function toggleRadio(){
     audio.src=audio.src;
     audio.load();
     audio.play().catch(()=>showToast('Nu s-a putut porni radioul','err'));
+    if('mediaSession' in navigator){
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: 'Despre tine 💛',
+        artist: '✨',
+        artwork: [
+          { src: 'https://github.com/markyz1337/abouthope/raw/refs/heads/main/icon.png', sizes: '512x512', type: 'image/png' }
+        ]
+      });
+    }
     radioPlaying=true;
     fab.classList.add('playing');
     fab.innerHTML=iconStop;
