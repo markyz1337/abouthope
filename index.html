@@ -532,8 +532,8 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
       <div class="aform">
         <div class="aform-title">🎂 Ziua de naștere & countdown</div>
         <div class="aform-grid">
-          <div class="afield"><label>Data nașterii (format MM-DD)</label><input id="sf-birthday_date" placeholder="ex: 03-15 pentru 15 martie"></div>
-          <div class="afield"><label>Etichetă dată (text afișat)</label><input id="sf-birthday_label" placeholder="ex: 15 Martie 🎂"></div>
+<div class="afield"><label>Data nașterii (format ZI-LUNĂ)</label><input id="sf-birthday_date" placeholder="ex: 27-10 pentru 27 octombrie"></div>
+          <div class="afield"><label>Etichetă dată (text afișat)</label><input id="sf-birthday_label" placeholder="ex: 27 Octombrie 🎂"></div>
           <div class="afield"><label>Mesaj countdown normal</label><input id="sf-birthday_msg" placeholder="ex: Fiecare secundă contează 🌸"></div>
           <div class="afield"><label>Mesaj când e săptămâna zilei</label><input id="sf-birthday_msg_week" placeholder="ex: Curând vine ziua ta! 🎀"></div>
           <div class="afield"><label>Mesaj în ziua nașterii</label><input id="sf-birthday_msg_day" placeholder="ex: Azi e ziua ta specială! 🎂"></div>
@@ -1036,8 +1036,9 @@ function updateCD(){
     return;
   }
   const parts=dateStr.split('-');
-  const month=parseInt(parts[0])-1;
-  const day=parseInt(parts[1]);
+  const day=parseInt(parts[0]);
+  const month=parseInt(parts[1])-1;
+
   const now=new Date();
   let next=new Date(now.getFullYear(),month,day,0,0,0);
   if(now>=next)next=new Date(now.getFullYear()+1,month,day,0,0,0);
@@ -1905,7 +1906,7 @@ const settingDescriptions={
   hero_bg_letter:   'Litera decorativă mare din dreapta — ex: „X"',
   hero_card_name:   'Numele din cardul alb din dreapta',
   hero_card_sub:    'Subtitlul mic din card — ex: „o pagină specială"',
-  birthday_date:    'Format MM-DD — ex: 05-04 pentru 4 Mai',
+  birthday_date:    'Format ZI-LUNĂ — ex: 04-05 pentru 4 Mai',
   birthday_label:   'Text afișat sub titlu — ex: „4 Mai 🎂"',
   birthday_msg:     'Mesaj afișat când mai sunt multe zile',
   birthday_msg_week:'Mesaj când mai e mai puțin de o săptămână',
