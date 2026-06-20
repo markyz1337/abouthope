@@ -945,9 +945,15 @@ const SB_KEY = 'sb_publishable_bHDKjiKAVHqW199ICw7i2g_O3olYMAr';
 const { createClient } = supabase;
 const db = createClient(SB_URL, SB_KEY);
 
+if('scrollRestoration' in history){
+  history.scrollRestoration='manual';
+}
+window.scrollTo(0,0);
+
 document.addEventListener('gesturestart',e=>e.preventDefault(),{passive:false});
 document.addEventListener('gesturechange',e=>e.preventDefault(),{passive:false});
 document.addEventListener('touchstart',e=>{if(e.touches.length>1)e.preventDefault();},{passive:false});
+
 
 // ── CURSOR
 
@@ -2259,7 +2265,9 @@ async function exportAllCSV(){
 }
 
 // INIT
+window.scrollTo(0,0);
 loadAll();
+
 
 </script>
 </body>
