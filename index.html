@@ -76,6 +76,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 
 
 
+
+
 .hero-note{font-size:.85rem;font-weight:300;color:var(--text-body);line-height:1.9;border-left:2px solid var(--rose-mist);padding-left:1.2rem;font-style:italic;opacity:0;animation:fsu .9s .7s ease both;max-width:380px}
 .scroll-cta{margin-top:2.8rem;display:flex;align-items:center;gap:.8rem;opacity:0;animation:fsu .9s .85s ease both}
 .scroll-line{width:40px;height:1px;background:linear-gradient(to right,var(--rose),transparent)}
@@ -229,7 +231,7 @@ section,.sect{padding:5rem 2rem;max-width:1140px;margin:0 auto;position:relative
 
 /* FILMS */
 .films-bg{background:var(--cream);padding:6rem 2rem}
-.actress-badge{display:inline-flex;align-items:center;gap:.6rem;background:linear-gradient(135deg,var(--card-bg),var(--card-bg2));border:1.5px solid rgba(232,85,122,.25);border-radius:50px;padding:.55rem 1.4rem;font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;color:var(--rose-deep);box-shadow:0 3px 14px rgba(0,0,0,.3);margin-bottom:2.5rem}
+.actress-badge{display:inline-flex;align-items:center;gap:.6rem;background:linear-gradient(135deg,var(--card-bg),var(--card-bg2));border:1.5px solid rgba(232,85,122,.25);border-radius:50px;padding:.55rem 1.4rem;font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;color:var(--rose-deep);box-shadow:0 3px 14px rgba(0,0,0,.3)}
 .films-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.4rem}
 .film-col{background:linear-gradient(160deg,var(--card-bg),var(--card-bg2));border-radius:20px;padding:2rem 1.8rem;border:1px solid rgba(232,85,122,.15);box-shadow:0 4px 16px rgba(0,0,0,.25)}
 .film-col h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--rose);margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem}
@@ -812,9 +814,8 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
     <div style="text-align:center;position:relative">
       <h2 class="s-title rev">Filme & Seriale <em>🎬</em></h2>
       <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">🎬</span><span class="s-rule-line right"></span></div>
-      <div class="rev" style="margin-bottom:.8rem;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center" id="actoriBadges"></div>
-      <button class="add-item-btn" style="margin-bottom:1.5rem" onclick="openAddModal('actor_badge')">+ Adaugă actor/actriță</button>
     </div>
+
 
     <div class="films-grid rev" id="filmeGrid"><div style="color:#9b6a7e;font-style:italic">Se încarcă...</div></div>
     <button class="add-item-btn" onclick="openAddModal('film')">+ Adaugă film</button>
@@ -1242,6 +1243,7 @@ return `<div style="margin-top:1rem">${items}<button class="add-item-btn" onclic
 
 
 function openAddModalQuote(sectiune) {
+  lastAddBtn=event?event.currentTarget:null;
   const sibQ=allQuotes.filter(r=>r.sectiune===sectiune);
   const nextOrdQ=sibQ.length?Math.max(...sibQ.map(r=>r.ordine||0))+1:0;
   buildEditModal('➕ Citat — ' + sectiune, [], {}, async () => {});
@@ -1262,10 +1264,12 @@ function openAddModalQuote(sectiune) {
     const { error } = await db.from('tribute_quotes').insert(obj).select();
     if (error) { showToast('Eroare: ' + error.message, 'err'); return; }
     showToast('✓ Adăugat!'); closeEditModal(); await reloadQuotes();
+    scrollToLastAddBtn();
   };
   document.getElementById('eModalSaveBtn').onclick = editModalSaveFn;
   document.getElementById('editModal').classList.add('open');
 }
+
 
 function openEditModalQuote(id) {
   const r = allQuotes.find(x => x.id === id);
@@ -1311,7 +1315,6 @@ function renderPage(){
   renderNoapte();
   renderScratch();
   renderComplimente();
-  renderActoriBadges();
   renderFilme();
   renderMuzica();
   renderStats();
@@ -1473,12 +1476,7 @@ function renderComplimente(){
 }
 
 
-function renderActoriBadges(){
-  const items=getItems('actor_badge');
-  const wrap=document.getElementById('actoriBadges');
-  if(!items.length){wrap.innerHTML='';return;}
-  wrap.innerHTML=items.map(r=>`<span class="actress-badge editable-wrap" data-id="${r.id}" data-tip="actor_badge" style="position:relative">${itemCtrl(r)}${r.emoji||'🌟'} ${r.titlu||''}</span>`).join('');
-}
+
 
 function renderFilme(){
   const items=getItems('film');
@@ -1728,7 +1726,6 @@ const tipFields={
   scratch:   ['emoji','text'],
   compliment:['emoji','text'],
 film:      ['titlu','cat1','bool1','link'],
-actor_badge:['emoji','titlu'],
 
 
   muzica_artist:['titlu','bool1'],
@@ -1753,6 +1750,8 @@ const fieldLabels={emoji:'Emoji',titlu:'Titlu',text:'Text/Descriere',hex:'Culoar
 const fieldTypes={emoji:'text',titlu:'text',text:'textarea',hex:'text',hex2:'text',pref:'checkbox',bool1:'checkbox',cat1:'text',num1:'number',ordine:'number'};
 
 let editModalSaveFn=null;
+let lastAddBtn=null;
+
 
 function openEditModalItem(id){
   const r=allItems.find(x=>x.id===id);
@@ -1778,6 +1777,7 @@ function openEditModalItem(id){
 
 
 function openAddModal(tip){
+  lastAddBtn=event?event.currentTarget:null;
   const fields=tipFields[tip]||['emoji','titlu','text'];
   const sib=allItems.filter(r=>r.tip===tip);
   const nextOrd=sib.length?Math.max(...sib.map(r=>r.ordine||0))+1:0;
@@ -1797,8 +1797,10 @@ fields.forEach(f=>{
     showToast('✓ Adăugat!');
     closeEditModal();
     await reloadItems();
+    scrollToLastAddBtn();
   });
 }
+
 
 function buildEditModal(title,fields,data,saveFn){
   document.getElementById('eModalTitle').textContent=title;
@@ -1844,6 +1846,13 @@ function buildEditModal(title,fields,data,saveFn){
   };
   document.getElementById('eModalSaveBtn').onclick=editModalSaveFn;
   document.getElementById('editModal').classList.add('open');
+}
+
+function scrollToLastAddBtn(){
+  if(!lastAddBtn || !document.body.contains(lastAddBtn))return;
+  setTimeout(()=>{
+    lastAddBtn.scrollIntoView({behavior:'smooth',block:'center'});
+  },150);
 }
 
 function closeEditModal(){
