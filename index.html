@@ -633,7 +633,7 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
     <a href="#flori">Flori</a>
     <a href="#vibes">Vibes</a>
     <a href="#personalitate">Suflet</a>
-    <a href="#filme">Povești</a>
+    <a href="#filme">Filme</a>
     <a href="#muzica">Muzică</a>
     <a href="#iubire">Iubire</a>
     <a href="#motive">Motive</a>
@@ -812,7 +812,7 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 <div class="films-bg" id="filme">
   <div class="sect-inner">
     <div style="text-align:center;position:relative">
-      <h2 class="s-title rev">Poveștile tale <em>📖🎬</em></h2>
+      <h2 class="s-title rev">Filme & Seriale <em>🎬</em></h2>
       <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">🎬</span><span class="s-rule-line right"></span></div>
     </div>
 
@@ -1485,16 +1485,16 @@ if(!items.length){grid.innerHTML='<div style="color:#9b6a7e;font-style:italic">N
 
   const cats={};
   items.forEach(r=>{const c=r.cat1||'Diverse';if(!cats[c])cats[c]=[];cats[c].push(r);});
-  const catEmojis={'Romantice clasice':'💕','Comedii':'😄','Animații & Seriale':'🎪','Animații':'🎠','Seriale':'📺'};
   grid.innerHTML=Object.entries(cats).map(([cat,films])=>`
     <div class="film-col">
-      <h3>${catEmojis[cat]||'🎬'} ${cat}</h3>
+      <h3>${cat}</h3>
       <ul class="flist">${films.map(f=>`<li class="${f.bool1?'hl':''} editable-wrap" data-id="${f.id}" data-tip="film" style="position:relative">
         ${itemCtrl(f)}<span style="cursor:pointer" onclick="window.open(${f.link?`'${f.link}'`:`'https://www.google.com/search?q=${encodeURIComponent(f.titlu||'')}'`},'_blank')">${f.titlu||''}</span></li>`).join('')}</ul>
     </div>`).join('');
 document.getElementById('citatFilmeSection').innerHTML=quotesEditHtml(getQuotes('filme'),'filme');
 
 }
+
 
 function renderMuzica(){
   const artisti=getItems('muzica_artist');
@@ -1757,7 +1757,9 @@ function openEditModalItem(id){
   const r=allItems.find(x=>x.id===id);
   if(!r)return;
   const fields=tipFields[r.tip]||['emoji','titlu','text'];
+  const ta=r.tip==='motiv'?['titlu']:[];
   buildEditModal('✏️ Editează — '+r.tip,fields,r,async(vals)=>{
+
     const obj={};
     fields.forEach(f=>{
       if(f==='pref')obj.bool1=vals.pref;
@@ -1771,8 +1773,9 @@ function openEditModalItem(id){
     showToast('✓ Salvat!');
     closeEditModal();
     await reloadItems();
-  });
+  },ta);
 }
+
 
 
 
@@ -1781,7 +1784,9 @@ function openAddModal(tip){
   const fields=tipFields[tip]||['emoji','titlu','text'];
   const sib=allItems.filter(r=>r.tip===tip);
   const nextOrd=sib.length?Math.max(...sib.map(r=>r.ordine||0))+1:0;
+  const ta=tip==='motiv'?['titlu']:[];
   buildEditModal('➕ Adaugă — '+tip,fields,{ordine:nextOrd},async(vals)=>{
+
 
 const obj={tip};
 fields.forEach(f=>{
@@ -1798,17 +1803,20 @@ fields.forEach(f=>{
     closeEditModal();
     await reloadItems();
     scrollToLastAddBtn();
-  });
+  },ta);
 }
 
 
-function buildEditModal(title,fields,data,saveFn){
+
+function buildEditModal(title,fields,data,saveFn,textareaFields){
   document.getElementById('eModalTitle').textContent=title;
   const container=document.getElementById('eModalFields');
   container.innerHTML='';
+  textareaFields=textareaFields||[];
   fields.forEach(f=>{
     const label=fieldLabels[f]||f;
-    const type=fieldTypes[f]||'text';
+    const type=textareaFields.includes(f)?'textarea':(fieldTypes[f]||'text');
+
     const val=data[f]==='undefined'?'':(data[f]??'');
     const div=document.createElement('div');
     div.className=`ef-row ${type==='textarea'?'full':''}`;
@@ -1819,6 +1827,7 @@ function buildEditModal(title,fields,data,saveFn){
       </label></div>`;
     } else if(type==='textarea'){
       div.innerHTML=`<div class="efield full"><label>${label}</label><textarea id="em-${f}" rows="4">${val}</textarea></div>`;
+
     } else if(f==='cat1'){
       const cats=[...new Set(allItems.filter(r=>r.tip==='film'&&r.cat1).map(r=>r.cat1))];
       const esc=s=>String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
