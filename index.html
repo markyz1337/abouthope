@@ -548,8 +548,6 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
           <div class="afield"><label>Atribuire citat apus</label><input id="sf-sunset_attr" placeholder="ex: — un gând special"></div>
           <div class="afield" style="grid-column:1/-1"><label>Subtitlu secțiune Noapte</label><input id="sf-night_sub" placeholder="ex: Liniștea nopții, gândurile care nu se opresc..."></div>
           <div class="afield" style="grid-column:1/-1"><label>Textul introductiv Iubire</label><input id="sf-love_intro" placeholder="ex: Știi să iubești. Crezi în ea."></div>
-          <div class="afield"><label>Badge actriță preferată</label><input id="sf-actress_badge" placeholder="ex: 🌟 Audrey Hepburn"></div>
-          <div class="afield"><label>Badge actor preferat</label><input id="sf-actor_badge" placeholder="ex: ⭐ Timothée Chalamet"></div>
           <div class="afield"><label>Titlu secțiune Suflet</label><input id="sf-pers_title" placeholder="ex: Sufletul tău"></div>
 
         </div>
@@ -811,16 +809,13 @@ footer p{font-size:.82rem;color:#9b6a7e;line-height:2;position:relative;z-index:
 <!-- FILME -->
 <div class="films-bg" id="filme">
   <div class="sect-inner">
-    <div style="text-align:center;position:relative" class="section-edit-wrap">
-      <button class="section-edit-icon" onclick="editSettingGroup(['actress_badge','actor_badge'])">✏️ Editează</button>
+    <div style="text-align:center;position:relative">
       <h2 class="s-title rev">Filme & Seriale <em>🎬</em></h2>
       <div class="s-rule rev"><span class="s-rule-line"></span><span class="s-rule-icon">🎬</span><span class="s-rule-line right"></span></div>
-      <div class="rev" style="margin-bottom:1.5rem;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center">
-        <span class="actress-badge" id="actressBadge">🌟 Actriță preferată</span>
-        <span class="actress-badge" id="actorBadge">⭐ Actor preferat</span>
-      </div>
-
+      <div class="rev" style="margin-bottom:.8rem;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center" id="actoriBadges"></div>
+      <button class="add-item-btn" style="margin-bottom:1.5rem" onclick="openAddModal('actor_badge')">+ Adaugă actor/actriță</button>
     </div>
+
     <div class="films-grid rev" id="filmeGrid"><div style="color:#9b6a7e;font-style:italic">Se încarcă...</div></div>
     <button class="add-item-btn" onclick="openAddModal('film')">+ Adaugă film</button>
     <div id="citatFilmeSection" style="margin-top:2.5rem"></div>
@@ -1162,7 +1157,8 @@ function populateSettingFields(){
   const keys=['hero_name','hero_tagline','hero_bg_letter','hero_eyebrow','hero_note',
     'hero_card_name','hero_card_sub',
     'birthday_date','birthday_label','birthday_msg','birthday_msg_week','birthday_msg_day','birthday_bday_text',
-    'sunset_quote','sunset_attr','night_title','night_sub','love_intro','actress_badge','pers_title',
+    'sunset_quote','sunset_attr','night_title','night_sub','love_intro','pers_title',
+
 
     'nav_logo','footer_line1','footer_line2'];
   keys.forEach(k=>{
@@ -1175,7 +1171,8 @@ async function saveAllSettings(){
   const keys=['hero_name','hero_tagline','hero_bg_letter','hero_eyebrow','hero_note',
     'hero_card_name','hero_card_sub',
     'birthday_date','birthday_label','birthday_msg','birthday_msg_week','birthday_msg_day','birthday_bday_text',
-    'sunset_quote','sunset_attr','night_title','night_sub','love_intro','actress_badge','actor_badge','pers_title',
+    'sunset_quote','sunset_attr','night_title','night_sub','love_intro','pers_title',
+
 
 
     'nav_logo','footer_line1','footer_line2'];
@@ -1207,8 +1204,7 @@ function applySettings(){
 
   if(s.sunset_quote)    document.getElementById('sunsetQuote').textContent=s.sunset_quote;
   if(s.sunset_attr)     document.getElementById('sunsetAttr').textContent=s.sunset_attr;
-  if(s.actress_badge)   document.getElementById('actressBadge').textContent=s.actress_badge;
-  if(s.actor_badge)     document.getElementById('actorBadge').textContent=s.actor_badge;
+
 
   if(s.pers_title)      document.getElementById('persTitle').innerHTML=s.pers_title+'<em style="color:#ffd6e7"> 🌙</em>';
   bdaySettings=s;
@@ -1315,13 +1311,13 @@ function renderPage(){
   renderNoapte();
   renderScratch();
   renderComplimente();
+  renderActoriBadges();
   renderFilme();
   renderMuzica();
   renderStats();
   renderLoveTags();
   renderMotive();
   renderExtra();
-
   renderScrisoare();
   renderQuotesTable(allQuotes);
   renderInfoTable(allItems);
@@ -1476,6 +1472,13 @@ function renderComplimente(){
   </div>`).join('');
 }
 
+
+function renderActoriBadges(){
+  const items=getItems('actor_badge');
+  const wrap=document.getElementById('actoriBadges');
+  if(!items.length){wrap.innerHTML='';return;}
+  wrap.innerHTML=items.map(r=>`<span class="actress-badge editable-wrap" data-id="${r.id}" data-tip="actor_badge" style="position:relative">${itemCtrl(r)}${r.emoji||'🌟'} ${r.titlu||''}</span>`).join('');
+}
 
 function renderFilme(){
   const items=getItems('film');
@@ -1725,6 +1728,8 @@ const tipFields={
   scratch:   ['emoji','text'],
   compliment:['emoji','text'],
 film:      ['titlu','cat1','bool1','link'],
+actor_badge:['emoji','titlu'],
+
 
   muzica_artist:['titlu','bool1'],
   muzica_piesa: ['titlu','bool1'],
