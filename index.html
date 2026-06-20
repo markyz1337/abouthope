@@ -1046,14 +1046,16 @@ function updateCD(){
   if(now>=next)next=new Date(now.getFullYear()+1,month,day,0,0,0);
   const isToday=now.getMonth()===month&&now.getDate()===day;
   document.getElementById('birthdayLabel').textContent=bdaySettings.birthday_label||dateStr;
-  if(isToday){
+if(isToday){
     document.getElementById('cd-msg').style.display='none';
     document.getElementById('cd-bday').style.display='block';
     document.getElementById('cd-bday').textContent=bdaySettings.birthday_bday_text||'🎉 La mulți ani! 🎂';
     document.querySelectorAll('.cd-box').forEach(b=>b.style.display='none');
     document.querySelector('.cd-inner').style.setProperty('--cd-sweep','360deg');
-    launchConfetti();return;
+    if(!window._confettiLaunched){window._confettiLaunched=true;launchConfetti();}
+    return;
   }
+
   const diff=next-now;
   const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
   document.getElementById('cd-days').textContent=String(d).padStart(2,'0');
@@ -1076,7 +1078,7 @@ function updateCD(){
 
 function launchConfetti(){
   const cols=['#e8557a','#ff80ab','#fce8ef','#b53060','#fdf0f4'];
-  for(let i=0;i<120;i++){
+  for(let i=0;i<70;i++){
     setTimeout(()=>{
       const c=document.createElement('div');c.className='confetti-p';
       c.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${cols[Math.floor(Math.random()*cols.length)]};width:${6+Math.random()*7}px;height:${6+Math.random()*7}px;border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${3+Math.random()*4}s;animation-delay:${Math.random()}s`;
