@@ -2214,8 +2214,9 @@ function autoStartRadio(){
   document.removeEventListener('click',autoStartRadio);
   document.removeEventListener('touchstart',autoStartRadio);
 }
-document.addEventListener('click',autoStartRadio);
-document.addEventListener('touchstart',autoStartRadio);
+document.addEventListener('click', autoStartRadio, {once:true});
+document.addEventListener('touchstart', autoStartRadio, {once:true, passive:true});
+
 
 
 
@@ -2301,9 +2302,158 @@ async function exportAllCSV(){
   closeAccessPopup();
 }
 
-// INIT
-window.scrollTo(0,0);
-loadAll();
+// ── VISITOR LOCK
+(function(){
+  const PASS = '0001';
+
+  // Blochează scroll-ul
+document.body.style.overflow = 'hidden';
+document.body.style.position = 'fixed';
+document.body.style.width = '100%';
+
+
+  // Creează modalul
+  const overlay = document.createElement('div');
+  overlay.id = 'visitorLock';
+  overlay.style.cssText = `
+    position:fixed;inset:0;z-index:199000;
+    background:radial-gradient(ellipse at 50% 40%, #2a0a1a 0%, #0d0410 60%, #000 100%);
+    display:flex;align-items:center;justify-content:center;
+    padding:1.5rem;
+    animation:vlFadeIn .6s ease both;
+  `;
+
+  overlay.innerHTML = `
+    <style>
+      @keyframes vlFadeIn{from{opacity:0}to{opacity:1}}
+      @keyframes vlCardIn{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+      @keyframes vlHeartBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+      @keyframes vlStarFloat{0%,100%{opacity:.15;transform:translateY(0)}50%{opacity:.55;transform:translateY(-8px)}}
+      @keyframes vlGlow{0%,100%{box-shadow:0 0 60px rgba(232,85,122,.18),0 32px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.07)}50%{box-shadow:0 0 100px rgba(232,85,122,.32),0 32px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.07)}}
+      @keyframes vlShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+      @keyframes vlPinPop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+      #vlCard{animation:vlCardIn .7s .15s cubic-bezier(.175,.885,.32,1.275) both,vlGlow 4s 1s ease-in-out infinite}
+      .vl-star{position:absolute;font-size:1.1rem;animation:vlStarFloat ease-in-out infinite;pointer-events:none}
+      #vlInput::placeholder{color:rgba(255,255,255,.25)}
+      #vlInput:focus{outline:none;border-color:var(--rose);box-shadow:0 0 0 3px rgba(232,85,122,.18)}
+      .vl-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(232,85,122,.45);transition:all .25s;background:transparent}
+      .vl-dot.filled{background:var(--rose);border-color:var(--rose);box-shadow:0 0 8px rgba(232,85,122,.6)}
+      .vl-dot.error{background:#ff4070;border-color:#ff4070;animation:vlShake .4s ease}
+      #vlPad button{font-size:1.3rem;font-family:'Jost',sans-serif;font-weight:400;color:#fdf0f4;background:rgba(255,255,255,.06);border:1px solid rgba(232,85,122,.16);border-radius:50%;width:64px;height:64px;cursor:pointer;transition:all .22s;letter-spacing:0;line-height:1}
+      #vlPad button:hover{background:rgba(232,85,122,.18);border-color:rgba(232,85,122,.45);transform:scale(1.08)}
+      #vlPad button:active{transform:scale(.93);background:rgba(232,85,122,.3)}
+    </style>
+
+    <!-- stele decorative -->
+    <span class="vl-star" style="top:8%;left:12%;animation-duration:3.2s;animation-delay:0s">✦</span>
+    <span class="vl-star" style="top:14%;right:10%;animation-duration:4s;animation-delay:.8s">🌸</span>
+    <span class="vl-star" style="bottom:18%;left:8%;animation-duration:3.6s;animation-delay:.3s">💕</span>
+    <span class="vl-star" style="bottom:12%;right:14%;animation-duration:4.5s;animation-delay:1.1s">✨</span>
+    <span class="vl-star" style="top:45%;left:4%;animation-duration:5s;animation-delay:.5s">🌷</span>
+    <span class="vl-star" style="top:38%;right:5%;animation-duration:3.8s;animation-delay:1.6s">💗</span>
+
+    <div id="vlCard" style="
+      position:relative;
+      background:linear-gradient(160deg,#1e0d17 0%,#160a0f 60%,#1a0b14 100%);
+      border:1px solid rgba(232,85,122,.22);
+      border-radius:32px;
+      padding:2.8rem 2.2rem 2.4rem;
+      width:100%;max-width:360px;
+      text-align:center;
+    ">
+      <!-- shimmer border top -->
+      <div style="position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(232,85,122,.6),transparent);border-radius:1px"></div>
+
+      <div style="font-size:2.8rem;margin-bottom:.4rem;animation:vlHeartBeat 2.4s ease-in-out infinite;display:inline-block">💗</div>
+      <div style="font-family:'Great Vibes',cursive;font-size:2.2rem;color:#fdf0f4;margin-bottom:.2rem;line-height:1.2">Un loc doar pentru tine</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:.88rem;font-style:italic;color:#c490a8;margin-bottom:2rem;letter-spacing:.04em">introdu codul de acces</div>
+
+      <!-- dots indicator -->
+      <div id="vlDots" style="display:flex;justify-content:center;gap:.7rem;margin-bottom:1.8rem">
+        <div class="vl-dot" id="vld0"></div>
+        <div class="vl-dot" id="vld1"></div>
+        <div class="vl-dot" id="vld2"></div>
+        <div class="vl-dot" id="vld3"></div>
+      </div>
+
+      <!-- numpad -->
+      <div id="vlPad" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;max-width:240px;margin:0 auto">
+        <button onclick="vlPress('1')">1</button>
+        <button onclick="vlPress('2')">2</button>
+        <button onclick="vlPress('3')">3</button>
+        <button onclick="vlPress('4')">4</button>
+        <button onclick="vlPress('5')">5</button>
+        <button onclick="vlPress('6')">6</button>
+        <button onclick="vlPress('7')">7</button>
+        <button onclick="vlPress('8')">8</button>
+        <button onclick="vlPress('9')">9</button>
+        <button onclick="vlPress('')" style="color:#9b6a7e;font-size:.9rem;background:transparent;border-color:transparent">✦</button>
+        <button onclick="vlPress('0')">0</button>
+        <button onclick="vlDelete()" style="font-size:1rem">⌫</button>
+      </div>
+
+      <div id="vlError" style="color:#ff6090;font-size:.78rem;margin-top:1.2rem;min-height:1.1rem;font-style:italic;letter-spacing:.03em"></div>
+
+      <!-- shimmer border bottom -->
+      <div style="position:absolute;bottom:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(232,85,122,.35),transparent);border-radius:1px"></div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  let vlVal = '';
+
+  window.vlPress = function(digit){
+    if(!digit || vlVal.length >= 4) return;
+    vlVal += digit;
+    updateDots();
+    if(vlVal.length === 4) setTimeout(vlCheck, 120);
+  };
+
+  window.vlDelete = function(){
+    vlVal = vlVal.slice(0, -1);
+    updateDots();
+  };
+
+  function updateDots(){
+    for(let i=0;i<4;i++){
+      const d = document.getElementById('vld'+i);
+      d.classList.remove('filled','error');
+      if(i < vlVal.length) d.classList.add('filled');
+    }
+  }
+
+  function vlCheck(){
+    if(vlVal === PASS){
+      overlay.style.animation = 'vlFadeIn .4s ease reverse forwards';
+      setTimeout(()=>{
+        overlay.remove();
+document.body.style.overflow = '';
+document.body.style.position = '';
+document.body.style.width = '';
+
+        loadAll();
+      }, 400);
+    } else {
+      for(let i=0;i<4;i++) document.getElementById('vld'+i).classList.add('error');
+      document.getElementById('vlError').textContent = 'Cod greșit — încearcă din nou 🌸';
+      setTimeout(()=>{
+        vlVal = '';
+        updateDots();
+        document.getElementById('vlError').textContent = '';
+      }, 900);
+    }
+  }
+
+  // keyboard support
+  document.addEventListener('keydown', function vlKey(e){
+    if(!document.getElementById('visitorLock')) return document.removeEventListener('keydown', vlKey);
+    if(e.key >= '0' && e.key <= '9') vlPress(e.key);
+    if(e.key === 'Backspace') vlDelete();
+  });
+
+})();
+
 
 
 </script>
