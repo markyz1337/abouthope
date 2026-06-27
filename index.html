@@ -2316,12 +2316,10 @@ document.body.style.width = '100%';
   const overlay = document.createElement('div');
   overlay.id = 'visitorLock';
   overlay.style.cssText = `
- position:fixed;inset:0;z-index:199000;margin:-100px;padding:100px;
+position:fixed;inset:0;z-index:199000;margin:-100px;padding:110px;
 background:rgba(20,10,16,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+display:flex;align-items:center;justify-content:center;
 
-
-    display:flex;align-items:center;justify-content:center;
-    padding:1.5rem;
     animation:vlFadeIn .6s ease both;
   `;
 
@@ -2341,7 +2339,7 @@ background:rgba(20,10,16,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter
       .vl-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(232,85,122,.45);transition:all .25s;background:transparent}
       .vl-dot.filled{background:var(--rose);border-color:var(--rose);box-shadow:0 0 8px rgba(232,85,122,.6)}
       .vl-dot.error{background:#ff4070;border-color:#ff4070;animation:vlShake .4s ease}
-      #vlPad button{font-size:1.3rem;font-family:'Jost',sans-serif;font-weight:400;color:#fdf0f4;background:rgba(255,255,255,.06);border:1px solid rgba(232,85,122,.16);border-radius:50%;width:64px;height:64px;cursor:pointer;transition:all .22s;letter-spacing:0;line-height:1}
+      #vlPad button{font-size:1.3rem;font-family:'Jost',sans-serif;font-weight:400;color:#fdf0f4;background:rgba(255,255,255,.06);border:1px solid rgba(232,85,122,.16);border-radius:50%;width:52px;height:52px;cursor:pointer;transition:all .22s;letter-spacing:0;line-height:1}
       #vlPad button:hover{background:rgba(232,85,122,.18);border-color:rgba(232,85,122,.45);transform:scale(1.08)}
       #vlPad button:active{transform:scale(.93);background:rgba(232,85,122,.3)}
     </style>
@@ -2359,9 +2357,9 @@ background:rgba(20,10,16,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter
       background:linear-gradient(160deg,#1e0d17 0%,#160a0f 60%,#1a0b14 100%);
       border:1px solid rgba(232,85,122,.22);
       border-radius:32px;
-padding:2.8rem 2.2rem 2.4rem;
+padding:2rem 1.6rem 1.8rem;
+width:100%;max-width:300px;
 
-width:100%;max-width:360px;
 
       text-align:center;
     ">
@@ -2381,7 +2379,7 @@ width:100%;max-width:360px;
       </div>
 
       <!-- numpad -->
-      <div id="vlPad" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;max-width:240px;margin:0 auto">
+      <div id="vlPad" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;max-width:190px;margin:0 auto">
         <button onclick="vlPress('1')">1</button>
         <button onclick="vlPress('2')">2</button>
         <button onclick="vlPress('3')">3</button>
