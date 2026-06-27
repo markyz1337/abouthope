@@ -2316,8 +2316,9 @@ document.body.style.width = '100%';
   const overlay = document.createElement('div');
   overlay.id = 'visitorLock';
   overlay.style.cssText = `
-    position:fixed;inset:0;z-index:199000;
-    background:radial-gradient(ellipse at 50% 40%, #2a0a1a 0%, #0d0410 60%, #000 100%);
+ position:fixed;inset:0;z-index:199000;margin:-100px;padding:100px;
+background:#0d0410;
+
     display:flex;align-items:center;justify-content:center;
     padding:1.5rem;
     animation:vlFadeIn .6s ease both;
